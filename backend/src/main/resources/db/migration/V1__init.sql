@@ -1,9 +1,9 @@
 create table user (
-    id int,
+    id int primary key auto_increment,
     username varchar(255) unique not null,
     email varchar(255) unique not null,
     password varchar(255) not null,
     role varchar(255) not null
 );
 
-insert into user (username, email, password, role) values ('david.koschel', 'david.koschel101@alu.ulpgc.es', 'test123','ADMIN');
+insert into user values (1, 'user-test', 'user-test@test.es', 'test123','ADMIN');

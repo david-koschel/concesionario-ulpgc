@@ -1,4 +1,4 @@
-package ps.grupo9.backend;
+package ps.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
