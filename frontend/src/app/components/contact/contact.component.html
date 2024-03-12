@@ -1,7 +1,7 @@
 <div class="container justify-content-center mt-4">
   <h1 class="pt-2 text-align-left"><b>Contacto</b></h1>
-  <div class="contact-container">
-    <div class="contact-col">
+  <div class="row">
+    <div class="col-12 col-lg-6">
       <p>Puede ponerse en contacto con nuestra empresa y enviarnos sus sugerencias en:</p>
       <ul>
         <li>(+34) 928 xxx 105</li>
@@ -16,11 +16,11 @@
         ></iframe>
       </div>
     </div>
-    <div class="contact-col">
+    <div class="col">
       <p>También se puede ponerse en contacto con nosotros rellenando el siguiente formulario:</p>
       <form [formGroup]="contactForm">
-        <div class="row-container">
-          <div class="two-col">
+        <div class="row">
+          <div class="col-6">
             <p-floatLabel>
               <input id="name" type="text" pInputText formControlName="name"/>
               <label for="name">Nombre</label>

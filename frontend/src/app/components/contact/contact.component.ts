@@ -11,7 +11,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
   ],
   templateUrl: './contact.component.html',
   standalone: true,
-  styleUrl: './contact.component.css'
+  styleUrl: './contact.component.scss'
 })
 export class ContactComponent implements OnInit{
 
