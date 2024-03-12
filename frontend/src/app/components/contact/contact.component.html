@@ -1,5 +1,33 @@
-<div>
-  <p>
-    HOLA MUNDO
-  </p>
+<div class="container justify-content-center mt-4">
+  <h1 class="pt-2 text-align-left"><b>Contacto</b></h1>
+  <div class="contact-container">
+    <div class="contact-col">
+      <p>Puede ponerse en contacto con nuestra empresa y enviarnos sus sugerencias en:</p>
+      <ul>
+        <li>(+34) 928 xxx 105</li>
+        <li>concesionario.ulpgc&#64;gmail.com</li>
+        <li>Campus de Tafira, 35017 Las Palmas de Gran Canaria, Las Palmas</li>
+      </ul>
+      <div style="width: 100%">
+        <iframe
+          width="100%"
+          height="500"
+          src="https://maps.google.com/maps?q=Escuela%20Ingenier%C3%ADa%20Inform%C3%A1tica%20ULPGC&t=&z=15&ie=UTF8&iwloc=&output=embed"
+        ></iframe>
+      </div>
+    </div>
+    <div class="contact-col">
+      <p>También se puede ponerse en contacto con nosotros rellenando el siguiente formulario:</p>
+      <form [formGroup]="contactForm">
+        <div class="row-container">
+          <div class="two-col">
+            <p-floatLabel>
+              <input id="name" type="text" pInputText formControlName="name"/>
+              <label for="name">Nombre</label>
+            </p-floatLabel>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
