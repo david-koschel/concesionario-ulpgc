@@ -1,13 +1,25 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import { FloatLabelModule } from 'primeng/floatlabel';
+import {InputTextModule} from "primeng/inputtext";
+import {StyleClassModule} from "primeng/styleclass";
+import {CheckboxModule} from "primeng/checkbox";
+import {ButtonModule} from "primeng/button";
+import {ProgressSpinnerModule} from "primeng/progressspinner";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-contact',
   imports: [
     ReactiveFormsModule,
     FormsModule,
-    FloatLabelModule
+    FloatLabelModule,
+    InputTextModule,
+    StyleClassModule,
+    CheckboxModule,
+    ButtonModule,
+    ProgressSpinnerModule,
+    NgIf
   ],
   templateUrl: './contact.component.html',
   standalone: true,
@@ -16,6 +28,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 export class ContactComponent implements OnInit{
 
   contactForm!: FormGroup;
+  loading: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -28,11 +41,14 @@ export class ContactComponent implements OnInit{
   private initializeForm() {
     this.contactForm = this.formBuilder.group({
       name: ['', Validators.required],
-      surname: [''],
       email: ['', [Validators.required, Validators.email]],
       subject: ['', Validators.required],
       message: ['', Validators.required],
       privacy: [false, Validators.requiredTrue]
     });
+  }
+
+  submit() {
+
   }
 }
