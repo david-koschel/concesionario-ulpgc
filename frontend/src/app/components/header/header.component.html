@@ -1,23 +1,52 @@
-<div class="container">
-  <div class="row">
-      <div class="col-md-1 text-right">
-        <p-sidebar [(visible)]="sidebarVisible">
-          <h1>Menú</h1>
-        </p-sidebar>
-        <button
-          class="btn btn-primary"
-          (click)="sidebarVisible = true"
-        ><i class="pi pi-bars"></i></button>
-      </div>
-      <div class="col-md-9">
-        <a href="#" class="logo">
-          <img src="path/to/your/logo.png" alt="Concesionario ULPGC Logo">
-        </a>
-      </div>
-      <div class="col-md-2 align-items-right">
-        <button class="btn btn-primary" ng-click="toggleMenu()">
-          Iniciar Sesión
-        </button>
-      </div>
-  </div>
+<div class="d-flex align-items-center menu" >
+    <div class="buttons-left">
+      <p-sidebar [(visible)]="sidebarVisible">
+        <div class="d-flex flex-column">
+          <button
+            class="btn btn-outline-dark"
+            routerLink="/home"
+            (click)="sidebarVisible = false"
+          ><i class="pi pi-home"></i> Home</button>
+          <button
+            class="btn btn-outline-dark"
+            routerLink=""
+            (click)="sidebarVisible = false"
+          >Nuestro Catálogo</button>
+          <button
+            class="btn btn-outline-dark"
+            routerLink=""
+            (click)="sidebarVisible = false"
+          >Nuestros Servicios</button>
+          <button class="btn btn-outline-dark">Sobre nosotros</button>
+          <button
+            class="btn btn-outline-dark"
+            routerLink="/contacto"
+            (click)="sidebarVisible = false"
+          >Contacto</button>
+          <button
+            class="btn btn-outline-dark"
+            routerLink=""
+            (click)="sidebarVisible = false"
+          >Mi coche ULPGC</button>
+        </div>
+      </p-sidebar>
+      <button
+        class="btn btn-outline-light"
+        (click)="sidebarVisible = true"
+      ><i class="pi pi-bars"></i></button>
+    </div>
+    <a
+      style="margin: 0 auto;"
+      routerLink="/home"
+    ><img
+        src=""
+        class="hover"
+        alt="Concesionario ULPGC Logo">
+    </a>
+    <div class="d-none d-md-block buttons-right">
+      <button class="btn btn-outline-light">
+        Iniciar Sesión
+      </button>
+    </div>
 </div>
+

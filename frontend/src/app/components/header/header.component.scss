@@ -1,0 +1,33 @@
+.buttons-right {
+  top: 0;
+  position: absolute;
+  right: 0;
+  margin: 20px;
+}
+
+.buttons-left {
+  top: 0;
+  position: absolute;
+  left: 0;
+  margin: 20px;
+}
+
+.menu {
+  height: 80px;
+  background-color: rgb(82, 87, 94);
+  width: 100%;
+}
+
+.hover:hover {
+  background: rgb(138, 133, 133);
+  border-radius: 12px;
+}
+
+.btn-outline-dark{
+  border: none;
+  font-size: larger !important;
+}
+
+.btn-outline-light{
+  border: none;
+}
