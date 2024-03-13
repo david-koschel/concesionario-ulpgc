@@ -29,6 +29,7 @@ export class ContactComponent implements OnInit{
 
   contactForm!: FormGroup;
   loading: boolean = false;
+  submitted: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -48,7 +49,11 @@ export class ContactComponent implements OnInit{
     });
   }
 
-  submit() {
+  get f() {
+    return this.contactForm.controls;
+  }
 
+  submit() {
+    this.submitted = true;
   }
 }

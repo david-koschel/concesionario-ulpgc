@@ -1,2 +1,24 @@
 /* You can add global styles to this file, and also import other style files */
 @import "primeicons/primeicons.css";
+
+label, span, th {
+  &.required:after {
+    content: "*";
+    font-weight: bold;
+    color: red;
+    margin-left: 4px;
+  }
+  &.semi-required:after {
+    content: "*";
+    font-weight: bold;
+    color: cadetblue;
+    margin-left: 4px;
+  }
+}
+
+.required > label:after {
+  content: "*";
+  font-weight: bold;
+  color: red;
+  margin-left: 4px;
+}
