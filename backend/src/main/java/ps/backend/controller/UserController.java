@@ -1,11 +1,9 @@
 package ps.backend.controller;
 
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ps.backend.entity.User;
+import ps.backend.service.EmailService;
 import ps.backend.service.UserService;
 
 import java.util.List;
@@ -15,12 +13,19 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final EmailService emailService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, EmailService emailService) {
         this.userService = userService;
+        this.emailService = emailService;
     }
 
     //PETICIONES DE PRUEBA
+
+    @PostMapping
+    public void sendEmail() {
+        emailService.sendEmail("david.koschel101@alu.ulpgc.es", "Prueba correo", "Esto es una prueba");
+    }
 
     @GetMapping("/all")
     public List<User> findAll() {
