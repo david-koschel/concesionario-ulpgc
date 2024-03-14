@@ -1,1 +1,27 @@
-<p>login works!</p>
+<div class="padreloginform">
+    <div class="loginform">
+        <form [formGroup]="loginForm">
+        <p-card header="Login">
+            <div class="field">
+                <label for="email">Email</label>
+                <input type="email" class="hola" pInputText formControlName="email" name="email" placeholder="Introduce tu email" />
+                
+            </div>
+            <div class="field">
+                    <label for="password">Password</label>
+                    <input type="password" class="hola" pInputText formControlName="password" name="password" placeholder="Introduce tu contraseña" />
+            </div>
+            <div class="j1"> <a href ="/forgotpassword">¿Ha olvidado su contraseña?</a></div>
+            <div class="boton">
+                <button
+                pButton
+                class="boton1"
+                label="SIGN IN"
+                ></button>
+            </div>
+            <div class="j1">¿Aún no esta registrado? <a href ="/register">Registrarse</a></div>
+        </p-card>
+        </form>
+    </div>
+</div>
+

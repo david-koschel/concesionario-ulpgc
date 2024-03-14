@@ -14,11 +14,11 @@ import { CommonModule } from '@angular/common'; // Importa CommonModule
   styleUrl: './forgotpassword.component.css'
 })
 export class ForgotpasswordComponent {
-  loginForm = this.fb.group({
+  forgotpasswordForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
   }) 
   constructor(private fb: FormBuilder){}
   get email() {
-    return this.loginForm.controls['email'];
+    return this.forgotpasswordForm.controls['email'];
   }
 }
