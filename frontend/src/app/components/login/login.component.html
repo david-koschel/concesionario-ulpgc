@@ -1,7 +1,7 @@
 <div class="padreloginform">
     <div class="loginform">
         <form [formGroup]="loginForm">
-        <p-card header="Login">
+        <p-card header="Iniciar Sesion">
             <div class="field">
                 <label for="email">Email</label>
                 <input type="email" class="hola" pInputText formControlName="email" name="email" placeholder="Introduce tu email" />
@@ -11,12 +11,13 @@
                     <label for="password">Password</label>
                     <input type="password" class="hola" pInputText formControlName="password" name="password" placeholder="Introduce tu contraseña" />
             </div>
+            <br>
             <div class="j1"> <a href ="/forgotpassword">¿Ha olvidado su contraseña?</a></div>
             <div class="boton">
                 <button
                 pButton
                 class="boton1"
-                label="SIGN IN"
+                label="INICIAR SESION"
                 ></button>
             </div>
             <div class="j1">¿Aún no esta registrado? <a href ="/register">Registrarse</a></div>
