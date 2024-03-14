@@ -2,32 +2,13 @@
     <div class="buttons-left">
       <p-sidebar [(visible)]="sidebarVisible">
         <div class="d-flex flex-column">
-          <button
-            class="btn btn-outline-dark"
-            routerLink="/home"
-            (click)="sidebarVisible = false"
-          ><i class="pi pi-home"></i> Home</button>
-          <button
-            class="btn btn-outline-dark"
-            routerLink=""
-            (click)="sidebarVisible = false"
-          >Nuestro Catálogo</button>
-          <button
-            class="btn btn-outline-dark"
-            routerLink=""
-            (click)="sidebarVisible = false"
-          >Nuestros Servicios</button>
-          <button class="btn btn-outline-dark">Sobre nosotros</button>
-          <button
-            class="btn btn-outline-dark"
-            routerLink="/contacto"
-            (click)="sidebarVisible = false"
-          >Contacto</button>
-          <button
-            class="btn btn-outline-dark"
-            routerLink=""
-            (click)="sidebarVisible = false"
-          >Mi coche ULPGC</button>
+          @for (button of buttons; track $index) {
+            <a
+              class="btn btn-outline-dark"
+              routerLink="{{button.route}}"
+              (click)="sidebarVisible = false"
+            ><i class="{{button.icon}}"></i>{{button.name}}</a>
+          }
         </div>
       </p-sidebar>
       <button
@@ -38,10 +19,20 @@
     <a
       style="margin: 0 auto;"
       routerLink="/home"
+      class="d-none d-md-block"
     ><img
-        src=""
+        src="/assets/logos/logo.png"
         class="hover"
         alt="Concesionario ULPGC Logo">
+    </a>
+    <a
+      style="margin: 0 auto;"
+      routerLink="/home"
+      class="d-sm-none buttons-right"
+    ><img
+      src="/assets/logos/logo-sm.png"
+      class="hover"
+      alt="Concesionario ULPGC Logo">
     </a>
     <div class="d-none d-md-block buttons-right">
       @if (!loggedIn) {
