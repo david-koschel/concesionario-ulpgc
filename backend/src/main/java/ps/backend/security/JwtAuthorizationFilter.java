@@ -37,20 +37,20 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
     private Optional<UsernamePasswordAuthenticationToken> getAuthentication(HttpServletRequest request) {
         String token = request.getHeader(TOKEN_HEADER);
-        Optional<UsernamePasswordAuthenticationToken> usernamePasswordAuthenticationToken = Optional.empty();
         if ((token != null && !token.isEmpty()) && token.startsWith(BEARER)) {
             Jws<Claims> parsedToken = Jwts.parser()
-                    .setSigningKey(JWT_KEY.getBytes())
-                    .parseClaimsJws(BEARER_PATTERN.matcher(token).replaceAll(Matcher.quoteReplacement("")));
-            String username = parsedToken.getBody().getSubject();
+                    .verifyWith(JWT_KEY)
+                    .build()
+                    .parseSignedClaims(BEARER_PATTERN.matcher(token).replaceAll(Matcher.quoteReplacement("")));
+            String username = parsedToken.getPayload().getSubject();
             if (username != null && !username.isEmpty()) {
-                List<SimpleGrantedAuthority> authorities = ((List<?>) parsedToken.getBody()
+                List<SimpleGrantedAuthority> authorities = ((List<?>) parsedToken.getPayload()
                         .get("rol")).stream()
                         .map(authority -> new SimpleGrantedAuthority((String) authority))
                         .collect(Collectors.toList());
-                usernamePasswordAuthenticationToken = Optional.of(new UsernamePasswordAuthenticationToken(username, null, authorities));
+                return Optional.of(new UsernamePasswordAuthenticationToken(username, null, authorities));
             }
         }
-        return usernamePasswordAuthenticationToken;
+        return Optional.empty();
     }
 }

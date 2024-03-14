@@ -2,7 +2,6 @@ package ps.backend.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -52,11 +51,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .collect(Collectors.toList());
 
         String token = Jwts.builder()
-                .signWith(Keys.hmacShaKeyFor(JWT_KEY.getBytes()))
-                .setHeaderParam("typ", "JWT")
-                .setSubject(user.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(8)))
+                .signWith(JWT_KEY)
+                .header().add("typ", "JWT").and()
+                .subject(user.getUsername())
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis() + TimeUnit.HOURS.toMillis(8)))
                 .claim("rol", roles)
                 .compact();
 

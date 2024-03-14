@@ -3,4 +3,4 @@
 
 ## Diseño
 
-- [Mockups en Figma](https://www.figma.com/team_invite/redeem/OTrp77EWLdqDfkeiakRl74)
+- [Mockups en Figma](https://www.figma.com/file/hjHSfqp53JgXTBSCr8VQF9/MockupsConcesionario?type=design&node-id=0%3A1&mode=design&t=7HwOJH3WUtNoekuE-1)
