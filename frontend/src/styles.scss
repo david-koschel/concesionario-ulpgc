@@ -22,3 +22,7 @@ label, span, th {
   color: red;
   margin-left: 4px;
 }
+
+.main-home-bar .pi-angle-right::before {
+  content: "\e931";
+}
