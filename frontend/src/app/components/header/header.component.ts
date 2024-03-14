@@ -1,8 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {SidebarModule} from "primeng/sidebar";
 import {ButtonModule} from "primeng/button";
 import {RouterLink} from "@angular/router";
-import {trigger} from "@angular/animations";
+import {LoginService} from "../../security/login.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-header',
@@ -14,14 +15,27 @@ import {trigger} from "@angular/animations";
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
-  animations: [
-  ]
+  animations: []
 })
-export class HeaderComponent implements OnInit{
-  sidebarVisible = false;
+export class HeaderComponent implements OnDestroy {
 
-  constructor() {}
+  protected sidebarVisible = false;
+  protected loggedIn!: boolean;
+  private loggedInSubscription: Subscription;
 
-  ngOnInit(): void {
+  constructor(protected loginService: LoginService) {
+    this.loggedInSubscription = this.loginService.userIsLoggedIn$.subscribe(result => this.loggedIn = result);
+  }
+
+  ngOnDestroy(): void {
+    this.loggedInSubscription.unsubscribe();
+  }
+
+  fakeLogin() {
+    this.loginService.login("user-test", "test123");
+  }
+
+  logout() {
+    this.loginService.logout();
   }
 }

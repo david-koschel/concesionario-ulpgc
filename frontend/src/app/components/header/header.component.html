@@ -44,9 +44,11 @@
         alt="Concesionario ULPGC Logo">
     </a>
     <div class="d-none d-md-block buttons-right">
-      <button class="btn btn-outline-light">
-        Iniciar Sesión
-      </button>
+      @if (!loggedIn) {
+        <button class="btn btn-outline-light" (click)="fakeLogin()">Iniciar Sesión</button>
+      } @else {
+        <button class="btn btn-outline-light" (click)="logout()">Cerrar Sesión</button>
+      }
     </div>
 </div>
 
