@@ -22,6 +22,8 @@ public class ContactMessage {
     @Column(columnDefinition = "TEXT")
     private String message;
 
+    private boolean answered;
+
     public Integer getId() {
         return id;
     }
@@ -60,5 +62,13 @@ public class ContactMessage {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public boolean isAnswered() {
+        return answered;
+    }
+
+    public void setAnswered(boolean answered) {
+        this.answered = answered;
     }
 }

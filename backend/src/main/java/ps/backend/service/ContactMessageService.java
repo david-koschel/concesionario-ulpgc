@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 public class ContactMessageService {
-    @Value("${EMAIL.IT}")
+
     private String itEmail;
     private final ContactMessageRepository contactMessageRepository;
 
