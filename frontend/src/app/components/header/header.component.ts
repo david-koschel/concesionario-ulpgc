@@ -35,7 +35,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     protected loginService: LoginService,
     private router: Router
   ) {
-    this.loggedInSubscription = this.loginService.userIsLoggedIn$.subscribe(result => this.loggedIn = result);
+    this.loggedInSubscription = this.loginService.userIsLoggedIn$
+      .subscribe(result => this.onUserLoggedInChange(result));
   }
 
   ngOnInit(): void {
@@ -46,9 +47,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.loggedInSubscription.unsubscribe();
   }
 
+  onUserLoggedInChange(loggedInStatus: boolean) {
+    this.loggedIn = loggedInStatus;
+    if (this.loggedIn) {
+      this.buildUserMenu();
+    } else {
+      this.menuItems = [];
+    }
+  }
+
   fakeLogin() {
     this.loginService.login("user-test", "test123");
-    this.buildUserMenu();
   }
 
   logout() {
@@ -101,6 +110,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.buildAdministrationItems();
     this.menuItems.push(
       {separator:true},
+      {
+        label: "Mi Perfil",
+        icon: "pi pi-user",
+        routerLink: "user"
+      },
       {
         label: "Cerrar Sesión",
         icon: "pi pi-sign-out",
