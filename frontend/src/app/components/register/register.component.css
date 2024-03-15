@@ -1,0 +1,41 @@
+.padreloginform{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(164, 206, 249);
+}
+.loginform{  
+    width: 450px; 
+}
+
+.j1{
+    margin-top: 15px;
+    text-align: center;
+}
+.boton{
+    width: 100%;
+    margin-top: 15px;
+    
+}
+
+.boton1{
+    width: 100%;
+    
+}
+.hola{
+    width: 100%;
+    margin-top: 10px;
+}
+
+
+
+.field{
+    width: 100%;
+    margin-top: 15px;
+}
+
+.registerdiv{
+    width: 400px;
+}
