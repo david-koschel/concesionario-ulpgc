@@ -35,3 +35,7 @@ label, span, th {
     width: 100%;
   }
 }
+  
+.main-home-bar .pi-angle-right::before {
+  content: "\e931";
+}
