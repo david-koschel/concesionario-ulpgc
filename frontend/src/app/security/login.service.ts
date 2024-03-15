@@ -2,21 +2,22 @@ import {Injectable, signal, WritableSignal} from '@angular/core';
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {toObservable} from "@angular/core/rxjs-interop";
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
 
-  private readonly userIsLoggedIn: WritableSignal<any>;
+  private readonly userIsLoggedInSignal: WritableSignal<any>;
   public userIsLoggedIn$: Observable<boolean>;
 
-  constructor(private http: HttpClient) {
-    this.userIsLoggedIn = signal(this.tokenExists())
-    this.userIsLoggedIn$ = toObservable(this.userIsLoggedIn);
+  constructor(private http: HttpClient, private router: Router) {
+    this.userIsLoggedInSignal = signal(this.userIsLoggedIn())
+    this.userIsLoggedIn$ = toObservable(this.userIsLoggedInSignal);
   }
 
-  private tokenExists(): boolean {
+  public userIsLoggedIn(): boolean {
     return !!localStorage.getItem("token");
   }
 
@@ -24,18 +25,19 @@ export class LoginService {
     this.http.post("http://localhost:8080/api/login", {username, password}, {observe: 'response'})
       .subscribe({
         next: response => {
-          this.userIsLoggedIn.set(this.onLogin(response));
+          this.userIsLoggedInSignal.set(this.onLogin(response));
         },
         error: () => {
           console.error("Invalid Login");
-          this.userIsLoggedIn.set(false);
+          this.userIsLoggedInSignal.set(false);
         }
       })
   }
 
   public logout(): void {
     localStorage.removeItem("token");
-    this.userIsLoggedIn.set(false);
+    this.userIsLoggedInSignal.set(false);
+    this.router.navigate(["home"])
   }
 
   private onLogin(response: HttpResponse<any>): boolean {
