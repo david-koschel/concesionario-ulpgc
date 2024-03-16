@@ -15,6 +15,10 @@ public class User {
 
     private String password;
 
+    private String name;
+
+    private String address;
+
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "VARCHAR")
     private Role role;
@@ -57,5 +61,21 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

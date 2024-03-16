@@ -34,6 +34,14 @@ public class UserService implements UserDetailsService {
         return userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).orElse(null);
     }
 
+    public User updatedLoggedUser(User user) {
+        User currentUser = findLoggedUser();
+        currentUser.setAddress(user.getAddress());
+        currentUser.setEmail(user.getEmail());
+        currentUser.setName(user.getName());
+        return userRepository.save(currentUser);
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> optionalUser = userRepository.findByUsername(username);

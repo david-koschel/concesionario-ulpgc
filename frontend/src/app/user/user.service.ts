@@ -14,6 +14,10 @@ export class UserService {
     return this.http.get<User>("http://localhost:8080/api/user/current");
   }
 
+  public updatedCurrentUser(user: User): Observable<User> {
+    return this.http.post<User>("http://localhost:8080/api/user/current", user);
+  }
+
   //PETICIONES DE PRUEBA
 
   public getUsers() {
