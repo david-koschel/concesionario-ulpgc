@@ -40,6 +40,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.buildSidebarButtons();
+    this.buildUserMenu();
   }
 
   ngOnDestroy(): void {
@@ -48,7 +49,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   fakeLogin() {
     this.loginService.login("user-test", "test123");
-    this.buildUserMenu();
   }
 
   logout() {
@@ -113,7 +113,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.menuItems.push(
       {
         label: "Panel de Administración",
-        command: () => this.router.navigate(["/panel-administracion"])
+        command: () => this.router.navigate(["/admin-panel"])
       }
     )
   }
