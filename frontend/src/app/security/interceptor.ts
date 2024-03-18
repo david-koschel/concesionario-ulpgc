@@ -15,7 +15,7 @@ export function authorizationInterceptor(req: HttpRequest<unknown>, next: HttpHa
   }
   return next(req).pipe(
     catchError(error => {
-      if (error.status === 403) {
+      if (error.status === 403 || error.status === 401) {
         console.warn("Unauthorized access, logging out...")
         loginService.logout();
       }

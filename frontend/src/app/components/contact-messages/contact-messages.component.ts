@@ -9,6 +9,8 @@ import {FloatLabelModule} from "primeng/floatlabel";
 import {InputTextModule} from "primeng/inputtext";
 import {NgIf} from "@angular/common";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {MessageService} from "primeng/api";
+import {ToastModule} from "primeng/toast";
 
 @Component({
   selector: 'app-contact-messages',
@@ -21,10 +23,12 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/
     FloatLabelModule,
     InputTextModule,
     NgIf,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ToastModule
   ],
   templateUrl: './contact-messages.component.html',
-  styleUrl: './contact-messages.component.scss'
+  styleUrl: './contact-messages.component.scss',
+  providers: [MessageService]
 })
 export class ContactMessagesComponent implements OnInit{
 
@@ -35,10 +39,12 @@ export class ContactMessagesComponent implements OnInit{
   showAnswerForm: boolean = false;
   answerForm!: FormGroup;
   submitted: boolean = false;
+  loading: boolean = false;
 
   public constructor(
     private contactMessageService: ContactMessageService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
@@ -82,6 +88,26 @@ export class ContactMessagesComponent implements OnInit{
 
   submit() {
     this.submitted = true;
+    if (this.answerForm.valid) {
+      this.loading = true;
+      const answer = {...this.answerForm.value, id: this.currentMessage!.id};
+      this.contactMessageService.answerMessage(answer).subscribe({
+          next: () => this.onSuccessfulAnswer(),
+          error: () => this.onUnsuccessfulAnswer()
+        }
+      );
+    }
+  }
+
+  private onSuccessfulAnswer() {
+    this.sidebarVisible = false;
+    this.loading = false;
+    this.messageService.add({summary: 'Éxito', detail: 'Se ha contestado el mensaje', severity: 'success'});
+  }
+
+  private onUnsuccessfulAnswer() {
+    this.loading = false;
+    this.messageService.add({summary: 'Error', detail: 'No se ha podido contestar al mensaje', severity: 'error'});
   }
 
   protected initializeForm() {

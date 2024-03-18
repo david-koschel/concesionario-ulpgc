@@ -1,7 +1,6 @@
 package ps.backend.entity;
 
 import jakarta.persistence.*;
-import org.antlr.v4.runtime.misc.NotNull;
 
 @Entity
 public class ContactMessage {
@@ -9,16 +8,12 @@ public class ContactMessage {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotNull
     private String name;
 
-    @NotNull
     private String email;
 
-    @NotNull
     private String subject;
 
-    @NotNull
     @Column(columnDefinition = "TEXT")
     private String message;
 

@@ -37,7 +37,7 @@ public class EmailService {
         helper.setFrom(EMAIL_ADDRESS, EMAIL_NAME);
         helper.setTo(to);
         helper.setSubject(subject);
-        helper.setText(body);
+        helper.setText(body, true);
         return helper;
     }
 }

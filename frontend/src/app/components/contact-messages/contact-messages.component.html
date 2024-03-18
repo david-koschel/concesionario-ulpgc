@@ -60,6 +60,7 @@
           icon="pi pi-reply"
           class="btn btn-outline-primary"
           (click)="showAnswerForm = true; initializeForm()"
+          [disabled]="loading"
         > Responder</button>
       </div>
       @if(showAnswerForm){
@@ -94,11 +95,14 @@
               pButton
               icon="pi pi-times"
               class="btn btn-outline-danger me-2"
+              [disabled]="loading"
             > Cancelar</button>
             <button
               pButton
-              icon="pi pi-send"
+              [icon]="loading ? 'pi pi-spin pi-spinner' : 'pi pi-send'"
               class="btn btn-outline-primary"
+              (click)="submit()"
+              [disabled]="loading"
             > Enviar </button>
           </div>
         </form>
@@ -106,3 +110,4 @@
     </div>
   </p-sidebar>
 </div>
+<p-toast></p-toast>

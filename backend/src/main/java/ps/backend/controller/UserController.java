@@ -13,11 +13,9 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final EmailService emailService;
 
     public UserController(UserService userService, EmailService emailService) {
         this.userService = userService;
-        this.emailService = emailService;
     }
 
     @GetMapping("/current")
@@ -31,11 +29,6 @@ public class UserController {
     }
 
     //PETICIONES DE PRUEBA
-
-    @PostMapping
-    public void sendEmail() {
-        emailService.sendEmail("david.koschel101@alu.ulpgc.es", "Prueba correo", "Esto es una prueba");
-    }
 
     @GetMapping("/all")
     public List<User> findAll() {

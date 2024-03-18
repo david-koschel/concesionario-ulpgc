@@ -1,7 +1,5 @@
 package ps.backend.controller;
 
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ps.backend.entity.ContactMessage;
 import ps.backend.service.ContactMessageService;

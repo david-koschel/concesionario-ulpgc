@@ -42,11 +42,13 @@ export const routes: Routes = [
   },
   {
     path: "admin-panel",
-    component: AdminPanelComponent
+    component: AdminPanelComponent,
+    canActivate: [userIsLoggedInGuard]
   },
   {
     path: "contact-messages",
-    component: ContactMessagesComponent
+    component: ContactMessagesComponent,
+    canActivate: [userIsLoggedInGuard]
   },
   {
     path: '**',

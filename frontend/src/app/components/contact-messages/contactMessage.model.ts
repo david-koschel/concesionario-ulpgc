@@ -3,5 +3,6 @@ export interface ContactMessage {
   email: string,
   subject: string,
   message: string,
-  answered: boolean
+  answered: boolean,
+  id: number
 }

@@ -1,12 +1,12 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {NgClass, NgForOf, NgIf, NgOptimizedImage, NgTemplateOutlet} from "@angular/common";
 import {ButtonModule} from "primeng/button";
-import {UserService} from "../../user/user.service";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {User} from "../../user/user.model";
 import {InputTextModule} from "primeng/inputtext";
 import {MessageService} from "primeng/api";
 import {ToastModule} from "primeng/toast";
+import {UserService} from "../../service/user.service";
+import {User} from "../../service/user.model";
 
 @Component({
   selector: 'app-user-profile',
@@ -30,7 +30,7 @@ export class UserProfileComponent implements OnInit {
 
   protected editing: boolean = false;
 
-  protected userCardRows: { name: string; value: string; formControl?: string}[] = [];
+  protected userCardRows: { name: string; value: string; formControl?: string }[] = [];
   protected userVehicles: { model: string; status: string; image: string; }[] = [];
   protected userConfigurations: {
     name: string;
@@ -44,8 +44,8 @@ export class UserProfileComponent implements OnInit {
   protected form!: FormGroup;
   protected formLoading = false;
 
-  private userService =  inject(UserService);
-  private formBuilder =  inject(FormBuilder);
+  private userService = inject(UserService);
+  private formBuilder = inject(FormBuilder);
   private user!: User;
 
   constructor(private messageService: MessageService) {
@@ -83,7 +83,14 @@ export class UserProfileComponent implements OnInit {
 
   private getUserConfigurations() {
     this.userConfigurations = [
-      {name: "Coche nuevo", model: "Ford Fiesta", color: "Plata Perla", design: "Active", engine: "1.0 EcoBoost Hybrid 125 CV", accessories: ["Sistema de Sonido B&O", "Llantas de aleación y mecanizado brillante"]}
+      {
+        name: "Coche nuevo",
+        model: "Ford Fiesta",
+        color: "Plata Perla",
+        design: "Active",
+        engine: "1.0 EcoBoost Hybrid 125 CV",
+        accessories: ["Sistema de Sonido B&O", "Llantas de aleación y mecanizado brillante"]
+      }
     ]
   }
 
@@ -106,7 +113,7 @@ export class UserProfileComponent implements OnInit {
       this.userService.updatedCurrentUser(this.form.value).subscribe({
         next: value => {
           this.updateUserCardInfo(value);
-          this.messageService.add({ severity: 'success', summary: 'Éxito', detail: 'Datos de usuario actualizados' });
+          this.messageService.add({severity: 'success', summary: 'Éxito', detail: 'Datos de usuario actualizados'});
           this.formLoading = false;
           this.editing = false;
         },
