@@ -7,7 +7,7 @@ h1 {
   margin-bottom: 1.5rem;
 }
 
-label, span, th {
+label, span, th, h5 {
   &.required:after {
     content: "*";
     font-weight: bold;
@@ -35,7 +35,13 @@ label, span, th {
     width: 100%;
   }
 }
-  
-.main-home-bar .pi-angle-right::before {
-  content: "\e931";
+
+.p-menu {
+  ul {
+    padding-left: 0;
+    margin-bottom: 0;
+    a {
+      text-decoration: none;
+    }
+  }
 }
