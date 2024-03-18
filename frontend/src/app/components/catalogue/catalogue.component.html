@@ -1,0 +1,18 @@
+<h1>Catálogo de vehículos</h1>
+<article>
+    @for (vehicle of vehicles; track vehicle.id){
+        <section id="{{ vehicle.id }}"> 
+            <img [src]="vehicle.srcImage" width="450px" height="350px" alt="">
+            <div class="content">
+                <h2 class="name">
+                    {{ vehicle.name }}
+                </h2>
+                
+                <div class="description">
+                    {{ vehicle.description}}
+                </div>
+            </div>
+                
+        </section>
+    }
+</article>

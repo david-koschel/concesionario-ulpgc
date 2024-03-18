@@ -1,5 +1,5 @@
-<div class="container justify-content-center mt-4">
-  <h1 class="pt-2 text-align-left"><b>Contacto</b></h1>
+<div>
+  <h1>Contacto</h1>
   <div class="row">
     <div class="col-12 col-lg-6">
       <p>Puede ponerse en contacto con nuestra empresa y enviarnos sus sugerencias en:</p>
@@ -19,36 +19,35 @@
     <div class="col">
       <p>También se puede ponerse en contacto con nosotros rellenando el siguiente formulario:</p>
       <form [formGroup]="contactForm">
-        <div class="row mt-4">
-          <div class="col-6">
+        <div class="form-container row">
+          <div class="col-12 col-sm-6">
             <p-floatLabel>
-              <input id="name" type="text" pInputText formControlName="name" style="width: 100%"/>
+              <input id="name" type="text" pInputText formControlName="name"/>
               <label for="name"  class="required">Nombre</label>
             </p-floatLabel>
             <div *ngIf="submitted && f['name'].errors" class="text-danger">
               <small>Introducir un nombre.</small>
             </div>
           </div>
-          <div class="col-6">
+          <div class="col-12 col-sm-6">
             <p-floatLabel>
-              <input id="mail" type="text" pInputText formControlName="email" style="width: 100%"/>
+              <input id="mail" type="text" pInputText formControlName="email"/>
               <label for="mail" class="required">Email</label>
             </p-floatLabel>
             <div *ngIf="submitted && f['email'].errors" class="text-danger">
               <small>Introducir un email válido.</small>
             </div>
           </div>
-        </div>
-        <div class="mt-4">
+          <div class="col-12">
             <p-floatLabel>
-              <input id="subject" type="text" pInputText formControlName="subject" style="width: 100%"/>
+              <input id="subject" type="text" pInputText formControlName="subject"/>
               <label for="subject" class="required">Asunto</label>
             </p-floatLabel>
-          <div *ngIf="submitted && f['subject'].errors" class="text-danger">
-            <small>Añada un asunto a su mensaje.</small>
+            <div *ngIf="submitted && f['subject'].errors" class="text-danger">
+              <small>Añada un asunto a su mensaje.</small>
+            </div>
           </div>
-        </div>
-        <div class="mt-4">
+          <div class="col-12">
             <p-floatLabel>
               <textarea
                 pInputText
@@ -56,25 +55,22 @@
                 type="text"
                 rows="5"
                 formControlName="message"
-                style="width: 100%"
               ></textarea>
               <label for="message" class="required">Mensaje</label>
             </p-floatLabel>
             <div *ngIf="submitted && f['message'].errors" class="text-danger">
               <small>Añada un mensaje.</small>
             </div>
+          </div>
         </div>
         <div class="py-2">
-          <div class="d-flex align-items-center">
-            <p-checkbox
-              id="privacy"
-              formControlName="privacy"
-              [binary]="true"
-            ></p-checkbox>
-            <div class="mx-1">
-              <label class="required">He leído y acepto la política de privacidad</label>
-            </div>
-          </div>
+          <p-checkbox
+            id="privacy"
+            formControlName="privacy"
+            [binary]="true"
+            label="He leído y acepto la política de privacidad"
+            labelStyleClass="required"
+          ></p-checkbox>
           <div *ngIf="submitted && f['privacy'].errors" class="text-danger">
             <small>Debe leer y aceptar la política de privacidad.</small>
           </div>

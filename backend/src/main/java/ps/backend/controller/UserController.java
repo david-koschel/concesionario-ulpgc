@@ -20,6 +20,16 @@ public class UserController {
         this.emailService = emailService;
     }
 
+    @GetMapping("/current")
+    public User findLoggedUser() {
+        return userService.findLoggedUser();
+    }
+
+    @PostMapping("/current")
+    public User updatedLoggedUser(@RequestBody User user) {
+        return userService.updatedLoggedUser(user);
+    }
+
     //PETICIONES DE PRUEBA
 
     @PostMapping
@@ -30,11 +40,6 @@ public class UserController {
     @GetMapping("/all")
     public List<User> findAll() {
         return userService.findAll();
-    }
-
-    @GetMapping("/current")
-    public User findLoggedUser() {
-        return userService.findLoggedUser();
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")

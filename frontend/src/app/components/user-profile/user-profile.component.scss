@@ -1,0 +1,12 @@
+.card {
+  width: 100%;
+  max-width: 800px;
+}
+
+.table {
+  --bs-table-bg: #caccce;
+  --bs-table-border-color: #b0b0b0;
+  --bs-table-striped-bg: #e9ecef;
+  color: #212529;
+  border-color: var(--bs-table-border-color);
+}

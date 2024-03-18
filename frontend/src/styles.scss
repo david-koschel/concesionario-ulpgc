@@ -1,7 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
 @import "primeicons/primeicons.css";
 
-label, span, th {
+h1 {
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+label, span, th, h5 {
   &.required:after {
     content: "*";
     font-weight: bold;
@@ -21,4 +27,21 @@ label, span, th {
   font-weight: bold;
   color: red;
   margin-left: 4px;
+}
+
+.form-container.row > div {
+  margin-top: 1.5rem;
+  input, textarea {
+    width: 100%;
+  }
+}
+
+.p-menu {
+  ul {
+    padding-left: 0;
+    margin-bottom: 0;
+    a {
+      text-decoration: none;
+    }
+  }
 }
