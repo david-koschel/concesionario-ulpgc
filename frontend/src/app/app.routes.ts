@@ -7,6 +7,7 @@ import {HomeComponent} from "./components/home/home.component";
 import {CatalogueComponent} from './components/catalogue/catalogue.component';
 import {UserProfileComponent} from "./components/user-profile/user-profile.component";
 import {userIsLoggedInGuard} from "./security/guards";
+import { VehicleconfigurationComponent } from './components/vehicleconfiguration/vehicleconfiguration.component';
 
 export const routes: Routes = [
   {
@@ -37,6 +38,10 @@ export const routes: Routes = [
     path: "user",
     component: UserProfileComponent,
     canActivate: [userIsLoggedInGuard]
+  },
+  {
+    path: "vehicleconfiguration",
+    component: VehicleconfigurationComponent
   },
   {
     path: '**',
