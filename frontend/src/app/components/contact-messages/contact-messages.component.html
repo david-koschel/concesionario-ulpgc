@@ -1,1 +1,108 @@
-<p>contact-messages works!</p>
+<div class="container justify-content-center mt-4">
+  <h1 class="pt-2 text-align-left"><b>Bandeja de Entrada</b></h1>
+  <button
+    class="btn btn-outline-dark mb-3"
+    (click)="markAllAsRead()"
+  >
+    Marcar todos los mensajes como leídos
+  </button>
+  @for(message of messages; track $index){
+    <div class="row">
+      <div class="col-9">
+        @if(message.answered){
+          <div class="mb-3">{{message.subject}}<div class="message">{{message.message}}</div></div>
+        }@else{
+          <div class="mb-3"><b>{{message.subject}}</b><br><div class="message">{{message.message}}</div></div>
+        }
+      </div>
+      <div class="col-3 d-flex align-items-center justify-content-center">
+        <button
+          pButton
+          icon="pi pi-eye"
+          class="btn btn-secondary me-2"
+          style="height:60%;"
+          (click)="openMessage(message)"
+        >
+        </button>
+        <button
+          pButton
+          icon="pi pi-envelope"
+          class="btn btn-secondary me-2"
+          style="height:60%;"
+          (click)="markAsRead(message)"
+        >
+        </button>
+        <button
+          pButton
+          icon="pi pi-trash"
+          class="btn btn-danger"
+          style="height:60%;"
+          (click)="deleteMessage(message)"
+        >
+        </button>
+      </div>
+    </div>
+  }
+  <p-sidebar
+    [(visible)]="sidebarVisible"
+    position="right"
+    [fullScreen]="true"
+  >
+    <div class="container">
+      <div class="d-flex flex-column">
+        <h3>{{currentMessage?.subject}}</h3>
+        <p>De: <b>{{currentMessage?.name}}</b></p>
+        <div>{{currentMessage?.message}}</div>
+      </div>
+      <div class="buttons d-flex justify-content-end">
+        <button
+          pButton
+          icon="pi pi-reply"
+          class="btn btn-outline-primary"
+          (click)="showAnswerForm = true; initializeForm()"
+        > Responder</button>
+      </div>
+      @if(showAnswerForm){
+        <form [formGroup]="answerForm">
+          <div class="mt-4">
+            <p-floatLabel>
+              <input id="subject" type="text" pInputText formControlName="subject" style="width: 100%"/>
+              <label for="subject" class="required">Asunto</label>
+            </p-floatLabel>
+            <div *ngIf="submitted && f['subject'].errors" class="text-danger">
+              <small>Añada un asunto a su mensaje.</small>
+            </div>
+          </div>
+          <div class="pt-4">
+            <p-floatLabel>
+              <textarea
+                pInputText
+                id="message"
+                type="text"
+                rows="5"
+                formControlName="message"
+                style="width: 100%"
+              ></textarea>
+              <label for="message" class="required">Mensaje</label>
+            </p-floatLabel>
+            <div *ngIf="submitted && f['message'].errors" class="text-danger">
+              <small>Añada un mensaje.</small>
+            </div>
+          </div>
+          <div class="buttons d-flex justify-content-end">
+            <button
+              pButton
+              icon="pi pi-times"
+              class="btn btn-outline-danger me-2"
+            > Cancelar</button>
+            <button
+              pButton
+              icon="pi pi-send"
+              class="btn btn-outline-primary"
+            > Enviar </button>
+          </div>
+        </form>
+      }
+    </div>
+  </p-sidebar>
+</div>

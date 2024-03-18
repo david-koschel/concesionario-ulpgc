@@ -32,7 +32,7 @@ export class ContactComponent implements OnInit{
   submitted: boolean = false;
 
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder: FormBuilder
   ) {}
 
   ngOnInit(): void {

@@ -2,15 +2,14 @@ package ps.backend.controller;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import ps.backend.entity.ContactMessage;
 import ps.backend.service.ContactMessageService;
 
 import java.util.List;
 
-@Controller
+@RestController
+@RequestMapping("api/contact_message")
 public class ContactMessageController {
 
     private final ContactMessageService contactMessageService;
@@ -19,8 +18,7 @@ public class ContactMessageController {
         this.contactMessageService = contactMessageService;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping
+    @GetMapping("/all")
     public List<ContactMessage> findAll() {
         return this.contactMessageService.findAll();
     }
