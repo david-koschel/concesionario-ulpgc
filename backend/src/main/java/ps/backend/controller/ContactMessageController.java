@@ -21,8 +21,13 @@ public class ContactMessageController {
         return this.contactMessageService.findAll();
     }
 
+    @PostMapping("/answer")
+    public void sendAnswerContactMessageMail(@RequestBody ContactMessage contactMessage){
+        this.contactMessageService.sendContactMessageEmail(contactMessage);
+    }
+
     @PostMapping("/form")
     public void sendContactMessageMail(@RequestBody ContactMessage contactMessage){
-        this.contactMessageService.sendContactMessageEmail(contactMessage);
+        this.contactMessageService.save(contactMessage);
     }
 }
