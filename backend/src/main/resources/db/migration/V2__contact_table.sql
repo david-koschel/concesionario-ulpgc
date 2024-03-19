@@ -1,9 +1,9 @@
 create table contact_message (
     id       int primary key auto_increment,
-    name     varchar(255) unique not null,
-    email    varchar(255) unique not null,
-    subject  varchar(255)        not null,
-    message  varchar(2100)       not null,
+    name     varchar(255) not null,
+    email    varchar(255) not null,
+    subject  varchar(255) not null,
+    message  varchar(2100) not null,
     answered boolean
 );
 
