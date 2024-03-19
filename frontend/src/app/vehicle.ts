@@ -1,12 +1,13 @@
 export interface Vehicle {
     id: number,
-    Make: string,
+    make: string,
     model:{
         name: string,
         img: string,
     }
     price: number,
     descripcion: string,
+    engine: string[],
     color: {
       name: string;
       color: string;
@@ -16,14 +17,9 @@ export interface Vehicle {
         name: string,
         img: string 
       }[],
-    tires: {
-      name: string,
-      img: string 
-      }[],
-    Upholsterys: [string],
+    Upholsterys: string[],
     extras: {
       name: string,
       img: string 
       }[],      
-
 }

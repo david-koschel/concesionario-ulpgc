@@ -1,0 +1,71 @@
+#viewport{
+    height: 100%;
+    width: 100%;
+}
+.vehicleMain{
+    display: flex;
+    flex-direction: row;
+}
+.make, .model{
+    display:inline-block;
+    padding: 0.2em;
+    font-size: 2em;
+}
+.price{
+    margin-left: 2em;
+    font-size: 1.2em;
+}
+.selectorButton {
+    background-color: white;
+    border: none;
+    margin: 2em;
+    font-size: 1.2em;
+    font-weight: 600;
+  }
+  
+  .selectorButton.selected {
+    border-bottom: 3px solid blue; /* Define el estilo de borde deseado */
+  }
+.engineSelect{
+    display: block;
+    background: white;
+    border: none;
+    margin-bottom: 1em;
+}
+.colorBox{
+    height: 5em;
+    width: 5em;
+    border-radius: 10%;
+    margin: 0 auto;
+
+}
+.buttonColor{
+    background-color: white;
+    border: none;
+    padding: 2em;
+}
+.colorName{
+    background: white;
+    margin-top: 1em;
+    font-weight: bold;
+}
+.buttonRims{
+    background: white;
+    border: none;
+    max-width: 10em;
+    margin-right: 2em;
+}
+.upholsterySelect{
+    display: block;
+    background: white;
+    border: none;
+    margin-bottom: 1em;
+}
+
+.buttonExtra{
+    background: white;
+    border: 1px solid black;
+    max-width: 30em;
+    margin-right: 5em;
+
+}
