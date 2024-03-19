@@ -15,7 +15,11 @@ export class ContactMessageService {
   }
 
   public answerMessage(answer: {subject: string, message: string, id: number}): Observable<ContactMessage> {
-    return this.http.post<ContactMessage>("http://localhost:8080/api/contact_message/form", answer);
+    return this.http.post<ContactMessage>("http://localhost:8080/api/contact_message/answer", answer);
+  }
+
+  public sendContactMessage(message: ContactMessage){
+    return this.http.post<ContactMessage>("http://localhost:8080/api/contact_message/form", message);
   }
 }
 
