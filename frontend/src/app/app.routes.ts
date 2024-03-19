@@ -7,6 +7,7 @@ import {HomeComponent} from "./components/home/home.component";
 import {CatalogueComponent} from './components/catalogue/catalogue.component';
 import {UserProfileComponent} from "./components/user-profile/user-profile.component";
 import {userIsLoggedInGuard} from "./security/guards";
+import { VehicleconfigurationComponent } from './components/vehicleconfiguration/vehicleconfiguration.component';
 import {AdminPanelComponent} from "./components/admin-panel/admin-panel.component";
 import {ContactMessagesComponent} from "./components/contact-messages/contact-messages.component";
 
@@ -49,6 +50,10 @@ export const routes: Routes = [
     path: "contact-messages",
     component: ContactMessagesComponent,
     canActivate: [userIsLoggedInGuard]
+  },
+  {
+    path: "vehicleconfiguration",
+    component: VehicleconfigurationComponent
   },
   {
     path: '**',

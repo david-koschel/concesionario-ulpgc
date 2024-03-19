@@ -1,0 +1,54 @@
+
+<div id="viewport">
+    <div class="vehicleMain">
+        <div class="descripcion">
+            <h2 class="make"> {{vehicleList[1].make}} </h2>
+            <h3 class="model">{{vehicleList[1].model.name}}</h3>
+            <h3 class="price">Desde {{vehicleList[1].price}}€</h3>
+        </div>
+        <img src="{{vehicleList[1].model.img}}" alt="">
+    </div>
+    <div class="characteristicsMain">
+        <div class="selectorMenu">
+            <button class="engine selected selectorButton" (click)="selectedButton('engine')">Motor</button>
+            <button class="color selectorButton" (click)="selectedButton('color')">Color</button>
+            <button class="rims selectorButton" (click)="selectedButton('rims')">LLantas</button>
+            <button class="upnolsterys selectorButton" (click)="selectedButton('upnolsterys')">Tapicería</button>
+            <button class="extras selectorButton" (click)="selectedButton('extras')">Extras</button>
+        </div>
+        @if (selectButton == "engine"){
+            @for (engine of vehicleList[1].engine; track vehicleList[1].engine.indexOf(engine)) {
+                <button class="engineSelect">{{engine}}</button>
+            }
+        }
+        @if (selectButton == "color"){
+            @for (color of vehicleList[1].color; track vehicleList[1].engine.indexOf(color.name)) {
+                <button class="buttonColor">
+                    <div class="colorBox" [style.background-color] = "color.color"></div>
+                    <p class="colorName">{{color.name}}</p>
+                </button>
+            }
+        }
+        @if (selectButton == "rims"){
+            @for (rim of vehicleList[1].rims; track vehicleList[1].engine.indexOf(rim.name)) {
+                <button class="buttonRims">
+                    <img class="rimsBox" src="{{rim.img}}">
+                    <p class="rimName">{{rim.name}}</p>
+                </button>
+            }
+        }
+        @if (selectButton == "upnolsterys"){
+            @for (upholstery of vehicleList[1].Upholsterys; track vehicleList[1].engine.indexOf(upholstery)) {
+                <button class="upholsterySelect">{{upholstery}}</button>
+            }
+        }
+        @if (selectButton == "extras"){
+            @for (extra of vehicleList[1].extras; track vehicleList[1].extras) {
+                <button class="buttonExtra">
+                    <img class="extraBox" src="{{extra.img}}">
+                    <p class="extraName">{{extra.name}}</p>
+                </button>
+            }
+        }
+    </div>
+</div>
