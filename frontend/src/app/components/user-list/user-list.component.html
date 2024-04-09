@@ -1,0 +1,34 @@
+<h1>Usuarios</h1>
+<p-table
+  #dt
+  [loading]="!users"
+  [value]="users"
+>
+  <ng-template pTemplate="caption">
+    <div class="d-flex justify-content-between align-items-center gap-5">
+      <div class="input-group">
+        <input type="text" class="form-control border-dark" (input)="console.log($event.target)">
+        <span class="input-group-text border-dark">Buscar</span>
+      </div>
+      <a class="btn btn-outline-dark text-nowrap" routerLink="/home">Añadir usuario</a>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Nombre</th>
+      <th>Correo</th>
+      <th>Rol</th>
+      <th style="width: 6rem">  </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-user>
+    <tr>
+      <td>{{ user.name }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.role }}</td>
+      <td>
+        <a class="btn btn-outline-dark" routerLink="/home">Editar</a>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

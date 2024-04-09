@@ -6,7 +6,7 @@ import {InputTextModule} from "primeng/inputtext";
 import {MessageService} from "primeng/api";
 import {ToastModule} from "primeng/toast";
 import {UserService} from "../../service/user.service";
-import {User} from "../../service/user.model";
+import {User} from "../../models/user.model";
 
 @Component({
   selector: 'app-user-profile',

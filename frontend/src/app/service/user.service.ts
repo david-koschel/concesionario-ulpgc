@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {User} from "./user.model";
+import {User} from "../models/user.model";
 
 @Injectable({
   providedIn: 'root'
@@ -18,10 +18,8 @@ export class UserService {
     return this.http.post<User>("http://localhost:8080/api/user/current", user);
   }
 
-  //PETICIONES DE PRUEBA
-
-  public getUsers() {
-    return this.http.get("http://localhost:8080/api/user/all");
+  public getUsers(): Observable<User[]> {
+    return this.http.get<User[]>("http://localhost:8080/api/user/all");
   }
 
   public getUserById(id: number) {

@@ -23,13 +23,7 @@ public class UserController {
         return userService.findLoggedUser();
     }
 
-    @PostMapping("/current")
-    public User updatedLoggedUser(@RequestBody User user) {
-        return userService.updatedLoggedUser(user);
-    }
-
-    //PETICIONES DE PRUEBA
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/all")
     public List<User> findAll() {
         return userService.findAll();
@@ -40,4 +34,22 @@ public class UserController {
     public User findById(@PathVariable Integer id) {
         return userService.findById(id);
     }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("/new")
+    public User save(@RequestBody User user) {
+        return userService.save(user);
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PutMapping("/update")
+    public User update(@RequestBody User user) {
+        return userService.update(user);
+    }
+
+    @PutMapping("/current")
+    public User updatedLoggedUser(@RequestBody User user) {
+        return userService.updatedLoggedUser(user);
+    }
+
 }

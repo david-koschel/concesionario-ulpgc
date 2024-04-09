@@ -1,5 +1,6 @@
 package ps.backend.controller;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ps.backend.entity.ContactMessage;
 import ps.backend.service.ContactMessageService;
@@ -16,11 +17,13 @@ public class ContactMessageController {
         this.contactMessageService = contactMessageService;
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/all")
     public List<ContactMessage> findAll() {
         return this.contactMessageService.findAll();
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/answer")
     public void sendAnswerContactMessageMail(@RequestBody ContactMessage contactMessage){
         this.contactMessageService.sendContactMessageEmail(contactMessage);

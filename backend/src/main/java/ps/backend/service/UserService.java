@@ -62,4 +62,12 @@ public class UserService implements UserDetailsService {
                 Collections.singleton(new SimpleGrantedAuthority(user.getRole().toString()))
         );
     }
+
+    public User save(User user) {
+        return user;
+    }
+
+    public User update(User user) {
+        return user;
+    }
 }

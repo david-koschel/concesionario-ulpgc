@@ -6,3 +6,7 @@ import {LoginService} from "./login.service";
 export const userIsLoggedInGuard: CanActivateFn = () => {
   return inject(LoginService).userIsLoggedIn() || inject(Router).createUrlTree(["/home"]);
 };
+
+export const userIsAdminGuard: CanActivateFn = () => {
+  return inject(LoginService).userIsAdmin() || inject(Router).createUrlTree(["/home"]);
+};
