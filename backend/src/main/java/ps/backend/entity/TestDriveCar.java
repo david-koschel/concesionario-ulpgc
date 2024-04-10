@@ -9,6 +9,7 @@ public class TestDriveCar {
     private Integer id;
 
     @OneToOne
+    @JoinColumn(name = "car_model_id", referencedColumnName = "id")
     private CarModel model;
 
     public Integer getId() {

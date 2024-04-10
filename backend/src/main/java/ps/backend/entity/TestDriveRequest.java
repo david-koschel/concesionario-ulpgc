@@ -11,13 +11,15 @@ public class TestDriveRequest {
     private Integer id;
 
     @OneToOne
+    @JoinColumn(name = "test_drive_car_id", referencedColumnName = "id")
     private TestDriveCar testDriveCar;
 
     private Date startDate;
 
     private Date endDate;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     public void setId(Integer id) {
