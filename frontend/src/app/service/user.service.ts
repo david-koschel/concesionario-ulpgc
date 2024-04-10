@@ -15,14 +15,23 @@ export class UserService {
   }
 
   public updatedCurrentUser(user: User): Observable<User> {
-    return this.http.post<User>("http://localhost:8080/api/user/current", user);
+    return this.http.put<User>("http://localhost:8080/api/user/current", user);
   }
 
   public getUsers(): Observable<User[]> {
     return this.http.get<User[]>("http://localhost:8080/api/user/all");
   }
 
-  public getUserById(id: number) {
-    return this.http.get(`http://localhost:8080/api/user/single/${id}`);
+  public getUserById(id: number): Observable<User> {
+    return this.http.get<User>(`http://localhost:8080/api/user/single/${id}`);
   }
+
+  public updateUser(user: User): Observable<User> {
+    return this.http.put<User>("http://localhost:8080/api/user/current", user);
+  }
+
+  public addUser(user: User): Observable<User> {
+    return this.http.put<User>("http://localhost:8080/api/user/current", user);
+  }
+
 }

@@ -11,6 +11,7 @@ import { VehicleconfigurationComponent } from './components/vehicleconfiguration
 import {AdminPanelComponent} from "./components/admin-panel/admin-panel.component";
 import {ContactMessagesComponent} from "./components/contact-messages/contact-messages.component";
 import {UserListComponent} from "./components/user-list/user-list.component";
+import {UserFormComponent} from "./components/user-form/user-form.component";
 
 export const routes: Routes = [
   {
@@ -59,6 +60,11 @@ export const routes: Routes = [
   {
     path: "user-list",
     component: UserListComponent,
+    canActivate: [userIsAdminGuard]
+  },
+  {
+    path: "user-form/:userId",
+    component: UserFormComponent,
     canActivate: [userIsAdminGuard]
   },
   {

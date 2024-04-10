@@ -4,6 +4,7 @@ import {User} from "../../models/user.model";
 import {TableModule} from "primeng/table";
 import {RouterLink} from "@angular/router";
 import {InputTextModule} from "primeng/inputtext";
+import {TitleCasePipe} from "@angular/common";
 
 @Component({
   selector: 'app-user-list',
@@ -11,7 +12,8 @@ import {InputTextModule} from "primeng/inputtext";
   imports: [
     TableModule,
     RouterLink,
-    InputTextModule
+    InputTextModule,
+    TitleCasePipe
   ],
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.scss'
@@ -26,6 +28,4 @@ export class UserListComponent implements OnInit {
       this.users = users;
     })
   }
-
-  protected readonly console = console;
 }

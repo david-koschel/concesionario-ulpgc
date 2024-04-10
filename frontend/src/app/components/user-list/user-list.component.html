@@ -1,13 +1,14 @@
 <h1>Usuarios</h1>
 <p-table
-  #dt
+  #table
   [loading]="!users"
   [value]="users"
+  [globalFilterFields]="['name', 'email', 'role']"
 >
   <ng-template pTemplate="caption">
     <div class="d-flex justify-content-between align-items-center gap-5">
       <div class="input-group">
-        <input type="text" class="form-control border-dark" (input)="console.log($event.target)">
+        <input #input type="text" class="form-control border-dark" (input)="table.filterGlobal(input.value,'contains')">
         <span class="input-group-text border-dark">Buscar</span>
       </div>
       <a class="btn btn-outline-dark text-nowrap" routerLink="/home">Añadir usuario</a>
@@ -25,7 +26,7 @@
     <tr>
       <td>{{ user.name }}</td>
       <td>{{ user.email }}</td>
-      <td>{{ user.role }}</td>
+      <td>{{ user.role | titlecase }}</td>
       <td>
         <a class="btn btn-outline-dark" routerLink="/home">Editar</a>
       </td>
