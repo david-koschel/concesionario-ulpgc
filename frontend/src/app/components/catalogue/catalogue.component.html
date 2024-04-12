@@ -4,12 +4,17 @@
         <section class="d-flex gap-3 mb-4">
             <img [ngClass]="{'order-2': $index % 2 == 1}" class="object-fit-cover" [src]="vehicle.srcImage" width="450px" height="350px" alt="">
             <div class="content">
-                <h2 class="name">
-                    {{ vehicle.name }}
-                </h2>
-                <div class="description">
-                    {{ vehicle.description}}
-                </div>
+              <h2 class="name">
+                  {{ vehicle.name }}
+              </h2>
+              <div class="description">
+                  {{ vehicle.description}}
+              </div>
+              <div class="button-container">
+                <a class="btn btn-outline-dark"
+                   href="/catalogue/drive-request"
+                >Solicitud de Prueba</a>
+              </div>
             </div>
         </section>
     }
