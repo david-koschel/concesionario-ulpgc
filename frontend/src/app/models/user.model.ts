@@ -5,5 +5,7 @@ export interface User {
   email: string;
   username: string;
   password: string;
-  role: string;
+  role: Role;
 }
+
+export type Role = "ADMIN" | "USER"

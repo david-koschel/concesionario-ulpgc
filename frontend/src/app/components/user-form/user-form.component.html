@@ -22,9 +22,9 @@
       <input pInputText max="255" formControlName="password" type="password" class="mb-3 w-100">
     </div>
     <div>
-      <label class="card-title required">Rol</label>
-      ...
+      <p-checkbox label="Administrador" formControlName="isAdmin" [binary]="true"></p-checkbox>
     </div>
   </form>
   <button class="btn btn-outline-dark text-center" (click)="submitForm()">Añadir</button>
 </div>
+<p-toast></p-toast>

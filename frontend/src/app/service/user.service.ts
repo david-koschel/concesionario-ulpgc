@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {User} from "../models/user.model";
+import { Injectable } from '@angular/core';
+import { HttpClient } from "@angular/common/http";
+import { Observable } from "rxjs";
+import { User } from "../models/user.model";
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +27,7 @@ export class UserService {
   }
 
   public updateUser(user: User): Observable<User> {
-    return this.http.put<User>("http://localhost:8080/api/user/current", user);
+    return this.http.put<User>("http://localhost:8080/api/user/update", user);
   }
 
   public addUser(user: User): Observable<User> {

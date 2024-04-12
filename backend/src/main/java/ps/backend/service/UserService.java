@@ -1,5 +1,6 @@
 package ps.backend.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,7 +28,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User findById(Integer id) {
-        return userRepository.findById(id).orElse(null);
+        return userRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
     public User findLoggedUser() {
@@ -68,6 +69,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User update(User user) {
-        return user;
+        User userDB = this.findById(user.getId());
+        return userRepository.save(user);
     }
 }

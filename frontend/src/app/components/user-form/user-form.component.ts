@@ -1,11 +1,13 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {InputTextModule} from "primeng/inputtext";
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {UserService} from "../../service/user.service";
-import {ActivatedRoute} from "@angular/router";
-import {User} from "../../models/user.model";
-import {NgIf} from "@angular/common";
-import {update} from "@angular-devkit/build-angular/src/tools/esbuild/angular/compilation/parallel-worker";
+import { Component, inject, OnInit } from '@angular/core';
+import { InputTextModule } from "primeng/inputtext";
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
+import { UserService } from "../../service/user.service";
+import { ActivatedRoute, Router } from "@angular/router";
+import { User } from "../../models/user.model";
+import { NgIf } from "@angular/common";
+import { CheckboxModule } from "primeng/checkbox";
+import { MessageService } from "primeng/api";
+import { ToastModule } from "primeng/toast";
 
 @Component({
   selector: 'app-user-form',
@@ -13,16 +15,21 @@ import {update} from "@angular-devkit/build-angular/src/tools/esbuild/angular/co
   imports: [
     InputTextModule,
     ReactiveFormsModule,
-    NgIf
+    NgIf,
+    CheckboxModule,
+    ToastModule
   ],
   templateUrl: './user-form.component.html',
-  styleUrl: './user-form.component.scss'
+  styleUrl: './user-form.component.scss',
+  providers: [MessageService]
 })
 export class UserFormComponent implements OnInit {
 
   private userService = inject(UserService);
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private formBuilder = inject(FormBuilder);
+  private messageService = inject(MessageService);
 
   private userId!: number;
   protected userCardRows: { name: string; value: string; formControl: string }[] = [];
@@ -44,7 +51,8 @@ export class UserFormComponent implements OnInit {
       email: [user.email, Validators.email],
       address: [user.address, Validators.required],
       username: [user.username, Validators.required],
-      password: [user.password, Validators.required]
+      password: [user.password, Validators.required],
+      isAdmin: [user.role === "ADMIN"]
     })
   }
 
@@ -54,7 +62,8 @@ export class UserFormComponent implements OnInit {
       email: ["", [Validators.required, Validators.email]],
       address: ["", Validators.required],
       username: ["", Validators.required],
-      password: ["", Validators.required]
+      password: ["", Validators.required],
+      isAdmin: [false]
     })
   }
 
@@ -65,21 +74,31 @@ export class UserFormComponent implements OnInit {
     }
 
     if (this.form.valid) {
-      const user: User = {...this.form.value};
-      if (this.userId) {
-        user.id = this.userId;
-        this.updateUser(user)
-      } else {
-        this.saveUser(user)
-      }
+      const isAdmin = this.form.get("isAdmin")?.value;
+      const user: User = {...this.form.value, role: isAdmin ? "ADMIN" : "USER"};
+      console.log("updating")
+      this.addOrUpdateUser(user).subscribe({
+        next: res => {
+          this.messageService.add({
+            summary: "Usuario guardado con éxito",
+            severity: "success"
+          });
+        },
+        error: err => this.messageService.add({
+          summary: "Error al guardar el usuario",
+          detail: err.error
+        }),
+      })
     }
   }
 
-  private updateUser(user: User) {
-    this.userService.updateUser(user);
-  }
-
-  private saveUser(user: User) {
-    this.userService.addUser(user);
+  addOrUpdateUser(user: User) {
+    if (this.userId) {
+      user.id = this.userId;
+      return this.userService.updateUser(user);
+    } else {
+      console.log(user)
+      return this.userService.addUser(user);
+    }
   }
 }

@@ -11,7 +11,7 @@
         <input #input type="text" class="form-control border-dark" (input)="table.filterGlobal(input.value,'contains')">
         <span class="input-group-text border-dark">Buscar</span>
       </div>
-      <a class="btn btn-outline-dark text-nowrap" routerLink="/home">Añadir usuario</a>
+      <a class="btn btn-outline-dark text-nowrap" routerLink="/user-form/new">Añadir usuario</a>
     </div>
   </ng-template>
   <ng-template pTemplate="header">
@@ -28,7 +28,7 @@
       <td>{{ user.email }}</td>
       <td>{{ user.role | titlecase }}</td>
       <td>
-        <a class="btn btn-outline-dark" routerLink="/home">Editar</a>
+        <a class="btn btn-outline-dark" routerLink="/user-form/{{user.id}}">Editar</a>
       </td>
     </tr>
   </ng-template>
