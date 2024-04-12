@@ -10,6 +10,7 @@ import {userIsLoggedInGuard} from "./security/guards";
 import { VehicleconfigurationComponent } from './components/vehicleconfiguration/vehicleconfiguration.component';
 import {AdminPanelComponent} from "./components/admin-panel/admin-panel.component";
 import {ContactMessagesComponent} from "./components/contact-messages/contact-messages.component";
+import {DriveRequestFormComponent} from "./components/drive-request-form/drive-request-form.component";
 
 export const routes: Routes = [
   {
@@ -23,6 +24,10 @@ export const routes: Routes = [
   {
     path: "catalogue",
     component: CatalogueComponent
+  },
+  {
+    path: "catalogue/drive-request",
+    component: DriveRequestFormComponent
   },
   {
     path: "login",
