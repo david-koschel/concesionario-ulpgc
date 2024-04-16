@@ -9,6 +9,7 @@ import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 import {ToastModule} from "primeng/toast";
 import {MessageService} from "primeng/api";
 import {CalendarModule} from "primeng/calendar";
+import {DriveRequestService} from "../../../service/drive-request.service";
 
 @Component({
   selector: 'app-drive-request-form',
@@ -37,7 +38,8 @@ export class DriveRequestFormComponent implements OnInit{
 
   constructor(
     private formBuilder: FormBuilder,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private driveRequestService: DriveRequestService
   ) {}
 
   ngOnInit(): void {
@@ -58,5 +60,7 @@ export class DriveRequestFormComponent implements OnInit{
     })
   }
 
-  public submit() {}
+  public submit() {
+    //this.driveRequestService.addDriveRequest();
+  }
 }

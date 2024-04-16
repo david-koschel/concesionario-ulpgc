@@ -12,7 +12,8 @@ import {AdminPanelComponent} from "./components/admin-panel/admin-panel.componen
 import {ContactMessagesComponent} from "./components/contact-messages/contact-messages.component";
 import {UserListComponent} from "./components/user-list/user-list.component";
 import {UserFormComponent} from "./components/user-form/user-form.component";
-import {DriveRequestFormComponent} from "./components/drive-request-form/drive-request-form.component";
+import {DriveRequestFormComponent} from "./components/drive-request/drive-request-form/drive-request-form.component";
+import {DriveRequestListComponent} from "./components/drive-request/drive-request-list/drive-request-list.component";
 
 export const routes: Routes = [
   {
@@ -56,7 +57,12 @@ export const routes: Routes = [
   {
     path: "contact-messages",
     component: ContactMessagesComponent,
-    canActivate: [userIsLoggedInGuard]
+    canActivate: [userIsAdminGuard]
+  },
+  {
+    path: "drive-requests",
+    component: DriveRequestListComponent,
+    canActivate: [userIsAdminGuard]
   },
   {
     path: "vehicleconfiguration",

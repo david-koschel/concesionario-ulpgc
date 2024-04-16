@@ -1,0 +1,25 @@
+<div class="container justify-content-center mt-4">
+  <h1 class="pt-2 text-align-left"><b>Solicitudes de Prueba</b></h1>
+  <p-table
+    #table
+    [loading]="!driveRequests"
+    [value]="driveRequests"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Usuario</th>
+        <th>Vehículo</th>
+        <th>Fecha de Inicio</th>
+        <th>Fecha de Fin</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-driveRequest>
+      <tr>
+        <td>{{ driveRequest.username }}</td>
+        <td>{{ driveRequest.carModel }}</td>
+        <td>{{ driveRequest.startDate | date:"dd-MM-yyyy HH:mm" }}</td>
+        <td>{{ driveRequest.endDate | date:"dd-MM-yyyy HH:mm"}}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

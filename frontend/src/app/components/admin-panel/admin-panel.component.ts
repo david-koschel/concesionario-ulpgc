@@ -14,7 +14,7 @@ export class AdminPanelComponent {
 
   adminButtons: {routerLink: string, label: string}[] = [
     {routerLink: "/contact-messages", label: "Bandeja de Entrada"},
-    {routerLink: "/user-list", label: "Usuarios"}
+    {routerLink: "/user-list", label: "Usuarios"},
+    {routerLink: "/drive-requests", label: "Solicitudes de Prueba"}
   ]
-
 }
