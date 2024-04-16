@@ -36,12 +36,37 @@ public class UserService implements UserDetailsService {
         return userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).orElse(null);
     }
 
+    public User save(User user) {
+        if (this.userRepository.findByUsername(user.getUsername()).isPresent()) {
+            throw new BasicException("El nombre de usuario ya está registrado");
+        }
+        if (this.userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new BasicException("El correo electrónico ya está registrado");
+        }
+        return userRepository.save(user);
+    }
+
+    public User update(User user) {
+        User userDB = this.findById(user.getId());
+        return this.updateUser(user, userDB);
+    }
+
     public User updatedLoggedUser(User user) {
         User currentUser = findLoggedUser();
-        currentUser.setAddress(user.getAddress());
-        currentUser.setEmail(user.getEmail());
-        currentUser.setName(user.getName());
-        return userRepository.save(currentUser);
+        user.setRole(currentUser.getRole());
+        user.setId(currentUser.getId());
+        user.setPassword(currentUser.getPassword());
+        return this.updateUser(user, currentUser);
+    }
+
+    private User updateUser(User newUser, User currentUser) {
+        if (!newUser.getUsername().equals(currentUser.getUsername()) && this.userRepository.findByUsername(newUser.getUsername()).isPresent()) {
+            throw new BasicException("El nombre de usuario ya está registrado");
+        }
+        if (!newUser.getEmail().equals(currentUser.getEmail()) && this.userRepository.findByEmail(newUser.getEmail()).isPresent()) {
+            throw new BasicException("El correo electrónico ya está registrado");
+        }
+        return userRepository.save(newUser);
     }
 
     @Override
@@ -63,26 +88,5 @@ public class UserService implements UserDetailsService {
                 true,
                 Collections.singleton(new SimpleGrantedAuthority(user.getRole().toString()))
         );
-    }
-
-    public User save(User user) {
-        if (this.userRepository.findByUsername(user.getUsername()).isPresent()) {
-            throw new BasicException("El nombre de usuario ya está registrado");
-        }
-        if (this.userRepository.findByEmail(user.getEmail()).isPresent()) {
-            throw new BasicException("El correo electrónico ya está registrado");
-        }
-        return userRepository.save(user);
-    }
-
-    public User update(User user) {
-        User userDB = this.findById(user.getId());
-        if (!user.getUsername().equals(userDB.getUsername()) && this.userRepository.findByUsername(user.getUsername()).isPresent()) {
-            throw new BasicException("El nombre de usuario ya está registrado");
-        }
-        if (!user.getEmail().equals(userDB.getEmail()) && this.userRepository.findByEmail(user.getEmail()).isPresent()) {
-            throw new BasicException("El correo electrónico ya está registrado");
-        }
-        return userRepository.save(user);
     }
 }
