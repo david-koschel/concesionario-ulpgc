@@ -3,6 +3,7 @@ package ps.backend.service;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
+import ps.backend.dto.TestDriveRequestDto;
 import ps.backend.entity.CarModel;
 import ps.backend.entity.TestDriveCar;
 import ps.backend.entity.TestDriveRequest;
@@ -24,12 +25,20 @@ public class TestDriveRequestService {
         this.templateEngine = templateEngine;
     }
 
-    public List<TestDriveRequest> findAll(){
-        return testDriveRequestRepository.findAll();
+    public List<TestDriveRequestDto> findAll(){
+        return testDriveRequestRepository.findAll().stream().map(
+                testDriveRequest -> new TestDriveRequestDto(
+                        testDriveRequest.getUser().getUsername(),
+                        testDriveRequest.getTestDriveCar().getModel().getModelName(),
+                        testDriveRequest.getStartDate(),
+                        testDriveRequest.getEndDate()
+                )
+        ).toList();
     }
 
     public void save(TestDriveRequest testDriveRequest){
         testDriveRequestRepository.save(testDriveRequest);
+        sendConfirmationEmail(testDriveRequest);
     }
 
     public void sendConfirmationEmail(TestDriveRequest testDriveRequest){
