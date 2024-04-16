@@ -1,9 +1,8 @@
 package ps.backend.controller;
 
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ps.backend.dto.TestDriveRequestDto;
 import ps.backend.entity.TestDriveRequest;
 import ps.backend.service.TestDriveRequestService;
 
@@ -19,9 +18,15 @@ public class TestDriveRequestController {
         this.testDriveRequestService = testDriveRequestService;
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/all")
-    public List<TestDriveRequest> findAll(){
+    public List<TestDriveRequestDto> findAll(){
         return testDriveRequestService.findAll();
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PutMapping("/form")
+    public void add(@RequestBody TestDriveRequest testDriveRequest){
+        testDriveRequestService.save(testDriveRequest);
     }
 }

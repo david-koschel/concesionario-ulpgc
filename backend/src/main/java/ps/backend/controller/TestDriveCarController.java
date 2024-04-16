@@ -22,7 +22,7 @@ public class TestDriveCarController {
         return testDriveCarService.findAll();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/add")
     public void createTestDriveCar(@RequestBody TestDriveCar testDriveCar) {
         testDriveCarService.save(testDriveCar);
