@@ -1,12 +1,16 @@
 package ps.backend.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ps.backend.entity.User;
+import ps.backend.exception.BasicException;
 import ps.backend.service.EmailService;
 import ps.backend.service.UserService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/user")
@@ -52,4 +56,12 @@ public class UserController {
         return userService.updatedLoggedUser(user);
     }
 
+
+    @ExceptionHandler(BasicException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public Map<String, String> exceptionHandler(BasicException e) {
+        Map<String, String> result = new HashMap<>();
+        result.put("message", e.getMessage());
+        return result;
+    }
 }

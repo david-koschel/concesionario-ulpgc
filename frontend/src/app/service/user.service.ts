@@ -31,7 +31,7 @@ export class UserService {
   }
 
   public addUser(user: User): Observable<User> {
-    return this.http.put<User>("http://localhost:8080/api/user/current", user);
+    return this.http.post<User>("http://localhost:8080/api/user/new", user);
   }
 
 }

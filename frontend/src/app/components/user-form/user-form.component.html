@@ -1,5 +1,11 @@
 <div class="d-flex flex-column align-items-center">
-  <h1>Añadir Usuario</h1>
+  <h1>
+    @if (userId) {
+      Editar Usuario
+    } @else {
+      Añadir Usuario
+    }
+    </h1>
   <form class="w-50" *ngIf="form" [formGroup]="form">
     <div>
       <label class="card-title required">Nombre</label>
@@ -25,6 +31,12 @@
       <p-checkbox label="Administrador" formControlName="isAdmin" [binary]="true"></p-checkbox>
     </div>
   </form>
-  <button class="btn btn-outline-dark text-center" (click)="submitForm()">Añadir</button>
+  <button class="btn btn-outline-dark text-center mt-2" (click)="submitForm()">
+    @if (userId) {
+      Editar
+    } @else {
+      Añadir
+    }
+  </button>
 </div>
 <p-toast></p-toast>

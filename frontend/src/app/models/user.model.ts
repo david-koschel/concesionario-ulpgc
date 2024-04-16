@@ -8,4 +8,4 @@ export interface User {
   role: Role;
 }
 
-export type Role = "ADMIN" | "USER"
+export type Role = "ADMIN" | "CUSTOMER"

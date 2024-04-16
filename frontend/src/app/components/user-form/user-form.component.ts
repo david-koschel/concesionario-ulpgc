@@ -8,6 +8,7 @@ import { NgIf } from "@angular/common";
 import { CheckboxModule } from "primeng/checkbox";
 import { MessageService } from "primeng/api";
 import { ToastModule } from "primeng/toast";
+import { tap } from "rxjs";
 
 @Component({
   selector: 'app-user-form',
@@ -31,8 +32,7 @@ export class UserFormComponent implements OnInit {
   private formBuilder = inject(FormBuilder);
   private messageService = inject(MessageService);
 
-  private userId!: number;
-  protected userCardRows: { name: string; value: string; formControl: string }[] = [];
+  protected userId!: number;
   protected form!: FormGroup;
 
   ngOnInit() {
@@ -75,8 +75,7 @@ export class UserFormComponent implements OnInit {
 
     if (this.form.valid) {
       const isAdmin = this.form.get("isAdmin")?.value;
-      const user: User = {...this.form.value, role: isAdmin ? "ADMIN" : "USER"};
-      console.log("updating")
+      const user: User = {...this.form.value, role: isAdmin ? "ADMIN" : "CUSTOMER"};
       this.addOrUpdateUser(user).subscribe({
         next: res => {
           this.messageService.add({
@@ -86,7 +85,8 @@ export class UserFormComponent implements OnInit {
         },
         error: err => this.messageService.add({
           summary: "Error al guardar el usuario",
-          detail: err.error
+          detail: err.error.message || "Vuelva a intentarlo más tarde",
+          severity: "error"
         }),
       })
     }
@@ -95,10 +95,19 @@ export class UserFormComponent implements OnInit {
   addOrUpdateUser(user: User) {
     if (this.userId) {
       user.id = this.userId;
-      return this.userService.updateUser(user);
+      return this.userService.updateUser(user)
     } else {
-      console.log(user)
-      return this.userService.addUser(user);
+      return this.userService.addUser(user).pipe(
+        tap({
+          next: user => {
+            this.userId = user.id!;
+            this.router.navigate(
+              [`user-form/${user.id}`],
+              {replaceUrl: true}
+            );
+          }
+        })
+      );
     }
   }
 }
