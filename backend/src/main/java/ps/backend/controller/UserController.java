@@ -1,12 +1,16 @@
 package ps.backend.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ps.backend.entity.User;
+import ps.backend.exception.BasicException;
 import ps.backend.service.EmailService;
 import ps.backend.service.UserService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/user")
@@ -23,13 +27,7 @@ public class UserController {
         return userService.findLoggedUser();
     }
 
-    @PostMapping("/current")
-    public User updatedLoggedUser(@RequestBody User user) {
-        return userService.updatedLoggedUser(user);
-    }
-
-    //PETICIONES DE PRUEBA
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/all")
     public List<User> findAll() {
         return userService.findAll();
@@ -39,5 +37,31 @@ public class UserController {
     @GetMapping("/single/{id}")
     public User findById(@PathVariable Integer id) {
         return userService.findById(id);
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("/new")
+    public User save(@RequestBody User user) {
+        return userService.save(user);
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PutMapping("/update")
+    public User update(@RequestBody User user) {
+        return userService.update(user);
+    }
+
+    @PutMapping("/current")
+    public User updatedLoggedUser(@RequestBody User user) {
+        return userService.updatedLoggedUser(user);
+    }
+
+
+    @ExceptionHandler(BasicException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public Map<String, String> exceptionHandler(BasicException e) {
+        Map<String, String> result = new HashMap<>();
+        result.put("message", e.getMessage());
+        return result;
     }
 }

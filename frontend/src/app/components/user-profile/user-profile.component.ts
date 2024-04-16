@@ -1,12 +1,12 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {NgClass, NgForOf, NgIf, NgOptimizedImage, NgTemplateOutlet} from "@angular/common";
-import {ButtonModule} from "primeng/button";
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {InputTextModule} from "primeng/inputtext";
-import {MessageService} from "primeng/api";
-import {ToastModule} from "primeng/toast";
-import {UserService} from "../../service/user.service";
-import {User} from "../../service/user.model";
+import { Component, inject, OnInit } from '@angular/core';
+import { NgClass, NgForOf, NgIf, NgOptimizedImage, NgTemplateOutlet } from "@angular/common";
+import { ButtonModule } from "primeng/button";
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
+import { InputTextModule } from "primeng/inputtext";
+import { MessageService } from "primeng/api";
+import { ToastModule } from "primeng/toast";
+import { UserService } from "../../service/user.service";
+import { User } from "../../models/user.model";
 
 @Component({
   selector: 'app-user-profile',
@@ -67,7 +67,7 @@ export class UserProfileComponent implements OnInit {
       {name: "Nombre", value: user.name, formControl: "name"},
       {name: "Correo electrónico", value: user.email, formControl: "email"},
       {name: "Dirección", value: user.address, formControl: "address"},
-      {name: "Nombre de usuario", value: user.username},
+      {name: "Nombre de usuario", value: user.username, formControl: "username"},
       {name: "Contraseña", value: '********'}
     ];
   }
@@ -98,7 +98,8 @@ export class UserProfileComponent implements OnInit {
     this.form = this.formBuilder.group({
       name: [this.user.name, Validators.required],
       email: [this.user.email, [Validators.required, Validators.email]],
-      address: [this.user.address, Validators.required]
+      address: [this.user.address, Validators.required],
+      username: [this.user.username, Validators.required]
     });
     this.editing = true;
   }
@@ -117,8 +118,12 @@ export class UserProfileComponent implements OnInit {
           this.formLoading = false;
           this.editing = false;
         },
-        error: () => {
-          this.messageService.add({severity: 'error', summary: 'Error', detail: 'Error al actualizar los datos'});
+        error: err => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: err.error.message || 'Error al actualizar los datos'
+          });
           this.formLoading = false;
         }
       })

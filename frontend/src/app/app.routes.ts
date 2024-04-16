@@ -6,10 +6,12 @@ import {ContactComponent} from "./components/contact/contact.component";
 import {HomeComponent} from "./components/home/home.component";
 import {CatalogueComponent} from './components/catalogue/catalogue.component';
 import {UserProfileComponent} from "./components/user-profile/user-profile.component";
-import {userIsLoggedInGuard} from "./security/guards";
+import {userIsAdminGuard, userIsLoggedInGuard} from "./security/guards";
 import { VehicleconfigurationComponent } from './components/vehicleconfiguration/vehicleconfiguration.component';
 import {AdminPanelComponent} from "./components/admin-panel/admin-panel.component";
 import {ContactMessagesComponent} from "./components/contact-messages/contact-messages.component";
+import {UserListComponent} from "./components/user-list/user-list.component";
+import {UserFormComponent} from "./components/user-form/user-form.component";
 import {DriveRequestFormComponent} from "./components/drive-request-form/drive-request-form.component";
 
 export const routes: Routes = [
@@ -49,7 +51,7 @@ export const routes: Routes = [
   {
     path: "admin-panel",
     component: AdminPanelComponent,
-    canActivate: [userIsLoggedInGuard]
+    canActivate: [userIsAdminGuard]
   },
   {
     path: "contact-messages",
@@ -59,6 +61,16 @@ export const routes: Routes = [
   {
     path: "vehicleconfiguration",
     component: VehicleconfigurationComponent
+  },
+  {
+    path: "user-list",
+    component: UserListComponent,
+    canActivate: [userIsAdminGuard]
+  },
+  {
+    path: "user-form/:userId",
+    component: UserFormComponent,
+    canActivate: [userIsAdminGuard]
   },
   {
     path: '**',

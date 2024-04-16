@@ -1,9 +1,8 @@
 <div class="container justify-content-center mt-4">
   <h1 class="pt-2 text-align-left"><b>Panel de Administración</b></h1>
-  <div>
-    <a
-      class="btn btn-outline-dark"
-      routerLink="/contact-messages"
-    >Bandeja de Entrada</a>
+  <div class="d-flex flex-wrap gap-4 justify-content-center">
+    @for (button of adminButtons; track $index) {
+      <a class="btn btn-outline-dark" [routerLink]="button.routerLink">{{button.label}}</a>
+    }
   </div>
 </div>
