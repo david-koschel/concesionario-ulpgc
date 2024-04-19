@@ -1,0 +1,77 @@
+<h1>Editar catálogo de vehículos</h1>
+<article>
+
+    <section class="d-flex gap-3 mb-4 justify-content-center">
+        <button (click) = "addVehicleForm()"type="button" class="btn btn-success px-5 py-2">
+            <i class="bi bi-plus"></i> Añadir vehículo
+          </button>
+    </section>
+    
+@for (vehicle of vehicles; track $index) {
+    <div class="row"></div>
+    <section class="d-flex gap-3 mb-4 justify-content-center">
+        
+        <div class="content">
+            <h2 class="name">
+                {{ vehicle.name }}
+            </h2>
+            <div class="description">
+                {{ vehicle.description}}
+            </div>
+        </div>
+        <img src="data:image/jpg;base64,{{ vehicle.imagePath }}"  class="object-fit-cover"  width="200px" height="100px" alt="">
+
+        <button
+        pButton
+        icon="pi pi-eye"
+        class="btn btn-secondary me-2"
+        style="height:60%;"
+        (click)="editVehicle(vehicle)">Editar</button>
+
+    </section>
+}
+
+<p-sidebar [(visible)]="editFormVisible" position="right" [fullScreen]="true">
+    <div class="container">
+        <h3>Editar {{ currentVehicle?.name}}</h3>
+        <div class="mb-3">
+          <label for="name">Nombre:</label>
+          <input type="text" id="name" class="form-control" required/>
+        </div>
+        <div class="mb-3">
+          <label for="description">Descripción:</label>
+          <input type="text" id="description" class="form-control" required />
+        </div>
+        <div class="mb-3">
+          <label for="base64Text">Texto en Base64 para la imagen:</label>
+          <input type="file" id="base64Text"  class="form-control" required (change)="onFileSelected($event)"/>
+
+        </div>
+        <button class="btn btn-primary me-3" (click)="saveChanges(currentVehicle)">Guardar Cambios</button>
+        <button class="btn btn-secondary" (click)="cancelEdit()">Cancelar</button>
+      </div>
+</p-sidebar>
+
+<p-sidebar [(visible)]="addFormVisible" position="right" [fullScreen]="true">
+    <div class="container">
+        <h3>Añadir vehículo</h3>
+        <div class="mb-3">
+          <label for="name2">Nombre:</label>
+          <input type="text" id="name2" class="form-control" required/>
+        </div>
+        <div class="mb-3">
+          <label for="description2">Descripción:</label>
+          <input type="text" id="description2" class="form-control" required />
+        </div>
+        <div class="mb-3">
+          <label for="base64Text2">Texto en Base64 para la imagen:</label>
+          <input type="file" id="base64Text2"  class="form-control" (change)="onFileSelected($event)" required />
+        </div>
+        <button class="btn btn-primary me-3" (click)="addVehicle()">Añadir</button>
+        <button class="btn btn-secondary" (click)="cancelAdd()">Cancelar</button>
+      </div>
+</p-sidebar>
+
+
+
+</article>

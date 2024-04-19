@@ -8,7 +8,8 @@ import java.util.regex.Pattern;
 final class SecurityConstant {
     static final String AUTH_LOGIN_URL = "/api/login";
     static final String[] AUTH_WHITELIST = {
-            "/api/contact_message/form"
+            "/api/contact_message/form",
+            "/api/catalogue/all"
     };
     static final String API_URL = "/api/**";
     static final SecretKey JWT_KEY = Keys.hmacShaKeyFor("kBLPoylVFL5yWsPuBRkGltt9W3n5yNxkILchku8xEGTCkZsYlLVDkR1AB7sWuLlz".getBytes());

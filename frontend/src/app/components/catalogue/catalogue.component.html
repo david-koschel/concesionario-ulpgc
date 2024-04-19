@@ -2,7 +2,7 @@
 <article>
     @for (vehicle of vehicles; track $index) {
         <section class="d-flex gap-3 mb-4">
-            <img [ngClass]="{'order-2': $index % 2 == 1}" class="object-fit-cover" [src]="vehicle.srcImage" width="450px" height="350px" alt="">
+            <img src="data:image/jpg;base64,{{ vehicle.imagePath }}" [ngClass]="{'order-2': $index % 2 == 1}" class="object-fit-cover"  width="450px" height="350px" alt="">
             <div class="content">
                 <h2 class="name">
                     {{ vehicle.name }}
