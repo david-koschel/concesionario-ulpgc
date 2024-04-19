@@ -7,19 +7,28 @@ export interface Vehicle {
     }
     price: number,
     descripcion: string,
-    engine: string[],
+    engine: {
+      name: string,
+      price: number,
+    }[],
     color: {
-      name: string;
-      color: string;
-      img: string;
+      name: string,
+      color: string,
+      img: string,
+      price: number,
     }[];
     rims: {
         name: string,
-        img: string 
+        img: string,
+        price: number
       }[],
-    Upholsterys: string[],
+    upholsterys: {
+        name: string,
+        price: number,
+    }[],
     extras: {
       name: string,
-      img: string 
+      img: string,
+      price: number,
       }[],      
 }

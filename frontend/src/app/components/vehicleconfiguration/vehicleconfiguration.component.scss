@@ -2,6 +2,12 @@
     height: 100%;
     width: 100%;
 }
+.characteristicsMain{
+    margin-left: 2em;
+}
+.optionContent{
+    margin-left: 5em;
+}
 .vehicleMain{
     display: flex;
     flex-direction: row;
@@ -24,9 +30,9 @@
   }
   
   .selectorButton.selected {
-    border-bottom: 3px solid blue; /* Define el estilo de borde deseado */
+    border-bottom: 3px solid rgb(1, 108, 196); /* Define el estilo de borde deseado */
   }
-.engineSelect{
+.engine{
     display: block;
     background: white;
     border: none;
@@ -39,7 +45,7 @@
     margin: 0 auto;
 
 }
-.buttonColor{
+.color{
     background-color: white;
     border: none;
     padding: 2em;
@@ -49,23 +55,68 @@
     margin-top: 1em;
     font-weight: bold;
 }
-.buttonRims{
+.rim{
     background: white;
     border: none;
     max-width: 10em;
     margin-right: 2em;
 }
-.upholsterySelect{
+.upholstery{
     display: block;
     background: white;
     border: none;
     margin-bottom: 1em;
 }
 
-.buttonExtra{
+.extra{
     background: white;
     border: 1px solid black;
     max-width: 30em;
     margin-right: 5em;
-
+}
+.check{
+    border: 2px solid rgb(1, 108, 196);
+}
+ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+.summaryButton{
+    background: transparent;
+    border: 1px solid black;
+    font-size: 1.2em;
+    margin-top: 3em;
+    margin-bottom: 2em;
+    padding: 0.6em;
+}
+.summaryButton:hover{
+    background: black;
+    color: white;
+}
+#buy{
+    margin-right: 2em;
+}
+@media screen and (max-width: 1250px) {
+    .vehicleMain{
+        flex-direction: column;
+    }
+    .selectorButton{
+        margin-bottom: 0em;
+    }
+    .optionContent{
+        margin-top: 5em;
+    }
+}
+@media screen and (max-width: 600px) {
+    .vehicleMain{
+        align-items: center;
+    }
+    .selectorMenu{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    #principalImg{
+        width: 30em;
+    }
 }

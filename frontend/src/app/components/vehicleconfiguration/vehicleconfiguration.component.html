@@ -6,49 +6,74 @@
             <h3 class="model">{{vehicleList[1].model.name}}</h3>
             <h3 class="price">Desde {{vehicleList[1].price}}€</h3>
         </div>
-        <img src="{{vehicleList[1].model.img}}" alt="">
+        <img [src]="principalImg" id="principalImg" alt="">
     </div>
     <div class="characteristicsMain">
         <div class="selectorMenu">
-            <button class="engine selectorButton" (click)="selectedButton('engine')">Motor</button>
-            <button class="color selectorButton" (click)="selectedButton('color')">Color</button>
-            <button class="rims selectorButton" (click)="selectedButton('rims')">LLantas</button>
-            <button class="upnolsterys selectorButton" (click)="selectedButton('upnolsterys')">Tapicería</button>
-            <button class="extras selectorButton" (click)="selectedButton('extras')">Extras</button>
+            <button class="engineOption selectorButton" (click)="selectedButton('engineOption')">Motor</button>
+            <button class="colorOption selectorButton" (click)="selectedButton('colorOption')">Color</button>
+            <button class="rimsOption selectorButton" (click)="selectedButton('rimsOption')">LLantas</button>
+            <button class="upholsterysOption selectorButton" (click)="selectedButton('upholsterysOption')">Tapicería</button>
+            <button class="extrasOption selectorButton" (click)="selectedButton('extrasOption')">Extras</button>
+            <button class="summaryOption selectorButton" (click)="selectedButton('summaryOption')">Resumen</button>
         </div>
-        @if (selectButton == "engine"){
+        <div class="optionContent">
+        @if (selectButton == "engineOption"){
             @for (engine of vehicleList[1].engine; track vehicleList[1].engine.indexOf(engine)) {
-                <button class="engineSelect">{{engine}}</button>
+                <button class="engine" id="{{engine.name}}" (click)="selectByClick(engine.name, engine.price, 'engine', false)">{{engine.name}}: +{{engine.price}}€ {{checkIfSelect(engine.name, engine.price, 'engine', false)}}</button>
             }
         }  
-        @if (selectButton == "color"){
-            @for (color of vehicleList[1].color; track vehicleList[1].engine.indexOf(color.name)) {
-                <button class="buttonColor">
+        @if (selectButton == "colorOption"){
+            @for (color of vehicleList[1].color; track vehicleList[1].color.indexOf(color)) {
+                <button class="color" id="{{color.name}}" (click)="selectByClick(color.name,  color.price, 'color', false)" (click)="imgColorChange(color.img)">
+                    {{checkIfSelect(color.name,  color.price, 'color', false)}}
                     <div class="colorBox" [style.background-color] = "color.color"></div>
-                    <p class="colorName">{{color.name}}</p>
+                    <p class="colorName">{{color.name}}: +{{color.price}}€</p>
                 </button>
             }
-        } 
-        @if (selectButton == "rims"){
-            @for (rim of vehicleList[1].rims; track vehicleList[1].engine.indexOf(rim.name)) {
-                <button class="buttonRims">
+        }
+
+        @if (selectButton == "rimsOption"){
+            @for (rim of vehicleList[1].rims; track vehicleList[1].engine.indexOf(rim)) {
+                <button class="rim" id="{{rim.name}}" (click)="selectByClick(rim.name, rim.price, 'rim', false)">
+                    {{checkIfSelect(rim.name, rim.price, 'rim', false)}}
                     <img class="rimsBox" src="{{rim.img}}">
-                    <p class="rimName">{{rim.name}}</p>
+                    <p class="rimName">{{rim.name}}: +{{rim.price}}€</p>
                 </button>
             }
         }  
-        @if (selectButton == "upnolsterys"){
-            @for (upholstery of vehicleList[1].Upholsterys; track vehicleList[1].engine.indexOf(upholstery)) {
-                <button class="upholsterySelect">{{upholstery}}</button>
+        @if (selectButton == "upholsterysOption"){
+            @for (upholstery of vehicleList[1].upholsterys; track vehicleList[1].engine.indexOf(upholstery)) {
+                <button class="upholstery" id="{{upholstery.name}}" (click)="selectByClick(upholstery.name, upholstery.price, 'upholstery', false)">{{upholstery.name}} : +{{upholstery.price}}€
+                    {{checkIfSelect(upholstery.name, upholstery.price, 'upholstery', false)}}
+                </button>
+                
             }
         }  
-        @if (selectButton == "extras"){
+        @if (selectButton == "extrasOption"){
             @for (extra of vehicleList[1].extras; track vehicleList[1].extras) {
-                <button class="buttonExtra">
+                <button class="extra" id="{{extra.name}}" (click)="selectByClick(extra.name, extra.price, 'extra', true)">
+                    {{checkIfSelect(extra.name, extra.price, 'extra', true)}}
                     <img class="extraBox" src="{{extra.img}}">
-                    <p class="extraName">{{extra.name}}</p>
+                    <p class="extraName">{{extra.name}} : +{{extra.price}}€</p>
                 </button>
             }
         } 
+        @if (selectButton == "summaryOption"){
+            <ul>
+                <li *ngFor="let item of summaryList">
+                    @if(item.name != ''){
+                        {{ item.name }}: +{{ item.price }}€
+                    }
+                </li>
+                <li *ngFor="let item of extrasList">
+                    {{ item.name }}: +{{ item.price }}€
+                </li>
+                <li>Total: {{vehicleConfigurationList.totalPrice}}€</li>
+            </ul>
+            <button id="buy" class="summaryButton" (click)="optionChecker()">Comprar</button>
+            <button id="save" class="summaryButton" (click)="optionChecker()">Guardar</button>
+        }
+    </div>
     </div>
 </div>
