@@ -10,6 +10,8 @@ import {ToastModule} from "primeng/toast";
 import {MessageService} from "primeng/api";
 import {CalendarModule} from "primeng/calendar";
 import {DriveRequestService} from "../../../service/drive-request.service";
+import {DropdownModule} from "primeng/dropdown";
+import {TestDriveCar} from "../test-drive-car.model";
 
 @Component({
   selector: 'app-drive-request-form',
@@ -24,13 +26,16 @@ import {DriveRequestService} from "../../../service/drive-request.service";
     ReactiveFormsModule,
     ToastModule,
     CalendarModule,
-    FormsModule
+    FormsModule,
+    DropdownModule
   ],
   templateUrl: './drive-request-form.component.html',
   styleUrl: './drive-request-form.component.scss',
   providers: [MessageService]
 })
 export class DriveRequestFormComponent implements OnInit{
+
+  cars: String[] = [];
 
   driveRequestForm !: FormGroup;
   loading: boolean = false;
@@ -51,6 +56,7 @@ export class DriveRequestFormComponent implements OnInit{
   }
 
   private initializeDriveRequestForm() {
+    this.getCars();
     this.driveRequestForm = this.formBuilder.group({
       name: ["", Validators.required],
       email: ["", [Validators.required, Validators.email]],
@@ -58,6 +64,14 @@ export class DriveRequestFormComponent implements OnInit{
       dates: ["", Validators.required],
       privacy: ["", Validators.requiredTrue]
     })
+  }
+
+  private getCars() {
+    this.driveRequestService.getTestDriveCars().subscribe(
+      cars => this.cars = cars.map(
+          car => car.model
+      )
+    )
   }
 
   public submit() {

@@ -55,7 +55,7 @@ export const routes: Routes = [
     canActivate: [userIsAdminGuard]
   },
   {
-    path: "contact-messages",
+    path: "admin-panel/contact-messages",
     component: ContactMessagesComponent,
     canActivate: [userIsAdminGuard]
   },
@@ -63,6 +63,16 @@ export const routes: Routes = [
     path: "drive-requests",
     component: DriveRequestListComponent,
     canActivate: [userIsAdminGuard]
+  },
+  {
+    path: "admin-panel/drive-requests",
+    component: DriveRequestListComponent,
+    canActivate: [userIsLoggedInGuard]
+  },
+  {
+    path: "admin-panel/drive-requests",
+    component: DriveRequestListComponent,
+    canActivate: [userIsLoggedInGuard]
   },
   {
     path: "vehicleconfiguration",
