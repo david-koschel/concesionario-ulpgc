@@ -4,8 +4,6 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import ps.backend.dto.TestDriveRequestDto;
-import ps.backend.entity.CarModel;
-import ps.backend.entity.TestDriveCar;
 import ps.backend.entity.TestDriveRequest;
 import ps.backend.entity.User;
 import ps.backend.repository.TestDriveRequestRepository;
@@ -29,9 +27,10 @@ public class TestDriveRequestService {
         return testDriveRequestRepository.findAll().stream().map(
                 testDriveRequest -> new TestDriveRequestDto(
                         testDriveRequest.getUser().getUsername(),
-                        testDriveRequest.getTestDriveCar().getModel().getModelName(),
+                        testDriveRequest.getTestDriveCar().getModel(),
                         testDriveRequest.getStartDate(),
-                        testDriveRequest.getEndDate()
+                        testDriveRequest.getEndDate(),
+                        testDriveRequest.isAccepted()
                 )
         ).toList();
     }
@@ -52,10 +51,10 @@ public class TestDriveRequestService {
     }
 
     private String generateEmailBody(TestDriveRequest testDriveRequest) {
-        CarModel carModel = testDriveRequest.getTestDriveCar().getModel();
+        String carModel = testDriveRequest.getTestDriveCar().getModel();
 
         Context context = new Context();
-        context.setVariable("model", carModel.getModelName());
+        context.setVariable("model", carModel);
         context.setVariable("startDate", testDriveRequest.getStartDate());
         context.setVariable("endDate", testDriveRequest.getEndDate());
         return templateEngine.process("test-drive-mail.html", context);

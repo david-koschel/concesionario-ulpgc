@@ -8,9 +8,7 @@ public class TestDriveCar {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToOne
-    @JoinColumn(name = "car_model_id", referencedColumnName = "id")
-    private CarModel model;
+    private String model;
 
     public Integer getId() {
         return id;
@@ -20,11 +18,11 @@ public class TestDriveCar {
         this.id = id;
     }
 
-    public CarModel getModel() {
+    public String getModel() {
         return model;
     }
 
-    public void setModel(CarModel model) {
+    public void setModel(String model) {
         this.model = model;
     }
 }

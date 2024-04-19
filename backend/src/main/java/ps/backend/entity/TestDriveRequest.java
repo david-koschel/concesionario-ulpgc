@@ -22,6 +22,8 @@ public class TestDriveRequest {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
+    private boolean accepted;
+
     public void setId(Integer id) {
         this.id = id;
     }
@@ -60,5 +62,13 @@ public class TestDriveRequest {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public boolean isAccepted() {
+        return accepted;
+    }
+
+    public void setAccepted(boolean accepted) {
+        this.accepted = accepted;
     }
 }

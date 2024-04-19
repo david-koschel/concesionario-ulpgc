@@ -3,4 +3,5 @@ export interface DriveRequest {
   carModel: String,
   startDate: Date,
   endDate: Date,
+  accepted: boolean
 }

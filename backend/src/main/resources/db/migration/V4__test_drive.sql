@@ -1,6 +1,6 @@
 create table test_drive_car (
     id int primary key auto_increment,
-    car_model_id int not null
+    model varchar(255) not null
 );
 
 create table test_drive_request (
@@ -8,5 +8,6 @@ create table test_drive_request (
     test_drive_car_id int not null,
     start_date datetime not null,
     end_date datetime not null,
-    user_id int not null
+    user_id int not null,
+    accepted boolean not null
 );
