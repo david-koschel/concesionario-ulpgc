@@ -6,20 +6,20 @@
             <i class="bi bi-plus"></i> Añadir vehículo
           </button>
     </section>
-    
+
 @for (vehicle of vehicles; track $index) {
     <div class="row"></div>
     <section class="d-flex gap-3 mb-4 justify-content-center">
-        
+
         <div class="content">
             <h2 class="name">
-                {{ vehicle.name }}
+                {{ vehicle.brand }}
             </h2>
             <div class="description">
                 {{ vehicle.description}}
             </div>
         </div>
-        <img src="data:image/jpg;base64,{{ vehicle.imagePath }}"  class="object-fit-cover"  width="200px" height="100px" alt="">
+        <img src="data:image/jpg;base64,{{ vehicle.image }}" class="object-fit-cover" width="200px" height="100px" alt="">
 
         <button
         pButton

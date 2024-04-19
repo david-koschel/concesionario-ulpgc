@@ -45,36 +45,31 @@ export class CatalogueVehiclesComponent implements OnInit{
     const name = document.getElementById('name') as HTMLInputElement;
     const description = document.getElementById('description') as HTMLInputElement;
     const base64Text = document.getElementById('base64Text') as HTMLInputElement;
-  
+
     if (this.isNotValid(name,description,base64Text)) {
       alert('Todos los campos son obligatorios. Por favor, rellenalos.');
-      return; 
+      return;
     }
-    
+
     const index = this.vehicles.findIndex(vehicle => vehicle === this.currentVehicle);
 
-    this.vehicles[index].name = name.value;
+    this.vehicles[index].brand = name.value;
     this.vehicles[index].description = description.value;
-    this.vehicles[index].imagePath = this.base64img as string;
+    this.vehicles[index].image = this.base64img as string;
 
-    //const updatedVehicle: CatalogueItems = {
-     // name: name.value,
-     // description: description.value,
-     // imagePath: base64Text.value
-   // }
 
     this.catalogueService.updateVehicle(this.vehicles[index]).subscribe(data =>{
       console.log(data);
       this.loadVehicles();
     });
-    
+
 
 
 
     this.clearEditForm(name,description,base64Text);
     this.editFormVisible = false;
     return;
-    
+
   }
   cancelEdit():void{
     this.editFormVisible = false;
@@ -112,28 +107,28 @@ export class CatalogueVehiclesComponent implements OnInit{
     const name = document.getElementById('name2') as HTMLInputElement;
     const description = document.getElementById('description2') as HTMLInputElement;
     const base64Text = document.getElementById('base64Text2') as HTMLInputElement;
-  
+
     if (this.isNotValid(name,description,base64Text)) {
       alert('Todos los campos son obligatorios. Por favor, rellenalos.');
-      return; 
+      return;
     }
     console.log(this.base64img);
 
     if(this.base64img){
       const newVehicle: CatalogueItems = {
-        name: name.value,
+        brand: name.value,
         description: description.value,
-        imagePath: this.base64img as string
+        image: this.base64img as string
       }
       this.catalogueService.addNewVehicle(newVehicle).subscribe(data=>
       this.loadVehicles());
-      
+
     }else{
       console.log("No se ha selecionado ninguna imagen")
     }
 
-    
-    
+
+
     this.clearEditForm(name,description,base64Text);
     this.addFormVisible = false;
     return;

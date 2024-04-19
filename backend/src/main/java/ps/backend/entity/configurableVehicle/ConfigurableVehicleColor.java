@@ -7,7 +7,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class ConfigurableVehicleMakeColor {
+public class ConfigurableVehicleColor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

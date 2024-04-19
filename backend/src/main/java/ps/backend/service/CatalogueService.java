@@ -1,7 +1,7 @@
 package ps.backend.service;
 
 import org.springframework.stereotype.Service;
-import ps.backend.entity.Catalogue;
+import ps.backend.entity.configurableVehicle.ConfigurableVehicle;
 import ps.backend.repository.CatalogueRepository;
 
 import java.util.List;
@@ -11,29 +11,34 @@ public class CatalogueService {
 
     private final CatalogueRepository catalogueRepository;
 
-    public CatalogueService(CatalogueRepository catalogueRepository){
+    public CatalogueService(CatalogueRepository catalogueRepository) {
         this.catalogueRepository = catalogueRepository;
     }
 
-    public List<Catalogue> getCatalogue(){ return catalogueRepository.findAll();}
+    public List<ConfigurableVehicle> getCatalogue() {
+        return catalogueRepository.findAll();
+    }
 
-    public Catalogue findById(Integer id){ return catalogueRepository.findById(id).orElse(null);}
+    public ConfigurableVehicle findById(Integer id) {
+        return catalogueRepository.findById(id).orElse(null);
+    }
 
 
-    public Catalogue updateCatalogue(Catalogue updatedCatalogue) {
-        Catalogue existingCatalogue = catalogueRepository.findById(updatedCatalogue.getId()).orElse(null);
+    public ConfigurableVehicle updateCatalogue(ConfigurableVehicle updatedCatalogue) {
+        ConfigurableVehicle existingCatalogue = catalogueRepository.findById(updatedCatalogue.getId()).orElse(null);
         if (existingCatalogue == null) {
             throw new IllegalArgumentException("Catálogo no encontrado");
         }
 
-        existingCatalogue.setName(updatedCatalogue.getName());
+        existingCatalogue.setBrand(updatedCatalogue.getBrand());
+        existingCatalogue.setModel(updatedCatalogue.getModel());
         existingCatalogue.setDescription(updatedCatalogue.getDescription());
-        existingCatalogue.setImagePath(updatedCatalogue.getImagePath());
+        existingCatalogue.setImage(updatedCatalogue.getImage());
 
         return catalogueRepository.save(existingCatalogue);
     }
 
-    public Catalogue addVehicle(Catalogue newVehicle) {
+    public ConfigurableVehicle addVehicle(ConfigurableVehicle newVehicle) {
         return catalogueRepository.save(newVehicle);
     }
 }

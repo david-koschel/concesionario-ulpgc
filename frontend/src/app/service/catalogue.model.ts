@@ -1,6 +1,6 @@
 export interface CatalogueItems {
-    name: string;
-    description: string;
-    imagePath: string;
-  }
-  
+  brand?: string;
+  model?: string;
+  description: string;
+  image: string;
+}

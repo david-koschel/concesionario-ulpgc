@@ -1,8 +1,9 @@
 package ps.backend.controller;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import ps.backend.entity.Catalogue;
+import ps.backend.entity.configurableVehicle.ConfigurableVehicle;
 import ps.backend.service.CatalogueService;
 
 import java.util.List;
@@ -17,18 +18,19 @@ public class CatalogueController {
     }
 
     @GetMapping("/all")
-    public List<Catalogue> getCatalogue(){ return catalogueService.getCatalogue();}
+    public List<ConfigurableVehicle> getCatalogue(){ return catalogueService.getCatalogue();}
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/add")
-    public ResponseEntity<Catalogue> addCatalogue(@RequestBody Catalogue newVehicle) {
-        System.out.println(newVehicle.getDescription());
-        Catalogue savedCatalogue = catalogueService.addVehicle(newVehicle);
+    public ResponseEntity<ConfigurableVehicle> addCatalogue(@RequestBody ConfigurableVehicle newVehicle) {
+        ConfigurableVehicle savedCatalogue = catalogueService.addVehicle(newVehicle);
         return ResponseEntity.ok(savedCatalogue);
     }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/edit")
-    public ResponseEntity<Catalogue> updateCatalogue(@RequestBody Catalogue updatedVehicle) {
-        Catalogue updated = catalogueService.updateCatalogue(updatedVehicle);
+    public ResponseEntity<ConfigurableVehicle> updateCatalogue(@RequestBody ConfigurableVehicle updatedVehicle) {
+        ConfigurableVehicle updated = catalogueService.updateCatalogue(updatedVehicle);
         return ResponseEntity.ok(updated);
     }
-
 }

@@ -15,8 +15,20 @@ public class ConfigurableVehicle {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
-    private ConfigurableVehicleModel model;
+    private String brand;
+
+    private String model;
+
+    private Float basePrice;
+
+    private String description;
+
+    @Column(columnDefinition="MEDIUMTEXT")
+    private String image;
+
+    @OneToMany
+    @JoinColumn(name = "configurable_vehicle_id")
+    private List<ConfigurableVehicleColor> colors;
 
     @ManyToMany
     @JoinTable(
@@ -41,7 +53,5 @@ public class ConfigurableVehicle {
             inverseJoinColumns = @JoinColumn(name = "configurable_vehicle_extra_id")
     )
     private List<ConfigurableVehicleExtra> extras;
-
-    private String description;
 }
 
