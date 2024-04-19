@@ -3,7 +3,7 @@ create table configurable_vehicle
     id          int primary key auto_increment,
     brand       varchar(127),
     model       varchar(127),
-    base_price  float(24),
+    base_price  float,
     description varchar(1023),
     image       mediumtext
 );
@@ -12,7 +12,7 @@ create table configurable_vehicle_color
 (
     id                      int primary key auto_increment,
     configurable_vehicle_id int references configurable_vehicle (id),
-    price                   float(24),
+    price                   float,
     color                   varchar(63),
     name                    varchar(127),
     vehicle_image           mediumtext
@@ -21,7 +21,7 @@ create table configurable_vehicle_color
 create table engine
 (
     id          int primary key auto_increment,
-    price       float(24),
+    price       float,
     description varchar(511),
     name        varchar(127)
 );
@@ -35,7 +35,7 @@ create table configurable_vehicle_engine
 create table extra
 (
     id          int primary key auto_increment,
-    price       float(24),
+    price       float,
     description varchar(511),
     image       mediumtext,
     name        varchar(127)
@@ -50,7 +50,7 @@ create table configurable_vehicle_extra
 create table rim
 (
     id          int primary key auto_increment,
-    price       float(24),
+    price       float,
     description varchar(511),
     image       mediumtext,
     name        varchar(127)
