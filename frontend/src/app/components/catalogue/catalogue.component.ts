@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {CommonModule} from "@angular/common";
+import { CatalogueService } from '../../service/catalogue.service';
+import { CatalogueItems } from '../../service/catalogue.model';
 
 @Component({
   selector: 'app-catalogue',
@@ -8,7 +10,23 @@ import {CommonModule} from "@angular/common";
   templateUrl: './catalogue.component.html',
   styleUrl: './catalogue.component.scss'
 })
-export class CatalogueComponent {
+export class CatalogueComponent implements OnInit {
+
+  vehicles: CatalogueItems[] = [];
+
+  constructor(private catalogueService: CatalogueService){}
+
+  ngOnInit(): void {
+      this.catalogueService.getCatalogue()
+      .subscribe(data => {
+        this.vehicles = data;
+      });
+
+      
+  }
+
+
+/*  
   vehicles = [
     {
       name: 'Lamborghini Urus',
@@ -26,4 +44,5 @@ export class CatalogueComponent {
       srcImage: '../assets/Skoda_Enyaq_iv_60.jpg'
     }
   ];
+  */
 }

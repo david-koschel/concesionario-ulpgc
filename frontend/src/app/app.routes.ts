@@ -10,6 +10,7 @@ import {userIsLoggedInGuard} from "./security/guards";
 import { VehicleconfigurationComponent } from './components/vehicleconfiguration/vehicleconfiguration.component';
 import {AdminPanelComponent} from "./components/admin-panel/admin-panel.component";
 import {ContactMessagesComponent} from "./components/contact-messages/contact-messages.component";
+import {CatalogueVehiclesComponent} from "./components/catalogue-vehicles/catalogue-vehicles.component";
 
 export const routes: Routes = [
   {
@@ -54,6 +55,10 @@ export const routes: Routes = [
   {
     path: "vehicleconfiguration",
     component: VehicleconfigurationComponent
+  },
+  {
+    path: "catalogue-vehicles",
+    component: CatalogueVehiclesComponent
   },
   {
     path: '**',
