@@ -7,7 +7,7 @@ import {ReactiveFormsModule} from "@angular/forms";
 import {SidebarModule} from "primeng/sidebar";
 import {ToastModule} from "primeng/toast";
 import {DriveRequestService} from "../../../service/drive-request.service";
-import {DriveRequest} from "../drive-request.model";
+import {DriveRequest} from "../../../models/drive-request.model";
 import {TableModule} from "primeng/table";
 import {RouterLink} from "@angular/router";
 

@@ -1,0 +1,22 @@
+<div class="container justify-content-center mt-4">
+  <h1 class="pt-2 text-align-left"><b>Coches de Prueba</b></h1>
+  <p-table
+    #table
+    [loading]="!cars"
+    [value]="cars"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Id</th>
+        <th>Vehículo</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-car>
+      <tr>
+        <td>{{ car.id }}</td>
+        <td>{{ car.model }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <
+</div>

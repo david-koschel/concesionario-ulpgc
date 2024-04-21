@@ -11,7 +11,7 @@ import {MessageService} from "primeng/api";
 import {CalendarModule} from "primeng/calendar";
 import {DriveRequestService} from "../../../service/drive-request.service";
 import {DropdownModule} from "primeng/dropdown";
-import {TestDriveCar} from "../test-drive-car.model";
+import {TestDriveCar} from "../../../models/test-drive-car.model";
 
 @Component({
   selector: 'app-drive-request-form',

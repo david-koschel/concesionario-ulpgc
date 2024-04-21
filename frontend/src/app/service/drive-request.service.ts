@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {DriveRequest} from "../components/drive-request/drive-request.model";
-import {TestDriveCar} from "../components/drive-request/test-drive-car.model";
+import {DriveRequest} from "../models/drive-request.model";
+import {TestDriveCar} from "../models/test-drive-car.model";
 
 @Injectable({
   providedIn: 'root'
