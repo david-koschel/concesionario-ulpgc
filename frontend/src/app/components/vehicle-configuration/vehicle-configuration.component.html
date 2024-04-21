@@ -1,0 +1,144 @@
+<div *ngIf="vehicle">
+  <div class="d-flex flex-column align-items-center">
+    <div class="d-flex flex-column align-items-center">
+      <h2> {{ vehicle.brand }} - {{ vehicle.model }} </h2>
+      <span class="fs-5">Desde {{ getTotalPrice() }}€</span>
+    </div>
+    <div class="d-flex flex-row-reverse justify-content-center w-100 mt-2 gap-2">
+      <img
+        [src]="selectedColor.vehicleImage"
+        class="object-fit-cover"
+        width="480px"
+        height="300px"
+        alt
+      >
+    </div>
+  </div>
+  <div class="characteristicsMain">
+    <div class="selectorMenu">
+      <button class="engineOption selectorButton selected" (click)="selectedButton('engineOption')">Motor</button>
+      <button class="colorOption selectorButton" (click)="selectedButton('colorOption')">Color</button>
+      <button class="rimsOption selectorButton" (click)="selectedButton('rimsOption')">Llantas</button>
+      <button class="extrasOption selectorButton" (click)="selectedButton('extrasOption')">Extras</button>
+      <button class="summaryOption selectorButton" (click)="selectedButton('summaryOption')">Resumen</button>
+    </div>
+    <div class="optionContent">
+      @if (selectButton == "engineOption") {
+        @for (engine of vehicle.engines; track engine.id) {
+          <div class="d-flex flex-row align-items-center gap-3 mb-3">
+            <button
+              class="engine"
+              [ngClass]="{'check': engine.id === selectedEngine?.id}"
+              (click)="selectedEngine = engine">
+              {{ engine.name }}: +{{ engine.price }}€
+            </button>
+            <button
+              pButton
+              icon="pi pi-question"
+              class="p-button-secondary p-button-rounded p-button-raised p-button-text"
+              style="border-radius: 50% !important;"
+              (click)="showDialog(engine.name, engine.description)"
+            ></button>
+          </div>
+        }
+      }
+      @if (selectButton == "colorOption") {
+        @for (color of vehicle.colors; track color.id) {
+          <button
+            class="color"
+            [ngClass]="{'check': color.id === selectedColor.id}"
+            id="{{color.name}}"
+            (click)="selectedColor = color"
+          >
+            <div class="colorBox" [style.background-color]="color.color"></div>
+            <p class="colorName">{{ color.name }}: +{{ color.price }}€</p>
+          </button>
+        }
+      }
+      @if (selectButton == "rimsOption") {
+        <div class="d-flex flex-row flex-wrap gap-3">
+          @for (rim of vehicle.rims; track rim.id) {
+            <div class="d-flex flex-column align-items-center gap-3">
+              <button
+                class="rim"
+                [ngClass]="{'check': rim.id === selectedRim?.id}"
+                id="{{rim.name}}"
+                (click)="selectedRim = rim"
+              >
+                <img class="rimsBox" src="{{rim.image}}" width="100px" height="100px">
+                <p class="rimName">{{ rim.name }}: +{{ rim.price }}€</p>
+              </button>
+              <button
+                pButton
+                icon="pi pi-question"
+                class="p-button-secondary p-button-rounded p-button-raised p-button-text"
+                style="border-radius: 50% !important;"
+                (click)="showDialog(rim.name, rim.description)"
+              ></button>
+            </div>
+          }
+        </div>
+      }
+      @if (selectButton == "extrasOption") {
+        <div class="d-flex flex-row gap-3 flex-wrap">
+          @for (extra of vehicle.extras; track extra.id) {
+            <div class="d-flex flex-column align-items-center gap-3">
+              <button
+                class="extra"
+                [ngClass]="{'check': selectedExtras.includes(extra)}"
+                id="{{extra.name}}"
+                (click)="selectExtra(extra)"
+              >
+                <img class="extraBox" src="{{extra.image}}" width="200px" height="200px">
+                <p class="extraName">{{ extra.name }} : +{{ extra.price }}€</p>
+              </button>
+              <button
+                pButton
+                icon="pi pi-question"
+                class="p-button-secondary p-button-rounded p-button-raised p-button-text"
+                style="border-radius: 50% !important;"
+                (click)="showDialog(extra.name, extra.description)"
+              ></button>
+            </div>
+          }
+        </div>
+      }
+      @if (selectButton == "summaryOption") {
+        <ul>
+          <li *ngIf="selectedEngine">
+            Motor {{ selectedEngine.name }}: +{{ selectedEngine.price }}€
+          </li>
+          <li *ngIf="selectedColor.price! > 0">
+            Color {{ selectedColor.name }}: +{{ selectedColor.price }}€
+          </li>
+          <li *ngIf="selectedRim">
+            Llantas {{ selectedRim.name }}: +{{ selectedRim.price }}€
+          </li>
+          <li *ngFor="let item of selectedExtras">
+            {{ item.name }}: +{{ item.price }}€
+          </li>
+          <li>Total: {{ getTotalPrice() }}€</li>
+        </ul>
+        <button
+          class="btn btn-secondary"
+          (click)="saveConfiguration()"
+          [disabled]="!formIsValid()"
+        >
+          Guardar
+        </button>
+        <small *ngIf="!selectedEngine" class="text-danger"><br>Seleccione un motor</small>
+        <small *ngIf="!selectedRim" class="text-danger"><br>Seleccione unas llantas</small>
+      }
+    </div>
+  </div>
+</div>
+<p-dialog
+  [header]="dialogHeader"
+  [(visible)]="visible"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <p class="m-0">{{ dialogText }}</p>
+</p-dialog>

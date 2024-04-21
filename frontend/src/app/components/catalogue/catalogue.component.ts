@@ -1,27 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CommonModule} from "@angular/common";
-import { CatalogueService } from '../../services/catalogue.service';
-import { CatalogueItems } from '../../services/catalogue.model';
+import {CatalogueService} from '../../services/catalogue.service';
+import {RouterLink} from "@angular/router";
+import {ConfigurableVehicle} from "../../models/configurable-vehicle/configurable-vehicle.model";
 
 @Component({
   selector: 'app-catalogue',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './catalogue.component.html',
   styleUrl: './catalogue.component.scss'
 })
 export class CatalogueComponent implements OnInit {
 
-  vehicles: CatalogueItems[] = [];
+  vehicles: ConfigurableVehicle[] = [];
 
-  constructor(private catalogueService: CatalogueService){}
+  constructor(private catalogueService: CatalogueService) {
+  }
 
   ngOnInit(): void {
-      this.catalogueService.getCatalogue()
+    this.catalogueService.getCatalogue()
       .subscribe(data => {
         this.vehicles = data;
       });
-
-
   }
 }

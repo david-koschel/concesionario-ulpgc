@@ -3,8 +3,9 @@ package ps.backend.service;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import ps.backend.entity.configurableVehicle.ConfigurableVehicle;
-import ps.backend.entity.configurableVehicle.ConfigurableVehicleColor;
+import ps.backend.entity.userVehicle.UserConfiguration;
 import ps.backend.repository.ConfigurableVehicleRepository;
+import ps.backend.repository.UserConfigurationRepository;
 
 import java.util.List;
 
@@ -12,9 +13,13 @@ import java.util.List;
 public class ConfigurableVehicleService {
 
     private final ConfigurableVehicleRepository configurableVehicleRepository;
+    private final UserService userService;
+    private final UserConfigurationRepository userConfigurationRepository;
 
-    public ConfigurableVehicleService(ConfigurableVehicleRepository configurableVehicleRepository) {
+    public ConfigurableVehicleService(ConfigurableVehicleRepository configurableVehicleRepository, UserService userService, UserConfigurationRepository userConfigurationRepository) {
         this.configurableVehicleRepository = configurableVehicleRepository;
+        this.userService = userService;
+        this.userConfigurationRepository = userConfigurationRepository;
     }
 
     public List<ConfigurableVehicle> getCatalogue() {
@@ -41,5 +46,14 @@ public class ConfigurableVehicleService {
         ConfigurableVehicle savedVehicle = this.configurableVehicleRepository.save(newVehicle);
         newVehicle.getColors().forEach(color -> color.setConfigurableVehicle(savedVehicle));
         return configurableVehicleRepository.save(savedVehicle);
+    }
+
+    public UserConfiguration saveConfiguration(UserConfiguration configuration) {
+        configuration.setUser(userService.findLoggedUser());
+        return userConfigurationRepository.save(configuration);
+    }
+
+    public List<UserConfiguration> getConfigurations() {
+        return userService.findLoggedUser().getUserConfigurations();
     }
 }

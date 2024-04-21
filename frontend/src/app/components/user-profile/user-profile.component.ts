@@ -1,12 +1,15 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { NgClass, NgForOf, NgIf, NgOptimizedImage, NgTemplateOutlet } from "@angular/common";
-import { ButtonModule } from "primeng/button";
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import { InputTextModule } from "primeng/inputtext";
-import { MessageService } from "primeng/api";
-import { ToastModule } from "primeng/toast";
-import { UserService } from "../../services/user.service";
-import { User } from "../../models/user.model";
+import {Component, inject, OnInit} from '@angular/core';
+import {NgClass, NgForOf, NgIf, NgOptimizedImage, NgTemplateOutlet} from "@angular/common";
+import {ButtonModule} from "primeng/button";
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {InputTextModule} from "primeng/inputtext";
+import {MessageService} from "primeng/api";
+import {ToastModule} from "primeng/toast";
+import {UserService} from "../../services/user.service";
+import {User} from "../../models/user.model";
+import {VehicleService} from "../../services/vehicle.service";
+import {ConfiguredVehicle} from "../../models/configurable-vehicle/configured-vehicle.model";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-user-profile',
@@ -20,7 +23,8 @@ import { User } from "../../models/user.model";
     ReactiveFormsModule,
     InputTextModule,
     NgClass,
-    ToastModule
+    ToastModule,
+    RouterLink
   ],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.scss',
@@ -28,28 +32,21 @@ import { User } from "../../models/user.model";
 })
 export class UserProfileComponent implements OnInit {
 
+  private userService = inject(UserService);
+  private formBuilder = inject(FormBuilder);
+  private messageService = inject(MessageService);
+  private vehicleService = inject(VehicleService);
+
   protected editing: boolean = false;
 
   protected userCardRows: { name: string; value: string; formControl?: string }[] = [];
   protected userVehicles: { model: string; status: string; image: string; }[] = [];
-  protected userConfigurations: {
-    name: string;
-    model: string;
-    color: string;
-    design: string;
-    engine: string;
-    accessories: string[];
-  }[] = [];
+  protected userConfigurations: ConfiguredVehicle[] = [];
 
   protected form!: FormGroup;
   protected formLoading = false;
 
-  private userService = inject(UserService);
-  private formBuilder = inject(FormBuilder);
   private user!: User;
-
-  constructor(private messageService: MessageService) {
-  }
 
   ngOnInit(): void {
     this.getUserData();
@@ -78,20 +75,11 @@ export class UserProfileComponent implements OnInit {
       {model: "Renault Scenic", status: "Comprado", image: "assets/mockups/car_blue.png"},
       {model: "RS 6 Avant GT", status: "Comprado", image: "assets/mockups/car_red.png"},
       {model: "Lamborghini Urus", status: "Alquilado", image: "assets/lamborghiniurus.jpg"}
-    ]
+    ];
   }
 
   private getUserConfigurations() {
-    this.userConfigurations = [
-      {
-        name: "Coche nuevo",
-        model: "Ford Fiesta",
-        color: "Plata Perla",
-        design: "Active",
-        engine: "1.0 EcoBoost Hybrid 125 CV",
-        accessories: ["Sistema de Sonido B&O", "Llantas de aleación y mecanizado brillante"]
-      }
-    ]
+    this.vehicleService.getUserVehicles().subscribe(res => this.userConfigurations = res);
   }
 
   protected editProfile() {
@@ -126,7 +114,7 @@ export class UserProfileComponent implements OnInit {
           });
           this.formLoading = false;
         }
-      })
+      });
     }
   }
 }

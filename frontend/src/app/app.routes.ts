@@ -7,7 +7,7 @@ import {HomeComponent} from "./components/home/home.component";
 import {CatalogueComponent} from './components/catalogue/catalogue.component';
 import {UserProfileComponent} from "./components/user-profile/user-profile.component";
 import {userIsAdminGuard, userIsLoggedInGuard} from "./security/guards";
-import { VehicleconfigurationComponent } from './components/vehicle-configuration/vehicleconfiguration.component';
+import {VehicleConfigurationComponent} from './components/vehicle-configuration/vehicle-configuration.component';
 import {AdminPanelComponent} from "./components/admin-panel/admin-panel.component";
 import {ContactMessagesComponent} from "./components/contact-messages/contact-messages.component";
 import {UserListComponent} from "./components/user-list/user-list.component";
@@ -55,8 +55,8 @@ export const routes: Routes = [
     canActivate: [userIsLoggedInGuard]
   },
   {
-    path: "vehicleconfiguration",
-    component: VehicleconfigurationComponent
+    path: "vehicle-configurator/:id",
+    component: VehicleConfigurationComponent
   },
   {
     path: "user-list",

@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { CatalogueItems } from "./catalogue.model";
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {CatalogueItems} from "./catalogue.model";
 import {ConfigurableVehicle} from "../models/configurable-vehicle/configurable-vehicle.model";
 
 @Injectable({
@@ -14,8 +14,8 @@ export class CatalogueService {
 
   constructor(private http: HttpClient) { }
 
-  getCatalogue(): Observable<CatalogueItems[]> {
-    return this.http.get<CatalogueItems[]>(this.allUrl);
+  getCatalogue(): Observable<ConfigurableVehicle[]> {
+    return this.http.get<ConfigurableVehicle[]>(this.allUrl);
   }
 
   addNewVehicle(addedVehicle: ConfigurableVehicle): Observable<CatalogueItems>{

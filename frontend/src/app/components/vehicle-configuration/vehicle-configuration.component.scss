@@ -1,7 +1,3 @@
-#viewport{
-    height: 100%;
-    width: 100%;
-}
 .characteristicsMain{
     margin-left: 2em;
 }
@@ -28,7 +24,7 @@
     font-size: 1.2em;
     font-weight: 600;
   }
-  
+
   .selectorButton.selected {
     border-bottom: 3px solid rgb(1, 108, 196); /* Define el estilo de borde deseado */
   }
@@ -36,7 +32,6 @@
     display: block;
     background: white;
     border: none;
-    margin-bottom: 1em;
 }
 .colorBox{
     height: 5em;
@@ -58,21 +53,11 @@
 .rim{
     background: white;
     border: none;
-    max-width: 10em;
-    margin-right: 2em;
-}
-.upholstery{
-    display: block;
-    background: white;
-    border: none;
-    margin-bottom: 1em;
 }
 
 .extra{
     background: white;
     border: 1px solid black;
-    max-width: 30em;
-    margin-right: 5em;
 }
 .check{
     border: 2px solid rgb(1, 108, 196);
@@ -115,8 +100,5 @@ ul {
         display: flex;
         flex-direction: column;
         align-items: center;
-    }
-    #principalImg{
-        width: 30em;
     }
 }
