@@ -100,7 +100,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       {
         id: 6,
         name: 'Iniciar Sesión',
-        route: '',
+        route: '/login',
         icon: ''
       },
     ]
