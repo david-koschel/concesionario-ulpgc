@@ -22,4 +22,8 @@ export class DriveRequestService {
   public getTestDriveCars(): Observable<TestDriveCar[]>{
     return this.http.get<TestDriveCar[]>("http://localhost:8080/api/test-drive-car/all");
   }
+
+  public saveTestDriveCar(testCar: TestDriveCar) {
+    return this.http.post("http://localhost:8080/api/test-drive-car/add", testCar);
+  }
 }
