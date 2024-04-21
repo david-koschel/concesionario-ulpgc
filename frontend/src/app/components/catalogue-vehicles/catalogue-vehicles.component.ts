@@ -10,12 +10,13 @@ import {ToastModule} from "primeng/toast";
 import {ConfigurableVehicleEngine} from "../../models/configurable-vehicle/configurable-vehicle-engine.model";
 import {ConfigurableVehicleRim} from "../../models/configurable-vehicle/configurable-vehicle-rim.model";
 import {ConfigurableVehicleExtra} from "../../models/configurable-vehicle/configurable-vehicle-extra.model";
+import {ConfigurableVehicleFormComponent} from "../configurable-vehicle-form/configurable-vehicle-form.component";
 
 
 @Component({
   selector: 'app-catalogue-vehicles',
   standalone: true,
-  imports: [CommonModule, SidebarModule, ConfigurationFormComponent, ToastModule],
+  imports: [CommonModule, SidebarModule, ConfigurationFormComponent, ToastModule, ConfigurableVehicleFormComponent],
   templateUrl: './catalogue-vehicles.component.html',
   styleUrl: './catalogue-vehicles.component.scss'
 })
@@ -108,15 +109,6 @@ export class CatalogueVehiclesComponent implements OnInit{
     return;
   }
 
-
-  cancelAdd():void{
-    this.addFormVisible = false;
-    this.clearEditForm( document.getElementById('name2') as HTMLInputElement,
-    document.getElementById('description2') as HTMLInputElement,
-    document.getElementById('base64Text2') as HTMLInputElement);
-    return;
-  }
-
   isNotValid(name: HTMLInputElement, description: HTMLInputElement,base64Text: HTMLInputElement):boolean{
     return (name.value.trim() === '' || description.value.trim() === '' || base64Text.value.trim() === '');
   }
@@ -131,38 +123,6 @@ export class CatalogueVehiclesComponent implements OnInit{
     this.addFormVisible = true;
     return;
   }
-
-  addVehicle():void{
-    const name = document.getElementById('name2') as HTMLInputElement;
-    const description = document.getElementById('description2') as HTMLInputElement;
-    const base64Text = document.getElementById('base64Text2') as HTMLInputElement;
-
-    if (this.isNotValid(name,description,base64Text)) {
-      alert('Todos los campos son obligatorios. Por favor, rellenalos.');
-      return;
-    }
-    console.log(this.base64img);
-
-    if(this.base64img){
-      const newVehicle: CatalogueItems = {
-        brand: name.value,
-        description: description.value,
-        image: this.base64img as string
-      }
-      this.catalogueService.addNewVehicle(newVehicle).subscribe(data=>
-      this.loadVehicles());
-
-    }else{
-      console.log("No se ha selecionado ninguna imagen")
-    }
-
-
-
-    this.clearEditForm(name,description,base64Text);
-    this.addFormVisible = false;
-    return;
-  }
-
 
   onFileSelected(event:any):void{
     const image = event.target.files[0];
@@ -210,6 +170,16 @@ export class CatalogueVehiclesComponent implements OnInit{
       },
       error: () => this.sendErrorMessage('accesorio')
     });
+  }
+
+  vehicleSaved(saved: boolean) {
+    if (saved) {
+      this.sendSuccessMessage('Vehículo guardado con éxito');
+      this.addFormVisible = false;
+      this.loadVehicles();
+    } else {
+      this.sendErrorMessage('vehículo');
+    }
   }
 
   private sendSuccessMessage(text: string) {

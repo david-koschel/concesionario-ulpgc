@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CatalogueItems } from "./catalogue.model";
+import {ConfigurableVehicle} from "../models/configurable-vehicle/configurable-vehicle.model";
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class CatalogueService {
     return this.http.get<CatalogueItems[]>(this.allUrl);
   }
 
-  addNewVehicle(addedVehicle: CatalogueItems): Observable<CatalogueItems>{
+  addNewVehicle(addedVehicle: ConfigurableVehicle): Observable<CatalogueItems>{
     return this.http.post<CatalogueItems>(this.addUrl,addedVehicle);
   }
 

@@ -10,7 +10,7 @@ export interface ConfigurableVehicle {
   image: string,
   basePrice: number,
   description: string,
-  engine: ConfigurableVehicleEngine[],
+  engines: ConfigurableVehicleEngine[],
   colors: ConfigurableVehicleColor[];
   rims: ConfigurableVehicleRim[],
   extras: ConfigurableVehicleExtra[],

@@ -8,11 +8,11 @@
     <button (click)="addEngineVisible = true" type="button" class="btn btn-success px-5 py-2">
       Añadir Motor
     </button>
-    <button (click)="addExtraVisible = true" type="button" class="btn btn-success px-5 py-2">
-      Añadir Accesorio
-    </button>
     <button (click)="addRimVisible = true" type="button" class="btn btn-success px-5 py-2">
       Añadir Llanta
+    </button>
+    <button (click)="addExtraVisible = true" type="button" class="btn btn-success px-5 py-2">
+      Añadir Accesorio
     </button>
   </section>
   @for (vehicle of vehicles; track $index) {
@@ -116,6 +116,13 @@
     }
   </div>
 
+  <p-sidebar [(visible)]="addFormVisible" position="right" [fullScreen]="true">
+    <app-configurable-vehicle-form (onVehicleSaved)="vehicleSaved($event)"></app-configurable-vehicle-form>
+<!--
+    <button class="btn btn-primary me-3" (click)="addVehicle()">Añadir</button>
+    <button class="btn btn-secondary" (click)="cancelAdd()">Cancelar</button>
+-->
+  </p-sidebar>
   <p-sidebar [(visible)]="editFormVisible" position="right" [fullScreen]="true">
     <div class="container">
       <h3>Editar {{ currentVehicle?.name }}</h3>
@@ -134,26 +141,6 @@
       </div>
       <button class="btn btn-primary me-3" (click)="saveChanges(currentVehicle)">Guardar Cambios</button>
       <button class="btn btn-secondary" (click)="cancelEdit()">Cancelar</button>
-    </div>
-  </p-sidebar>
-
-  <p-sidebar [(visible)]="addFormVisible" position="right" [fullScreen]="true">
-    <div class="container">
-      <h3>Añadir vehículo</h3>
-      <div class="mb-3">
-        <label for="name2">Nombre:</label>
-        <input type="text" id="name2" class="form-control" required/>
-      </div>
-      <div class="mb-3">
-        <label for="description2">Descripción:</label>
-        <input type="text" id="description2" class="form-control" required/>
-      </div>
-      <div class="mb-3">
-        <label for="base64Text2">Texto en Base64 para la imagen:</label>
-        <input type="file" id="base64Text2" class="form-control" (change)="onFileSelected($event)" required/>
-      </div>
-      <button class="btn btn-primary me-3" (click)="addVehicle()">Añadir</button>
-      <button class="btn btn-secondary" (click)="cancelAdd()">Cancelar</button>
     </div>
   </p-sidebar>
   <p-sidebar [(visible)]="addEngineVisible" [fullScreen]="true">

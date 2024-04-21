@@ -3,6 +3,7 @@ package ps.backend.service;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import ps.backend.entity.configurableVehicle.ConfigurableVehicle;
+import ps.backend.entity.configurableVehicle.ConfigurableVehicleColor;
 import ps.backend.repository.ConfigurableVehicleRepository;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public class ConfigurableVehicleService {
         this.configurableVehicleRepository = configurableVehicleRepository;
     }
 
-    public List<ConfigurableVehicle> getCatalogue() { //cambiar a dto
+    public List<ConfigurableVehicle> getCatalogue() {
         return configurableVehicleRepository.findAll();
     }
 
@@ -24,8 +25,8 @@ public class ConfigurableVehicleService {
         return configurableVehicleRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
-
     public ConfigurableVehicle updateCatalogue(ConfigurableVehicle updatedCatalogue) {
+
         ConfigurableVehicle existingCatalogue = this.findById(updatedCatalogue.getId());
 
         existingCatalogue.setBrand(updatedCatalogue.getBrand());
@@ -37,6 +38,8 @@ public class ConfigurableVehicleService {
     }
 
     public ConfigurableVehicle addVehicle(ConfigurableVehicle newVehicle) {
-        return configurableVehicleRepository.save(newVehicle);
+        ConfigurableVehicle savedVehicle = this.configurableVehicleRepository.save(newVehicle);
+        newVehicle.getColors().forEach(color -> color.setConfigurableVehicle(savedVehicle));
+        return configurableVehicleRepository.save(savedVehicle);
     }
 }

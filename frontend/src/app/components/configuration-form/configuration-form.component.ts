@@ -42,7 +42,7 @@ export class ConfigurationFormComponent implements OnInit {
     if (this.form.valid) {
       this.onFormSubmit.emit(this.form.value);
       this.form.reset();
-      this.inputFile.nativeElement.value = "";
+      if (this.showImage) this.inputFile.nativeElement.value = "";
     }
   }
 

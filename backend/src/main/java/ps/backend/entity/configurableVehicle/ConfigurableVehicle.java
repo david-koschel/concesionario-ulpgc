@@ -26,8 +26,7 @@ public class ConfigurableVehicle {
     @Column(columnDefinition = "MEDIUMTEXT")
     private String image;
 
-    @OneToMany
-    @JoinColumn(name = "configurable_vehicle_id")
+    @OneToMany(mappedBy = "configurableVehicle", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private List<ConfigurableVehicleColor> colors;
 
     @ManyToMany

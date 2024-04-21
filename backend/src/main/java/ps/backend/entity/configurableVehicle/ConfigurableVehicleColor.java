@@ -1,5 +1,6 @@
 package ps.backend.entity.configurableVehicle;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,8 +18,12 @@ public class ConfigurableVehicleColor {
 
     private String color;
 
-    @Column(columnDefinition="MEDIUMTEXT")
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String vehicleImage;
 
     private Float price;
+
+    @JsonIgnore
+    @ManyToOne
+    private ConfigurableVehicle configurableVehicle;
 }
