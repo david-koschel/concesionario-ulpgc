@@ -14,6 +14,7 @@ import {UserListComponent} from "./components/user-list/user-list.component";
 import {UserFormComponent} from "./components/user-form/user-form.component";
 import {DriveRequestFormComponent} from "./components/drive-request/drive-request-form/drive-request-form.component";
 import {DriveRequestListComponent} from "./components/drive-request/drive-request-list/drive-request-list.component";
+import {TestDriveCarListComponent} from "./components/test-drive-car-list/test-drive-car-list.component";
 
 export const routes: Routes = [
   {
@@ -55,7 +56,7 @@ export const routes: Routes = [
     canActivate: [userIsAdminGuard]
   },
   {
-    path: "admin-panel/contact-messages",
+    path: "contact-messages",
     component: ContactMessagesComponent,
     canActivate: [userIsAdminGuard]
   },
@@ -65,14 +66,9 @@ export const routes: Routes = [
     canActivate: [userIsAdminGuard]
   },
   {
-    path: "admin-panel/drive-requests",
-    component: DriveRequestListComponent,
-    canActivate: [userIsLoggedInGuard]
-  },
-  {
-    path: "admin-panel/drive-requests",
-    component: DriveRequestListComponent,
-    canActivate: [userIsLoggedInGuard]
+    path: "test-drive-cars",
+    component: TestDriveCarListComponent,
+    canActivate: [userIsAdminGuard]
   },
   {
     path: "vehicleconfiguration",
