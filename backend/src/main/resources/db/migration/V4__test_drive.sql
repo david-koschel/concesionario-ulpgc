@@ -1,6 +1,7 @@
 create table test_drive_car (
     id int primary key auto_increment,
-    model varchar(255) not null
+    model varchar(255) not null,
+    car_license varchar(255) not null
 );
 
 create table test_drive_request (

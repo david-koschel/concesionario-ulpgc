@@ -10,6 +10,8 @@ public class TestDriveCar {
 
     private String model;
 
+    private String carLicense;
+
     public Integer getId() {
         return id;
     }
@@ -24,5 +26,13 @@ public class TestDriveCar {
 
     public void setModel(String model) {
         this.model = model;
+    }
+
+    public String getCarLicense() {
+        return carLicense;
+    }
+
+    public void setCarLicense(String carLicense) {
+        this.carLicense = carLicense;
     }
 }
