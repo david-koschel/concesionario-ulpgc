@@ -3,57 +3,27 @@
         <form [formGroup]="registerForm">
         <p-card header="Registro">
             <div class="field">
-                <label for="name">Nombre</label>
-                <input type="name"  class="hola" pInputText formControlName="name" name="name" placeholder="Nombre" />
+                <label class="name">Nombre</label>
+                <input type="text"  class="hola" pInputText formControlName="name" name="name" placeholder="Nombre" />
             </div>
-            <small
-                *ngIf="name.invalid && (name.dirty || name.touched)"
-                class="block p-error"
-            >
-                <div *ngIf="name.errors?.['required']">Se requiere un nombre.</div>
-            </small>
             <div class="field">
-                    <label for="apellidos">Apellidos</label>
-                    <input type="apellidos" class="hola" pInputText formControlName="apellidos" name="apellidos" placeholder="Apellidos" />
+              <label class="userName">Nombre de usuario</label>
+              <input type="text" class="hola" pInputText formControlName="username" name="username" placeholder="Nombre de usuario" />
             </div>
-            <small
-                *ngIf="apellidos.invalid && (apellidos.dirty || apellidos.touched)"
-                class="block p-error"
-            >
-                <div *ngIf="apellidos.errors?.['required']">Se requiere un apellido.</div>
-            </small>
+
             <div class="field">
-                <label for="email">Email</label>
+                <label class="email">Email</label>
                 <input type="email" class="hola" pInputText formControlName="email" name="email" placeholder="Introduce tu email" />
-                
+
             </div>
-            <small
-                *ngIf="email.invalid && (email.dirty || email.touched)"
-                class="block p-error"
-                >
-            <div *ngIf="email.errors?.['required']">Se requiere un email.</div>
-            </small>
-            
             <div class="field">
-                <label for="password">Contraseña</label>
+              <label class="address">Dirección</label>
+              <input type="text" class="hola" pInputText formControlName="address" name="apellidos" placeholder="Dirección" />
+            </div>
+            <div class="field">
+                <label class="password">Contraseña</label>
                 <input type="password" class="hola" pInputText formControlName="password" name="password" placeholder="Contraseña" />
             </div>
-            <small
-                *ngIf="password.invalid && (password.dirty || password.touched)"
-                class="block p-error"
-                >
-            <div *ngIf="password.errors?.['required']">Se requiere una contraseña.</div>
-            </small>
-            <div class="field">
-                <label for="confirmPassword">Confirmar contraseña</label>
-                <input type="confirmPassword" class="hola" pInputText formControlName="confirmPassword" name="confirmPassword" placeholder="Confirmar contraseña" />
-            </div>
-            <small
-                *ngIf="confirmPassword.invalid && (confirmPassword.dirty || confirmPassword.touched)"
-                class="block p-error"
-                >
-            <div *ngIf="confirmPassword.errors?.['required']">Se requiere confirmar contraseña.</div>
-            </small>
             <br>
             <div class="j1">¿Ya esta registrado? <a href ="/login">Iniciar sesion</a></div>
             <div class="boton">
@@ -61,11 +31,10 @@
                 pButton
                 class="boton1"
                 label="REGISTRARSE"
+                (click)="submitForm()"
                 ></button>
             </div>
         </p-card>
         </form>
     </div>
-    
-    
 </div>

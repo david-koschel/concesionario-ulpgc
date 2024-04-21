@@ -34,4 +34,8 @@ export class UserService {
     return this.http.post<User>("http://localhost:8080/api/user/new", user);
   }
 
+  public registerUser(user: User): Observable<User> {
+    return this.http.post<User>("http://localhost:8080/api/user/register", user);
+  }
+
 }

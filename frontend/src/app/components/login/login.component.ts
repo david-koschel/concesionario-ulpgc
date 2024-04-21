@@ -1,10 +1,9 @@
-import { Component } from '@angular/core';
+import {Component, inject} from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
-
-import { CommonModule } from '@angular/common'; // Importa CommonModule
+import {LoginService} from "../../security/login.service";
 
 @Component({
   selector: 'app-login',
@@ -14,13 +13,26 @@ import { CommonModule } from '@angular/common'; // Importa CommonModule
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-  loginForm = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', Validators.required]
-  }) 
+  private loginService = inject(LoginService);
 
+
+  protected loginForm = this.fb.group({
+    username: ['', [Validators.required]],
+    password: ['', Validators.required]
+  })
+  submitForm(){
+    this.loginService.login(
+      String(this.loginForm.controls['username'].value),
+      String(this.loginForm.controls['password'].value)
+    );
+
+  }
   constructor(private fb: FormBuilder){}
-  get email() {
-    return this.loginForm.controls['email'];
+  get username() {
+    return this.loginForm.controls['username'];
+  }
+
+  get password(){
+    return this.loginForm.controls['password'];
   }
 }

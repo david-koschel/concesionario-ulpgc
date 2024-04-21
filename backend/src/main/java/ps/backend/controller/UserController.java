@@ -5,6 +5,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ps.backend.entity.User;
 import ps.backend.exception.BasicException;
+import ps.backend.security.LoginDto;
 import ps.backend.service.EmailService;
 import ps.backend.service.UserService;
 
@@ -44,7 +45,10 @@ public class UserController {
     public User save(@RequestBody User user) {
         return userService.save(user);
     }
-
+    @PostMapping("/register")
+    public User register(@RequestBody User user) {
+        return userService.register(user);
+    }
     @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/update")
     public User update(@RequestBody User user) {

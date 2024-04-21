@@ -7,9 +7,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import ps.backend.entity.Role;
 import ps.backend.entity.User;
 import ps.backend.exception.BasicException;
 import ps.backend.repository.UserRepository;
+import ps.backend.security.LoginDto;
 
 import java.util.Collections;
 import java.util.List;
@@ -46,6 +48,17 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
+    public User register(User user) {
+        if (this.userRepository.findByUsername(user.getUsername()).isPresent()) {
+            throw new BasicException("El nombre de usuario ya está registrado");
+        }
+        if (this.userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new BasicException("El correo electrónico ya está registrado");
+        }
+
+        return userRepository.save(user);
+    }
+
     public User update(User user) {
         User userDB = this.findById(user.getId());
         return this.updateUser(user, userDB);
@@ -77,6 +90,7 @@ public class UserService implements UserDetailsService {
         }
         throw new RuntimeException("The user " + username + " wasn't found in the database");
     }
+    
 
     private org.springframework.security.core.userdetails.User createSpringSecurityUser(User user) {
         return new org.springframework.security.core.userdetails.User(
