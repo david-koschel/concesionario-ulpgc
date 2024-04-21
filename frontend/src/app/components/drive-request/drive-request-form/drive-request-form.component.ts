@@ -12,6 +12,7 @@ import {CalendarModule} from "primeng/calendar";
 import {DriveRequestService} from "../../../service/drive-request.service";
 import {DropdownModule} from "primeng/dropdown";
 import {TestDriveCar} from "../../../models/test-drive-car.model";
+import {DriveRequest} from "../../../models/drive-request.model";
 
 @Component({
   selector: 'app-drive-request-form',
@@ -58,9 +59,9 @@ export class DriveRequestFormComponent implements OnInit{
   private initializeDriveRequestForm() {
     this.getCars();
     this.driveRequestForm = this.formBuilder.group({
-      name: ["", Validators.required],
+      username: ["", Validators.required],
       email: ["", [Validators.required, Validators.email]],
-      car: ["", Validators.required],
+      carModel: ["", Validators.required],
       dates: ["", Validators.required],
       privacy: ["", Validators.requiredTrue]
     })
@@ -74,7 +75,26 @@ export class DriveRequestFormComponent implements OnInit{
     )
   }
 
+  private trimControl(controlName: string) {
+    this.driveRequestForm.controls[controlName].setValue(
+      this.driveRequestForm.controls[controlName].value.trim()
+    );
+  }
+
   public submit() {
-    //this.driveRequestService.addDriveRequest();
+    this.submitted = true;
+
+    this.trimControl("username");
+    this.trimControl("email");
+
+
+    if(!this.driveRequestForm.invalid){
+      const driveRequest: DriveRequest = {...this.driveRequestForm.value};
+        this.addDriveRequest(driveRequest);
+    }
+  }
+
+  private addDriveRequest(driveRequest: DriveRequest){
+    this.driveRequestService.addDriveRequest(driveRequest);
   }
 }
