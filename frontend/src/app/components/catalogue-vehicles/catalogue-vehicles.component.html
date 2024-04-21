@@ -1,77 +1,157 @@
 <h1>Editar catálogo de vehículos</h1>
 <article>
 
-    <section class="d-flex gap-3 mb-4 justify-content-center">
-        <button (click) = "addVehicleForm()"type="button" class="btn btn-success px-5 py-2">
-            <i class="bi bi-plus"></i> Añadir vehículo
+  <section class="d-flex gap-3 mb-4 justify-content-center">
+    <button (click)="addVehicleForm()" type="button" class="btn btn-success px-5 py-2">
+      Añadir vehículo
+    </button>
+    <button (click)="addEngineVisible = true" type="button" class="btn btn-success px-5 py-2">
+      Añadir Motor
+    </button>
+    <button (click)="addExtraVisible = true" type="button" class="btn btn-success px-5 py-2">
+      Añadir Accesorio
+    </button>
+    <button (click)="addRimVisible = true" type="button" class="btn btn-success px-5 py-2">
+      Añadir Llanta
+    </button>
+  </section>
+  @for (vehicle of vehicles; track $index) {
+    <h2 class="name">
+      {{ vehicle.brand }}
+    </h2>
+    <div class="row mb-3">
+      <div class="col-9">
+        <div class="description">
+          {{ vehicle.description }}
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="d-flex flex-column align-items-center justify-content-start gap-2">
+          <img
+            src="data:image/jpg;base64,{{ vehicle.image }}"
+            class="object-fit-cover mt-1"
+            width="200px"
+            height="100px"
+            alt
+          >
+          <button
+            class="btn btn-secondary me-2"
+            (click)="editVehicle(vehicle)">Editar
           </button>
-    </section>
-
-@for (vehicle of vehicles; track $index) {
-    <div class="row"></div>
-    <section class="d-flex gap-3 mb-4 justify-content-center">
-
-        <div class="content">
-            <h2 class="name">
-                {{ vehicle.brand }}
-            </h2>
+        </div>
+      </div>
+    </div>
+  }
+  <hr>
+  <div>
+    <h3>Motores</h3>
+    @for (engine of engines; track engine.id) {
+      <div class="row"></div>
+      <div class="d-flex flex-column justify-content-center mb-3">
+        <label class="fw-bold">
+          {{ engine.name }}
+        </label>
+        <div class="description">
+          {{ engine.description }}
+        </div>
+      </div>
+    }
+  </div>
+  <hr>
+  <div>
+    <h3>Llantas</h3>
+    @for (rim of rims; track rim.id) {
+      <div class="row"></div>
+      <div class="d-flex flex-column justify-content-center mb-3">
+        <label class="fw-bold">
+          {{ rim.name }}
+        </label>
+        <div class="row mb-3">
+          <div class="col-9">
             <div class="description">
-                {{ vehicle.description}}
+              {{ rim.description }}
             </div>
+          </div>
+          <div class="col-3">
+            <div class="d-flex flex-column align-items-center justify-content-start gap-2">
+              <img
+                [src]="rim.image"
+                class="object-fit-cover mt-1"
+                width="200px"
+                height="100px"
+                alt
+              >
+            </div>
+          </div>
         </div>
-        <img src="data:image/jpg;base64,{{ vehicle.image }}" class="object-fit-cover" width="200px" height="100px" alt="">
 
-        <button
-        pButton
-        icon="pi pi-eye"
-        class="btn btn-secondary me-2"
-        style="height:60%;"
-        (click)="editVehicle(vehicle)">Editar</button>
-
-    </section>
-}
-
-<p-sidebar [(visible)]="editFormVisible" position="right" [fullScreen]="true">
-    <div class="container">
-        <h3>Editar {{ currentVehicle?.name}}</h3>
-        <div class="mb-3">
-          <label for="name">Nombre:</label>
-          <input type="text" id="name" class="form-control" required/>
-        </div>
-        <div class="mb-3">
-          <label for="description">Descripción:</label>
-          <input type="text" id="description" class="form-control" required />
-        </div>
-        <div class="mb-3">
-          <label for="base64Text">Texto en Base64 para la imagen:</label>
-          <input type="file" id="base64Text"  class="form-control" required (change)="onFileSelected($event)"/>
-
-        </div>
-        <button class="btn btn-primary me-3" (click)="saveChanges(currentVehicle)">Guardar Cambios</button>
-        <button class="btn btn-secondary" (click)="cancelEdit()">Cancelar</button>
       </div>
-</p-sidebar>
-
-<p-sidebar [(visible)]="addFormVisible" position="right" [fullScreen]="true">
-    <div class="container">
-        <h3>Añadir vehículo</h3>
-        <div class="mb-3">
-          <label for="name2">Nombre:</label>
-          <input type="text" id="name2" class="form-control" required/>
+    }
+  </div>
+  <hr>
+  <div>
+    <h3>Accesorios</h3>
+    @for (extra of extras; track extra.id) {
+      <div class="row"></div>
+      <div class="d-flex flex-column justify-content-center mb-3">
+        <label class="fw-bold">
+          {{ extra.name }}
+        </label>
+        <div class="description">
+          {{ extra.description }}
         </div>
-        <div class="mb-3">
-          <label for="description2">Descripción:</label>
-          <input type="text" id="description2" class="form-control" required />
-        </div>
-        <div class="mb-3">
-          <label for="base64Text2">Texto en Base64 para la imagen:</label>
-          <input type="file" id="base64Text2"  class="form-control" (change)="onFileSelected($event)" required />
-        </div>
-        <button class="btn btn-primary me-3" (click)="addVehicle()">Añadir</button>
-        <button class="btn btn-secondary" (click)="cancelAdd()">Cancelar</button>
       </div>
-</p-sidebar>
+    }
+  </div>
 
+  <p-sidebar [(visible)]="editFormVisible" position="right" [fullScreen]="true">
+    <div class="container">
+      <h3>Editar {{ currentVehicle?.name }}</h3>
+      <div class="mb-3">
+        <label for="name">Nombre:</label>
+        <input type="text" id="name" class="form-control" required/>
+      </div>
+      <div class="mb-3">
+        <label for="description">Descripción:</label>
+        <input type="text" id="description" class="form-control" required/>
+      </div>
+      <div class="mb-3">
+        <label for="base64Text">Texto en Base64 para la imagen:</label>
+        <input type="file" id="base64Text" class="form-control" required (change)="onFileSelected($event)"/>
 
+      </div>
+      <button class="btn btn-primary me-3" (click)="saveChanges(currentVehicle)">Guardar Cambios</button>
+      <button class="btn btn-secondary" (click)="cancelEdit()">Cancelar</button>
+    </div>
+  </p-sidebar>
 
+  <p-sidebar [(visible)]="addFormVisible" position="right" [fullScreen]="true">
+    <div class="container">
+      <h3>Añadir vehículo</h3>
+      <div class="mb-3">
+        <label for="name2">Nombre:</label>
+        <input type="text" id="name2" class="form-control" required/>
+      </div>
+      <div class="mb-3">
+        <label for="description2">Descripción:</label>
+        <input type="text" id="description2" class="form-control" required/>
+      </div>
+      <div class="mb-3">
+        <label for="base64Text2">Texto en Base64 para la imagen:</label>
+        <input type="file" id="base64Text2" class="form-control" (change)="onFileSelected($event)" required/>
+      </div>
+      <button class="btn btn-primary me-3" (click)="addVehicle()">Añadir</button>
+      <button class="btn btn-secondary" (click)="cancelAdd()">Cancelar</button>
+    </div>
+  </p-sidebar>
+  <p-sidebar [(visible)]="addEngineVisible" [fullScreen]="true">
+    <app-configuration-form titleLabel="Motor" [showImage]="false" (onFormSubmit)="addEngine($event)"></app-configuration-form>
+  </p-sidebar>
+  <p-sidebar [(visible)]="addRimVisible" [fullScreen]="true">
+    <app-configuration-form titleLabel="Llanta" (onFormSubmit)="addRim($event)"></app-configuration-form>
+  </p-sidebar>
+  <p-sidebar [(visible)]="addExtraVisible" [fullScreen]="true">
+    <app-configuration-form titleLabel="Accesorio" (onFormSubmit)="addExtra($event)"></app-configuration-form>
+  </p-sidebar>
 </article>
+<p-toast></p-toast>

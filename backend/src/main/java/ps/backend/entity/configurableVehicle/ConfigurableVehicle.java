@@ -23,7 +23,7 @@ public class ConfigurableVehicle {
 
     private String description;
 
-    @Column(columnDefinition="MEDIUMTEXT")
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String image;
 
     @OneToMany

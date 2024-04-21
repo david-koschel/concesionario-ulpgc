@@ -3,12 +3,19 @@ import {CommonModule} from "@angular/common";
 import {CatalogueService} from '../../services/catalogue.service';
 import { CatalogueItems } from '../../services/catalogue.model';
 import { SidebarModule } from 'primeng/sidebar';
+import {ConfigurationFormComponent} from "../configuration-form/configuration-form.component";
+import {VehicleService} from "../../services/vehicle.service";
+import {MessageService} from "primeng/api";
+import {ToastModule} from "primeng/toast";
+import {ConfigurableVehicleEngine} from "../../models/configurable-vehicle/configurable-vehicle-engine.model";
+import {ConfigurableVehicleRim} from "../../models/configurable-vehicle/configurable-vehicle-rim.model";
+import {ConfigurableVehicleExtra} from "../../models/configurable-vehicle/configurable-vehicle-extra.model";
 
 
 @Component({
   selector: 'app-catalogue-vehicles',
   standalone: true,
-  imports: [CommonModule, SidebarModule],
+  imports: [CommonModule, SidebarModule, ConfigurationFormComponent, ToastModule],
   templateUrl: './catalogue-vehicles.component.html',
   styleUrl: './catalogue-vehicles.component.scss'
 })
@@ -20,12 +27,22 @@ export class CatalogueVehiclesComponent implements OnInit{
   currentVehicle: any;
 
   base64img: string | undefined;
+  addEngineVisible: boolean = false;
+  addRimVisible: boolean = false;
+  addExtraVisible: boolean = false;
 
+  engines: ConfigurableVehicleEngine[] = [];
+  rims: ConfigurableVehicleRim[] = [];
+  extras: ConfigurableVehicleExtra[] = [];
 
-  constructor(private catalogueService: CatalogueService){}
+  constructor(private catalogueService: CatalogueService, private vehicleService: VehicleService,
+              private messageService: MessageService){}
 
   ngOnInit(): void {
       this.loadVehicles();
+      this.loadEngines();
+      this.loadRims();
+      this.loadExtras();
   }
 
   loadVehicles():void{
@@ -33,6 +50,18 @@ export class CatalogueVehiclesComponent implements OnInit{
       .subscribe(data => {
         this.vehicles = data;
       });
+  }
+
+  loadEngines():void{
+    this.vehicleService.getEngines().subscribe(data => this.engines = data);
+  }
+
+  loadRims():void{
+    this.vehicleService.getRims().subscribe(data => this.rims = data);
+  }
+
+  loadExtras():void{
+    this.vehicleService.getExtras().subscribe(data => this.extras = data);
   }
 
   editVehicle(vehicle: CatalogueItems): void{
@@ -148,5 +177,51 @@ export class CatalogueVehiclesComponent implements OnInit{
     }
 
 
+  }
+
+  addEngine(event: any) {
+    this.vehicleService.addEngine(event).subscribe({
+      next: () => {
+        this.sendSuccessMessage('Motor guardado con éxito');
+        this.addEngineVisible = false;
+      },
+      error: () => this.sendErrorMessage('motor')
+    });
+  }
+
+  addRim(event: any) {
+    this.vehicleService.addRim(event).subscribe({
+      next: () => {
+        this.sendSuccessMessage('Llanta guardada con éxito');
+        this.addEngineVisible = false;
+      },
+      error: () => this.sendErrorMessage('llanta')
+    });
+  }
+
+  addExtra(event: any) {
+    this.vehicleService.addExtra(event).subscribe({
+      next: () => {
+        this.sendSuccessMessage('Accesorio guardado con éxito');
+        this.addEngineVisible = false;
+      },
+      error: () => this.sendErrorMessage('accesorio')
+    });
+  }
+
+  private sendSuccessMessage(text: string) {
+    this.messageService.add({
+      summary: 'Éxito',
+      detail: text,
+      severity: 'success'
+    });
+  }
+
+  private sendErrorMessage(text: string) {
+    this.messageService.add({
+      summary: 'Error',
+      detail: `Error al guardar ${text}`,
+      severity: 'error'
+    });
   }
 }

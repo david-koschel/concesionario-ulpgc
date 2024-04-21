@@ -5,6 +5,6 @@ import org.springframework.stereotype.Repository;
 import ps.backend.entity.configurableVehicle.ConfigurableVehicle;
 
 @Repository
-public interface CatalogueRepository extends JpaRepository<ConfigurableVehicle,Integer> {
+public interface ConfigurableVehicleRepository extends JpaRepository<ConfigurableVehicle,Integer> {
 
 }
