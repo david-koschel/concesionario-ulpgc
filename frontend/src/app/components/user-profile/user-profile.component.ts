@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angula
 import { InputTextModule } from "primeng/inputtext";
 import { MessageService } from "primeng/api";
 import { ToastModule } from "primeng/toast";
-import { UserService } from "../../service/user.service";
+import { UserService } from "../../services/user.service";
 import { User } from "../../models/user.model";
 
 @Component({

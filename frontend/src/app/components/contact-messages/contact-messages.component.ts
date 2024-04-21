@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ContactMessageService} from "../../service/contact-message.service";
+import {ContactMessageService} from "../../services/contact-message.service";
 import {ContactMessage} from "./contactMessage.model";
 import {CheckboxModule} from "primeng/checkbox";
 import {ConfirmDialogModule} from "primeng/confirmdialog";

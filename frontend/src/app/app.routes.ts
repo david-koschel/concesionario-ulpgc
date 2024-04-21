@@ -1,13 +1,13 @@
 import {Routes} from '@angular/router';
 import {LoginComponent} from './components/login/login.component';
 import {RegisterComponent} from './components/register/register.component';
-import {ForgotpasswordComponent} from './components/forgotpassword/forgotpassword.component';
+import {ForgotpasswordComponent} from './components/forgot-password/forgotpassword.component';
 import {ContactComponent} from "./components/contact/contact.component";
 import {HomeComponent} from "./components/home/home.component";
 import {CatalogueComponent} from './components/catalogue/catalogue.component';
 import {UserProfileComponent} from "./components/user-profile/user-profile.component";
 import {userIsAdminGuard, userIsLoggedInGuard} from "./security/guards";
-import { VehicleconfigurationComponent } from './components/vehicleconfiguration/vehicleconfiguration.component';
+import { VehicleconfigurationComponent } from './components/vehicle-configuration/vehicleconfiguration.component';
 import {AdminPanelComponent} from "./components/admin-panel/admin-panel.component";
 import {ContactMessagesComponent} from "./components/contact-messages/contact-messages.component";
 import {UserListComponent} from "./components/user-list/user-list.component";

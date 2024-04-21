@@ -1,8 +1,8 @@
 import { Component, inject, OnInit} from '@angular/core';
 import { CatalogueComponent } from '../catalogue/catalogue.component';
-import { Vehicle } from '../../vehicle';
-import { VehicleConfigurationList } from '../../vehicle-configuration-list';
-import { VehicleService } from '../../vehicle.service';
+import { Vehicle } from '../../models/vehicle.model';
+import { VehicleConfigurationList } from '../../models/vehicle-configuration-list';
+import { VehicleService } from '../../services/vehicle.service';
 import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-vehicleconfiguration',
@@ -125,6 +125,6 @@ export class VehicleconfigurationComponent implements OnInit {
         }
       }
     }
-    
+
 }
 

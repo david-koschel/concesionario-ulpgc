@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {CommonModule} from "@angular/common";
-import {CatalogueService} from '../../service/catalogue.service';
-import { CatalogueItems } from '../../service/catalogue.model';
+import {CatalogueService} from '../../services/catalogue.service';
+import { CatalogueItems } from '../../services/catalogue.model';
 import { SidebarModule } from 'primeng/sidebar';
 
 
