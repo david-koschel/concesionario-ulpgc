@@ -184,6 +184,7 @@ export class CatalogueVehiclesComponent implements OnInit{
       next: () => {
         this.sendSuccessMessage('Motor guardado con éxito');
         this.addEngineVisible = false;
+        this.loadEngines();
       },
       error: () => this.sendErrorMessage('motor')
     });
@@ -193,7 +194,8 @@ export class CatalogueVehiclesComponent implements OnInit{
     this.vehicleService.addRim(event).subscribe({
       next: () => {
         this.sendSuccessMessage('Llanta guardada con éxito');
-        this.addEngineVisible = false;
+        this.addRimVisible = false;
+        this.loadRims();
       },
       error: () => this.sendErrorMessage('llanta')
     });
@@ -203,7 +205,8 @@ export class CatalogueVehiclesComponent implements OnInit{
     this.vehicleService.addExtra(event).subscribe({
       next: () => {
         this.sendSuccessMessage('Accesorio guardado con éxito');
-        this.addEngineVisible = false;
+        this.addExtraVisible = false;
+        this.loadExtras();
       },
       error: () => this.sendErrorMessage('accesorio')
     });

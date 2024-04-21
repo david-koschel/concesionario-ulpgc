@@ -7,11 +7,11 @@
     </div>
     <div class="mb-3">
       <label for="description" class="required">Descripción</label>
-      <input type="text" id="description" formControlName="description" class="form-control"/>
+      <textarea type="text" id="description" formControlName="description" class="form-control"></textarea>
     </div>
     <div class="mb-3" *ngIf="showImage">
       <label for="image" class="required">Imagen</label>
-      <input type="file" accept="image/png, image/jpeg" id="image" class="form-control" (change)="handleUpload($event)"/>
+      <input #inputFile type="file" accept="image/png, image/jpeg" id="image" class="form-control" (change)="handleUpload($event)"/>
     </div>
     <div class="mb-3">
       <label for="price" class="required">Precio</label>

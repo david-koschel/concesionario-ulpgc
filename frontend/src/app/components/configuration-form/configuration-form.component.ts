@@ -1,4 +1,4 @@
-import {Component, EventEmitter, inject, Input, OnInit, Output} from '@angular/core';
+import {Component, ElementRef, EventEmitter, inject, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {NgIf} from "@angular/common";
 
@@ -21,6 +21,7 @@ export class ConfigurationFormComponent implements OnInit {
   @Input() showImage = true;
   @Input() titleLabel = '';
   @Output() private onFormSubmit = new EventEmitter<any>();
+  @ViewChild('inputFile') inputFile!: ElementRef;
 
   ngOnInit() {
     const form: FormGroup = this.formBuilder.group({
@@ -40,6 +41,8 @@ export class ConfigurationFormComponent implements OnInit {
     this.error = !this.form.valid;
     if (this.form.valid) {
       this.onFormSubmit.emit(this.form.value);
+      this.form.reset();
+      this.inputFile.nativeElement.value = "";
     }
   }
 
