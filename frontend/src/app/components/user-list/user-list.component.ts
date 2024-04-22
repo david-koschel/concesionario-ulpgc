@@ -1,5 +1,5 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {UserService} from "../../service/user.service";
+import {UserService} from "../../services/user.service";
 import {User} from "../../models/user.model";
 import {TableModule} from "primeng/table";
 import {RouterLink} from "@angular/router";

@@ -9,6 +9,8 @@ final class SecurityConstant {
     static final String AUTH_LOGIN_URL = "/api/login";
     static final String[] AUTH_WHITELIST = {
             "/api/contact_message/form",
+            "/api/catalogue/all",
+            "/api/vehicle/public/**",
             "/api/user/register",
             "/api/user/sendEmail"
     };

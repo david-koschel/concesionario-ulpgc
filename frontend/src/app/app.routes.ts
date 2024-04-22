@@ -4,11 +4,12 @@ import {HomeComponent} from "./components/home/home.component";
 import {CatalogueComponent} from './components/catalogue/catalogue.component';
 import {UserProfileComponent} from "./components/user-profile/user-profile.component";
 import {userIsAdminGuard, userIsLoggedInGuard} from "./security/guards";
-import { VehicleconfigurationComponent } from './components/vehicleconfiguration/vehicleconfiguration.component';
+import {VehicleConfigurationComponent} from './components/vehicle-configuration/vehicle-configuration.component';
 import {AdminPanelComponent} from "./components/admin-panel/admin-panel.component";
 import {ContactMessagesComponent} from "./components/contact-messages/contact-messages.component";
 import {UserListComponent} from "./components/user-list/user-list.component";
 import {UserFormComponent} from "./components/user-form/user-form.component";
+import {CatalogueVehiclesComponent} from "./components/catalogue-vehicles/catalogue-vehicles.component";
 import {LoginRegisterComponent} from "./components/login-register/login-register.component";
 import {LoginRegisterArregladoComponent} from "./components/login-register-arreglado/login-register.component";
 import {ForgotPasswordComponent} from "./components/forgot-password/forgot-password.component";
@@ -54,8 +55,8 @@ export const routes: Routes = [
     canActivate: [userIsLoggedInGuard]
   },
   {
-    path: "vehicleconfiguration",
-    component: VehicleconfigurationComponent
+    path: "vehicle-configurator/:id",
+    component: VehicleConfigurationComponent
   },
   {
     path: "user-list",
@@ -66,6 +67,10 @@ export const routes: Routes = [
     path: "user-form/:userId",
     component: UserFormComponent,
     canActivate: [userIsAdminGuard]
+  },
+  {
+    path: "catalogue-vehicles",
+    component: CatalogueVehiclesComponent
   },
   {
     path: '**',

@@ -1,0 +1,110 @@
+<div class="container">
+  <h3>{{ editVehicle ? 'Editar vehículo' : 'Añadir vehículo' }}</h3>
+  @if (form) {
+    <form [formGroup]="form">
+      <div class="row">
+        <div class="col-4">
+          <label for="brand" class="required">Marca</label>
+          <input type="text" id="brand" formControlName="brand" class="form-control"/>
+        </div>
+        <div class="col-4">
+          <label for="model" class="required">Modelo</label>
+          <input type="text" id="model" formControlName="model" class="form-control"/>
+        </div>
+        <div class="col-4">
+          <label for="basePrice" class="required">Precio Base</label>
+          <input type="number" min="0" step=".01" id="basePrice" formControlName="basePrice" class="form-control"/>
+        </div>
+        <div class="col-12 my-3">
+          <label for="description" class="required">Descripción</label>
+          <textarea type="text" id="description" formControlName="description" class="form-control" rows="4"></textarea>
+        </div>
+        <div class="col-12">
+          <label for="image" class="required">Imagen</label>
+          <input
+            #inputFile
+            type="file"
+            accept="image/*"
+            id="image"
+            class="form-control"
+            (change)="handleVehicleUpload($event)"
+          />
+        </div>
+      </div>
+    </form>
+    <div class="d-flex justify-content-between align-items-center mt-3">
+      <h3>Colores</h3>
+      <button class="btn btn-secondary" (click)="addColor()">Añadir color</button>
+    </div>
+    @for (color of colors; track $index) {
+      <div class="row">
+        <div class="col-4">
+          <label for="colorName" class="required">Nombre</label>
+          <input type="text" id="colorName" class="form-control" [(ngModel)]="color.name"/>
+        </div>
+        <div class="col-3">
+          <label for="colorPrice" class="required">Precio Base</label>
+          <input type="number" min="0" step=".01" id="colorPrice" class="form-control" [(ngModel)]="color.price"/>
+        </div>
+        <div class="col">
+          <label for="colorImage" class="required">Imagen</label>
+          <input
+            #colorInputFile
+            type="file"
+            accept="image/*"
+            id="colorImage"
+            class="form-control"
+            (change)="handleColorUpload($event, color)"
+          />
+        </div>
+      </div>
+      <div class="d-flex justify-content-between align-items-end mt-3">
+        <div class="col-2">
+          <label for="color" class="required">Color</label>
+          <input type="color" id="color" class="form-control" [(ngModel)]="color.color"/>
+        </div>
+        <button class="btn btn-danger" (click)="deleteColor($index)">Eliminar color</button>
+      </div>
+      <hr>
+    }
+    <hr *ngIf="colors.length < 1">
+    <div class="mb-3">
+      <label class="required fw-semibold">Motores</label>
+      <p-multiSelect
+        [options]="engines"
+        [(ngModel)]="selectedEngines"
+        styleClass="w-100"
+        optionLabel="name"
+        [maxSelectedLabels]="50"
+      ></p-multiSelect>
+    </div>
+    <div class="mb-3">
+      <label class="required fw-semibold">Llantas</label>
+      <p-multiSelect
+        [options]="rims"
+        [(ngModel)]="selectedRims"
+        styleClass="w-100"
+        optionLabel="name"
+        [maxSelectedLabels]="50"
+      ></p-multiSelect>
+    </div>
+    <div class="mb-3">
+      <label class="required fw-semibold">Accesorios</label>
+      <p-multiSelect
+        [options]="extras"
+        [(ngModel)]="selectedExtras"
+        styleClass="w-100"
+        optionLabel="name"
+        [maxSelectedLabels]="50"
+      ></p-multiSelect>
+    </div>
+    <div class="mt-3">
+      <small *ngIf="error" class="text-danger">
+        Rellene todos los campos correctamente
+      </small>
+      <div class="d-flex justify-content-start gap-3 mt-2">
+        <button class="btn btn-primary" (click)="submitForm()">{{ editVehicle ? 'Editar' : 'Añadir' }}</button>
+      </div>
+    </div>
+  }
+</div>

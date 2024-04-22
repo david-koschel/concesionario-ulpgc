@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { InputTextModule } from "primeng/inputtext";
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import { UserService } from "../../service/user.service";
+import { UserService } from "../../services/user.service";
 import { ActivatedRoute, Router } from "@angular/router";
 import { User } from "../../models/user.model";
 import { NgIf } from "@angular/common";

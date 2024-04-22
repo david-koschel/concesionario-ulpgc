@@ -3,7 +3,7 @@ import {HttpClient, HttpResponse} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {toObservable} from "@angular/core/rxjs-interop";
 import {Router} from "@angular/router";
-import {UserService} from "../service/user.service";
+import {UserService} from "../services/user.service";
 
 @Injectable({
   providedIn: 'root'
