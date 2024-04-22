@@ -1,0 +1,43 @@
+@font-face {
+    font-family: 'Inter';
+    src: url('../../../assets/fonts/Inter-VariableFont_slnt\,wght.ttf');
+}
+:host {
+    font-family: 'Inter', sans-serif;
+}
+h1{
+    background: linear-gradient(135deg, #012349, #0062a3);
+    color: white;
+}
+h2 {
+    display: inline-block;
+    border-bottom: 2px solid #0066A1;
+    margin-top: 2em;
+    margin-bottom: 1em;
+
+}
+#imgIGI, #imgMuralCoches, #imgCompraVenta{
+    width: 30em;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+p{
+    margin-bottom: 2em;
+}
+
+@media screen and (max-width: 600px) {
+    #imgIGI, #imgMuralCoches, #imgCompraVenta{
+        width: 15em;
+    }
+    .whoAreWeSection{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    p{
+        margin-left: 1em;
+        margin-right: 1em;
+        text-align: center;
+    }
+}

@@ -8,6 +8,8 @@ import {CatalogueComponent} from './components/catalogue/catalogue.component';
 import {UserProfileComponent} from "./components/user-profile/user-profile.component";
 import {userIsLoggedInGuard} from "./security/guards";
 import { VehicleconfigurationComponent } from './components/vehicleconfiguration/vehicleconfiguration.component';
+import { AboutusComponent } from './components/aboutus/aboutus.component';
+import { OurServicesComponent } from './components/our-services/our-services.component';
 
 export const routes: Routes = [
   {
@@ -42,6 +44,14 @@ export const routes: Routes = [
   {
     path: "vehicleconfiguration",
     component: VehicleconfigurationComponent
+  },
+  {
+    path: "aboutus",
+    component: AboutusComponent
+  },
+  {
+    path: "ourservices",
+    component: OurServicesComponent
   },
   {
     path: '**',
