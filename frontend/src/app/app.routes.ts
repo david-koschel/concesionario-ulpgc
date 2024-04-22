@@ -10,11 +10,21 @@ import {userIsLoggedInGuard} from "./security/guards";
 import { VehicleconfigurationComponent } from './components/vehicleconfiguration/vehicleconfiguration.component';
 import { AboutUsComponent } from './components/about-us/about-us.component';
 import { OurServicesComponent } from './components/our-services/our-services.component';
+import {TermsandconditionsComponent} from "./components/termsandconditions/termsandconditions.component";
+import {PrivacycookiesComponent} from "./components/privacycookies/privacycookies.component";
 
 export const routes: Routes = [
   {
     path: "contacto",
     component: ContactComponent
+  },
+  {
+    path: "termsandconditions",
+    component: TermsandconditionsComponent
+  },
+  {
+    path: "privacycookies",
+    component: PrivacycookiesComponent
   },
   {
     path: "home",
