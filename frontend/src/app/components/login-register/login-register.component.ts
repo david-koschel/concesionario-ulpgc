@@ -1,7 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {CardModule} from 'primeng/card';
 import {InputTextModule} from 'primeng/inputtext';
-import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ButtonModule} from 'primeng/button';
 import {CommonModule} from '@angular/common';
 import {CheckboxModule} from "primeng/checkbox";
@@ -10,7 +10,8 @@ import {LoginService} from "../../security/login.service";
 import {MessageService} from "primeng/api"; // Importa CommonModule
 import {ActivatedRoute, Router} from '@angular/router';
 import {UserService} from "../../services/user.service";
-import {map} from "rxjs";
+import {map, tap} from "rxjs";
+import {User} from "../../models/user.model";
 
 @Component({
   selector: 'app-login-register-arreglado',
@@ -31,18 +32,18 @@ export class LoginRegisterArregladoComponent implements OnInit {
   private router = inject(Router);
   private messageService = inject(MessageService);
 
+  protected loading = false;
+
   protected loginForm = this.formBuilder.group({
     loginName: ['', [Validators.required]],
     loginPassword: ['', Validators.required]
   });
-
-  protected registerForm = this.formBuilder.group({
+  protected registerForm: FormGroup = this.formBuilder.group({
     name: ["", Validators.required],
     email: ["", [Validators.required, Validators.email]],
     address: ["", Validators.required],
     username: ["", Validators.required],
-    password: ["", Validators.required],
-    isAdmin: [false]
+    password: ["", Validators.required]
   });
 
   ngOnInit() {
@@ -55,30 +56,30 @@ export class LoginRegisterArregladoComponent implements OnInit {
   }
 
   submitForm() {
-    /*if (this.registerForm.valid) {
-      const isAdmin = this.registerForm.get("isAdmin")?.value;
-      const user: User = <User>{...this.registerForm.value, role: isAdmin ? "ADMIN" : "CUSTOMER"};
-      this.userService.registerUser(user).subscribe({
-        next: res => {
-          this.loginService.login(
-            String(this.registerForm.controls['username'].value),
-            String(this.registerForm.controls['password'].value)
-          ).then(() => {
-            window.location.href = '/home';
-          });
-        },
-        error: err => this.messageService.add({
-          summary: "Error al guardar el usuario",
-          detail: err.error.message || "Vuelva a intentarlo más tarde",
-          severity: "error"
-        }),
-      });
+    if (this.registerForm.valid) {
+      this.loading = true;
+      const user: User = {...this.registerForm.value};
+      this.userService.registerUser(user)
+        .subscribe({
+          next: res => {
+            this.login(res.username, res.password);
+            this.loading = false;
+          },
+          error: err => {
+            this.messageService.add({
+              summary: "Error al registrarse",
+              detail: err.error.message || "Vuelva a intentarlo más tarde",
+              severity: "error"
+            });
+            this.loading = false;
+          }
+        });
     } else {
       this.messageService.add({
         summary: "Rellene correctamente todos los campos",
         severity: "error"
       });
-    }*/
+    }
   }
 
   showLogin(login: boolean) {
@@ -111,26 +112,30 @@ export class LoginRegisterArregladoComponent implements OnInit {
 
 
   submitLoginForm() {
-    console.log(this.loginForm.valid);
     if (this.loginForm.valid) {
-      this.loginService.login(
+      this.login(
         this.loginForm.controls['loginName'].value!,
         this.loginForm.controls['loginPassword'].value!
-      ).subscribe({
-        next: () => this.router.navigate(["user"]),
-        error: () => {
-          this.messageService.add({
-            summary: "Error",
-            detail: "Usuario o contraseña incorrectos",
-            severity: "error"
-          });
-        }
-      });
+      );
     } else {
       this.messageService.add({
         summary: "Rellene correctamente todos los campos",
         severity: "error"
       });
     }
+  }
+
+  private login(username: string, password: string) {
+    this.loginService.login(username, password).subscribe({
+      next: () => this.router.navigate(["user"]),
+      error: () => {
+        this.messageService.add({
+          summary: "Error",
+          detail: "Usuario o contraseña incorrectos",
+          severity: "error"
+        });
+      }
+    });
+
   }
 }

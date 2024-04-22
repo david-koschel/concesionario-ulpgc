@@ -72,6 +72,8 @@
           pButton
           class="boton"
           label="Registrarse"
+          [loading]="loading"
+          loadingIcon="pi pi-spinner pi-spin"
           (click)="submitForm()"
         ></button>
       </div>

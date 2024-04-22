@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import ps.backend.entity.Role;
 import ps.backend.entity.User;
 import ps.backend.exception.BasicException;
 import ps.backend.repository.UserRepository;
@@ -56,8 +57,10 @@ public class UserService implements UserDetailsService {
         } else if (this.userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new BasicException("El correo electrónico ya ha sido registrado");
         }
+        user.setRole(Role.CUSTOMER);
+        User savedUser = this.save(user);
         emailService.sendEmail(user.getEmail(), "Mensaje de Bienvenida", "Bienvenido");
-        return userRepository.save(user);
+        return savedUser;
     }
 
     public User update(User user) {
