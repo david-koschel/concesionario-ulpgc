@@ -1,5 +1,5 @@
 <div class="container">
-  <h3>Añadir vehículo</h3>
+  <h3>{{ editVehicle ? 'Editar vehículo' : 'Añadir vehículo' }}</h3>
   @if (form) {
     <form [formGroup]="form">
       <div class="row">
@@ -17,7 +17,7 @@
         </div>
         <div class="col-12 my-3">
           <label for="description" class="required">Descripción</label>
-          <textarea type="text" id="description" formControlName="description" class="form-control"></textarea>
+          <textarea type="text" id="description" formControlName="description" class="form-control" rows="4"></textarea>
         </div>
         <div class="col-12">
           <label for="image" class="required">Imagen</label>
@@ -75,6 +75,7 @@
         [(ngModel)]="selectedEngines"
         styleClass="w-100"
         optionLabel="name"
+        [maxSelectedLabels]="50"
       ></p-multiSelect>
     </div>
     <div class="mb-3">
@@ -84,6 +85,7 @@
         [(ngModel)]="selectedRims"
         styleClass="w-100"
         optionLabel="name"
+        [maxSelectedLabels]="50"
       ></p-multiSelect>
     </div>
     <div class="mb-3">
@@ -93,6 +95,7 @@
         [(ngModel)]="selectedExtras"
         styleClass="w-100"
         optionLabel="name"
+        [maxSelectedLabels]="50"
       ></p-multiSelect>
     </div>
     <div class="mt-3">
@@ -100,7 +103,7 @@
         Rellene todos los campos correctamente
       </small>
       <div class="d-flex justify-content-start gap-3 mt-2">
-        <button class="btn btn-primary" (click)="submitForm()">Añadir</button>
+        <button class="btn btn-primary" (click)="submitForm()">{{ editVehicle ? 'Editar' : 'Añadir' }}</button>
       </div>
     </div>
   }

@@ -30,16 +30,10 @@ public class ConfigurableVehicleService {
         return configurableVehicleRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
-    public ConfigurableVehicle updateCatalogue(ConfigurableVehicle updatedCatalogue) {
-
-        ConfigurableVehicle existingCatalogue = this.findById(updatedCatalogue.getId());
-
-        existingCatalogue.setBrand(updatedCatalogue.getBrand());
-        existingCatalogue.setModel(updatedCatalogue.getModel());
-        existingCatalogue.setDescription(updatedCatalogue.getDescription());
-        existingCatalogue.setImage(updatedCatalogue.getImage());
-
-        return configurableVehicleRepository.save(existingCatalogue);
+    public ConfigurableVehicle updateCatalogue(ConfigurableVehicle updatedVehicle) {
+        ConfigurableVehicle existingVehicle = this.findById(updatedVehicle.getId());
+        updatedVehicle.getColors().forEach(color -> color.setConfigurableVehicle(existingVehicle));
+        return configurableVehicleRepository.save(updatedVehicle);
     }
 
     public ConfigurableVehicle addVehicle(ConfigurableVehicle newVehicle) {

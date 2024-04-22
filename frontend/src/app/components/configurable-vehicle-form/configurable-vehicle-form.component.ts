@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, inject, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, inject, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {NgIf} from "@angular/common";
 import {DropdownModule} from "primeng/dropdown";
@@ -50,6 +50,8 @@ export class ConfigurableVehicleFormComponent implements OnInit {
 
   colors: ConfigurableVehicleColor[] = [];
 
+  @Input() editVehicle!: ConfigurableVehicle;
+
   ngOnInit() {
     this.loadVehicleItems();
     this.startForm();
@@ -62,6 +64,14 @@ export class ConfigurableVehicleFormComponent implements OnInit {
   }
 
   startForm() {
+    if (this.editVehicle) {
+      this.startExistingForm();
+    } else {
+      this.startNewForm();
+    }
+  }
+
+  startNewForm() {
     this.selectedEngines = [];
     this.selectedRims = [];
     this.selectedExtras = [];
@@ -75,6 +85,20 @@ export class ConfigurableVehicleFormComponent implements OnInit {
     });
   }
 
+  startExistingForm() {
+    this.selectedEngines = this.editVehicle.engines;
+    this.selectedRims = this.editVehicle.rims;
+    this.selectedExtras = this.editVehicle.extras;
+    this.colors = this.editVehicle.colors;
+    this.form = this.formBuilder.group({
+      brand: [this.editVehicle.brand, Validators.required],
+      model: [this.editVehicle.model, Validators.required],
+      description: [this.editVehicle.description, Validators.required],
+      basePrice: [this.editVehicle.basePrice, [Validators.required, Validators.min(0)]],
+      image: [this.editVehicle.image, [Validators.required]]
+    });
+  }
+
   submitForm() {
     this.error = !this.formIsValid();
     if (this.formIsValid()) {
@@ -82,10 +106,10 @@ export class ConfigurableVehicleFormComponent implements OnInit {
         ...this.form.value,
         colors: this.colors,
         rims: this.selectedRims,
-        engines: this.engines,
-        extras: this.extras
+        engines: this.selectedEngines,
+        extras: this.selectedExtras
       };
-      this.catalogue.addNewVehicle(vehicleToAdd).subscribe({
+      this.addOrUpdateVehicle(vehicleToAdd).subscribe({
         next: () => {
           this.onVehicleSaved.emit(true);
           this.loadVehicleItems();
@@ -94,6 +118,15 @@ export class ConfigurableVehicleFormComponent implements OnInit {
         },
         error: () => this.onVehicleSaved.emit(false)
       });
+    }
+  }
+
+  addOrUpdateVehicle(vehicleToAdd: ConfigurableVehicle) {
+    if (this.editVehicle) {
+      vehicleToAdd.id = this.editVehicle.id;
+      return this.catalogue.updateVehicle(vehicleToAdd);
+    } else {
+      return this.catalogue.addNewVehicle(vehicleToAdd);
     }
   }
 

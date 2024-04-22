@@ -1,5 +1,5 @@
 <div class="container">
-  <h3>Añadir {{titleLabel}}</h3>
+  <h3>{{ editingObject ? 'Editar' : 'Añadir' }} {{titleLabel}}</h3>
   <form *ngIf="form" [formGroup]="form">
     <div class="mb-3">
       <label for="name" class="required">Nombre</label>
@@ -7,7 +7,7 @@
     </div>
     <div class="mb-3">
       <label for="description" class="required">Descripción</label>
-      <textarea type="text" id="description" formControlName="description" class="form-control"></textarea>
+      <textarea type="text" id="description" formControlName="description" class="form-control" rows="4"></textarea>
     </div>
     <div class="mb-3" *ngIf="showImage">
       <label for="image" class="required">Imagen</label>
@@ -22,6 +22,6 @@
     </small>
   </form>
   <div class="d-flex justify-content-start gap-3">
-    <button class="btn btn-primary" (click)="submitForm()">Añadir</button>
+    <button class="btn btn-primary" (click)="submitForm()">{{ editingObject ? 'Editar' : 'Añadir' }}</button>
   </div>
 </div>
