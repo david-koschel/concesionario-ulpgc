@@ -1,0 +1,15 @@
+.footer {
+  background-color: rgb(82, 87, 94);
+  width: 100%;
+  color: white;
+
+  a {
+    text-decoration: none;
+    color: white;
+  }
+
+  & > div {
+    flex-grow: 1;
+    flex-basis: 0;
+  }
+}

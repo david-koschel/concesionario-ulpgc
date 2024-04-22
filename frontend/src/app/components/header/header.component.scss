@@ -1,19 +1,11 @@
-.buttons-right {
-  position: absolute;
-  right: 0;
-  margin: 20px;
-}
-
-.buttons-left {
-  position: absolute;
-  left: 0;
-  margin: 20px;
-}
-
-.menu {
+nav {
   height: 80px;
   background-color: rgb(82, 87, 94);
   width: 100%;
+  > div {
+    flex-grow: 1;
+    flex-basis: 0;
+  }
 }
 
 .hover:hover {
