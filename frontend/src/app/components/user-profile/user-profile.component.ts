@@ -50,6 +50,23 @@ export class UserProfileComponent implements OnInit {
 
   private user!: User;
 
+
+  sidebarVisible: boolean = false;
+
+  currentBasePrice: any;
+  currentConfigBrandName: any;
+  currentConfigModel: any;
+  currentColorPrice: any;
+  currentColorName: any;
+  currentEnginePrice: any;
+  currentEngineName: any;
+  currentRimPrice: any;
+  currentRimName: any;
+  currentExtraPrice: any;
+  currentExtraName: any;
+  currentTotalPrice: any;
+
+
   ngOnInit(): void {
     this.getUserData();
     this.getUserVehicles();
@@ -118,5 +135,47 @@ export class UserProfileComponent implements OnInit {
         }
       });
     }
+  }
+
+  showDialog(userConfig: UserConfiguration): void{
+    this.sidebarVisible = true;
+
+    this.currentConfigBrandName = userConfig.selectedVehicle.brand;
+    this.currentConfigModel = userConfig.selectedVehicle.model;
+    this.currentBasePrice = userConfig.selectedVehicle.basePrice;
+
+    this.currentColorPrice = userConfig.selectedColor.price;
+    this.currentColorName = userConfig.selectedColor.name;
+    
+    this.currentEnginePrice = userConfig.selectedEngine.price;
+    this.currentEngineName = userConfig.selectedEngine.name;
+    
+    this.currentRimPrice = userConfig.selectedRim.price;
+    this.currentRimName = userConfig.selectedRim.name;
+    
+    this.currentExtraPrice = userConfig.selectedExtras[4]; // NO LO OBTIENE
+    this.currentExtraName = userConfig.selectedExtras[1];
+
+    this.currentTotalPrice = this.currentBasePrice as number 
+      + this.currentColorPrice as number 
+      + this.currentEnginePrice as number 
+      + this.currentRimPrice as number;
+
+      //FALTA AÑADIR EL PRECIO DE LAS extras PERO NO APARECE
+    return;
+  }
+
+  paymentConfirmed():void{
+    const newVehicle = {
+      model: this.currentConfigBrandName + " " + this.currentConfigModel,
+      status: "Comprado",
+      image: "asd"
+    }
+    this.userVehicles.push(newVehicle);
+    this.sidebarVisible = false;
+  }
+
+  paymentCancelled():void{
+    this.sidebarVisible = false;
   }
 }

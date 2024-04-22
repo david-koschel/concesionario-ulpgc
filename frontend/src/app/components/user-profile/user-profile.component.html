@@ -89,7 +89,7 @@
               </ul>
             </td>
             <td style="width: 1rem" class="text-center align-middle">
-              <button class="btn btn-outline-dark">
+              <button class="btn btn-outline-dark" (click)="showDialog(configuration)">
                 Comprar
               </button>
             </td>
@@ -123,6 +123,16 @@
     (click)="cancel()"
   ></button>
 </ng-template>
-<p-sidebar>
-
+<p-sidebar  [(visible)]="sidebarVisible" position="right" [fullScreen]="true">
+  <div>Precio base del {{currentConfigBrandName}} {{currentConfigModel}}: {{currentBasePrice}} €</div>
+  <div>Precio del color {{currentColorName}}: {{currentColorPrice}} €</div>
+  <div>Precio del motor {{currentEngineName}}: {{currentEnginePrice}} €</div>
+  <div>Precio de las llantas {{currentRimName}}: {{currentRimPrice}} €</div>
+  <div>Precio de accesorios extra {{currentExtraName}}: {{currentExtraPrice}} €</div>
+  <div>Total a pagar {{currentTotalPrice}} €</div>
+  <button class="mt-4" (click)="paymentConfirmed()">
+    Confirmar pago
+  </button>
+  <button class="mt-4" (click)="paymentCancelled()">
+    Cancelar</button>
 </p-sidebar>
