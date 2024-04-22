@@ -35,7 +35,7 @@
         pButton
         class="boton"
         label="Iniciar Sesión"
-        (click)="ocultarMostrar('#slogins', '#sregistros', '#registros', '#logins')"
+        (click)="showLogin(true)"
       ></button>
     </div>
   </div>
@@ -87,7 +87,7 @@
         pButton
         class="boton"
         label="Registrarse"
-        (click)="ocultarMostrar('#sregistros', '#slogins', '#logins', '#registros')"
+        (click)="showLogin(false)"
       ></button>
     </div>
   </div>

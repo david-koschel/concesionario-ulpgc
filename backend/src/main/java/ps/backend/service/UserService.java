@@ -7,11 +7,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ps.backend.entity.Role;
 import ps.backend.entity.User;
 import ps.backend.exception.BasicException;
 import ps.backend.repository.UserRepository;
-import ps.backend.service.EmailService;
 
 import java.util.Collections;
 import java.util.List;
@@ -49,7 +47,7 @@ public class UserService implements UserDetailsService {
         }
         return userRepository.save(user);
     }
-    
+
     public User register(User user) {
         if (this.userRepository.findByUsername(user.getUsername()).isPresent() && this.userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new BasicException("El nombre de usuario y el correo electrónico ya han sido registrados");
@@ -93,7 +91,6 @@ public class UserService implements UserDetailsService {
         }
         throw new RuntimeException("The user " + username + " wasn't found in the database");
     }
-    
 
     private org.springframework.security.core.userdetails.User createSpringSecurityUser(User user) {
         return new org.springframework.security.core.userdetails.User(

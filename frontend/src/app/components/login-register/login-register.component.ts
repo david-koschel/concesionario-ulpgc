@@ -1,16 +1,16 @@
-import {Component, inject} from '@angular/core';
-import { CardModule } from 'primeng/card';
-import { InputTextModule } from 'primeng/inputtext';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import { ButtonModule } from 'primeng/button';
-import { CommonModule } from '@angular/common';
-import {User} from "../../models/user.model";
+import {Component, inject, OnInit} from '@angular/core';
+import {CardModule} from 'primeng/card';
+import {InputTextModule} from 'primeng/inputtext';
+import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
+import {ButtonModule} from 'primeng/button';
+import {CommonModule} from '@angular/common';
 import {CheckboxModule} from "primeng/checkbox";
 import {ToastModule} from "primeng/toast";
 import {LoginService} from "../../security/login.service";
 import {MessageService} from "primeng/api"; // Importa CommonModule
-import { Router } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {UserService} from "../../services/user.service";
+import {map} from "rxjs";
 
 @Component({
   selector: 'app-login-register-arreglado',
@@ -22,17 +22,20 @@ import {UserService} from "../../services/user.service";
 })
 
 
-export class LoginRegisterArregladoComponent {
+export class LoginRegisterArregladoComponent implements OnInit {
 
   private userService = inject(UserService);
   private formBuilder = inject(FormBuilder);
   private loginService = inject(LoginService);
+  private route = inject(ActivatedRoute);
   private router = inject(Router);
   private messageService = inject(MessageService);
+
   protected loginForm = this.formBuilder.group({
     loginName: ['', [Validators.required]],
     loginPassword: ['', Validators.required]
-  })
+  });
+
   protected registerForm = this.formBuilder.group({
     name: ["", Validators.required],
     email: ["", [Validators.required, Validators.email]],
@@ -40,11 +43,19 @@ export class LoginRegisterArregladoComponent {
     username: ["", Validators.required],
     password: ["", Validators.required],
     isAdmin: [false]
-  })
+  });
 
+  ngOnInit() {
+    this.subscribeToParams();
+  }
+
+  private subscribeToParams() {
+    this.route.queryParams.pipe(map(query => !!query["register"])).subscribe(
+      register => this.showLogin(!register));
+  }
 
   submitForm() {
-    if (this.registerForm.valid) {
+    /*if (this.registerForm.valid) {
       const isAdmin = this.registerForm.get("isAdmin")?.value;
       const user: User = <User>{...this.registerForm.value, role: isAdmin ? "ADMIN" : "CUSTOMER"};
       this.userService.registerUser(user).subscribe({
@@ -67,10 +78,19 @@ export class LoginRegisterArregladoComponent {
         summary: "Rellene correctamente todos los campos",
         severity: "error"
       });
+    }*/
+  }
+
+  showLogin(login: boolean) {
+    if (login) {
+      this.changeForm('#slogins', '#sregistros', '#registros', '#logins');
+    } else {
+      this.changeForm('#sregistros', '#slogins', '#logins', '#registros'
+      );
     }
   }
 
-  ocultarMostrar(selector: any, selector2: any, selector3: any, selector4: any) {
+  changeForm(selector: any, selector2: any, selector3: any, selector4: any) {
     var elemento = document.querySelector(selector);
     var elemento2 = document.querySelector(selector2);
     var elemento3 = document.querySelector(selector3);
@@ -91,25 +111,26 @@ export class LoginRegisterArregladoComponent {
 
 
   submitLoginForm() {
-    this.loginService.login(
-      String(this.loginForm.controls['loginName'].value),
-      String(this.loginForm.controls['loginPassword'].value)
-    ).then(() => {
-      window.location.href = '/home';
-    })
-      .catch(error => {
-        if(!this.loginService.userIsLoggedIn()){
+    console.log(this.loginForm.valid);
+    if (this.loginForm.valid) {
+      this.loginService.login(
+        this.loginForm.controls['loginName'].value!,
+        this.loginForm.controls['loginPassword'].value!
+      ).subscribe({
+        next: () => this.router.navigate(["user"]),
+        error: () => {
           this.messageService.add({
-            summary: "Usuario o contraseña incorrectos",
+            summary: "Error",
+            detail: "Usuario o contraseña incorrectos",
             severity: "error"
           });
         }
-        console.error("La promesa fue rechazada:", error);
       });
-
+    } else {
+      this.messageService.add({
+        summary: "Rellene correctamente todos los campos",
+        severity: "error"
+      });
+    }
   }
 }
-
-
-
-

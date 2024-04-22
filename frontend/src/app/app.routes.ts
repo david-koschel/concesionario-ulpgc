@@ -3,7 +3,7 @@ import {ContactComponent} from "./components/contact/contact.component";
 import {HomeComponent} from "./components/home/home.component";
 import {CatalogueComponent} from './components/catalogue/catalogue.component';
 import {UserProfileComponent} from "./components/user-profile/user-profile.component";
-import {userIsAdminGuard, userIsLoggedInGuard} from "./security/guards";
+import {userIsAdminGuard, userIsLoggedInGuard, userIsNotLoggedInGuard} from "./security/guards";
 import {AdminPanelComponent} from "./components/admin-panel/admin-panel.component";
 import {ContactMessagesComponent} from "./components/contact-messages/contact-messages.component";
 import {UserListComponent} from "./components/user-list/user-list.component";
@@ -28,7 +28,8 @@ export const routes: Routes = [
   },
   {
     path: "login-register",
-    component: LoginRegisterArregladoComponent
+    component: LoginRegisterArregladoComponent,
+    canActivate: [userIsNotLoggedInGuard]
   },
   {
     path: "forgot-password",
