@@ -1,0 +1,96 @@
+<div class="contenedorPadre">
+  <div class="login" id="logins">
+    <div class="loginStyle">
+      <h1>
+        Iniciar Sesión
+      </h1>
+      <form class="w-50" [formGroup]="loginForm">
+        <div>
+          <label class="card-title">Nombre de Usuario</label>
+          <input pInputText max="255" formControlName="loginName" class="mb-3 w-100">
+        </div>
+        <div>
+          <label class="card-title">Contraseña</label>
+          <input pInputText max="255" formControlName="loginPassword" type="password" class="mb-3 w-100">
+        </div>
+      </form>
+      <div class="boton">
+        <button
+          pButton
+          class="boton"
+          label="Iniciar Sesión"
+          (click)="submitLoginForm()"
+        ></button>
+      </div>
+    </div>
+    <p-toast></p-toast>
+  </div>
+  <div class="slogin" id='slogins'>
+    <h1>
+      Si ya tiene una cuenta de usuario
+    </h1>
+    <div class="boton">
+      <button
+        pButton
+        class="boton"
+        label="Iniciar Sesión"
+        (click)="ocultarMostrar('#slogins', '#sregistros', '#registros', '#logins')"
+      ></button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <div class="registro" id="registros">
+    <div class="d-flex flex-column align-items-center" class="registroStyle">
+      <h1>
+        Registro
+      </h1>
+      <form class="w-50" [formGroup]="registerForm">
+        <div>
+          <label class="card-title required">Nombre</label>
+          <input pInputText max="255" formControlName="name" class="mb-3 w-100">
+        </div>
+        <div>
+          <label class="card-title required">Correo electrónico</label>
+          <input pInputText max="255" formControlName="email" class="mb-3 w-100">
+        </div>
+        <div>
+          <label class="card-title required">Dirección</label>
+          <input pInputText max="255" formControlName="address" class="mb-3 w-100">
+        </div>
+        <div>
+          <label class="card-title required">Nombre de usuario</label>
+          <input pInputText max="255" formControlName="username" class="mb-3 w-100">
+        </div>
+        <div>
+          <label class="card-title required">Contraseña</label>
+          <input pInputText max="255" formControlName="password" type="password" class="mb-3 w-100">
+        </div>
+      </form>
+      <div class="boton">
+        <button
+          pButton
+          class="boton"
+          label="Registrarse"
+          (click)="submitForm()"
+        ></button>
+      </div>
+    </div>
+    <p-toast></p-toast>
+  </div>
+  <div class="sregistro" id="sregistros">
+    <h1>
+      Si aun no se ha registrado
+    </h1>
+    <div class="boton">
+      <button
+        pButton
+        class="boton"
+        label="Registrarse"
+        (click)="ocultarMostrar('#sregistros', '#slogins', '#logins', '#registros')"
+      ></button>
+    </div>
+  </div>
+</div>
+
+
+
