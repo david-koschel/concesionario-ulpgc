@@ -8,7 +8,7 @@ import {CatalogueComponent} from './components/catalogue/catalogue.component';
 import {UserProfileComponent} from "./components/user-profile/user-profile.component";
 import {userIsLoggedInGuard} from "./security/guards";
 import { VehicleconfigurationComponent } from './components/vehicleconfiguration/vehicleconfiguration.component';
-import { AboutusComponent } from './components/aboutus/aboutus.component';
+import { AboutusComponent } from './components/about-us/aboutus.component';
 import { OurServicesComponent } from './components/our-services/our-services.component';
 
 export const routes: Routes = [
@@ -42,15 +42,15 @@ export const routes: Routes = [
     canActivate: [userIsLoggedInGuard]
   },
   {
-    path: "vehicleconfiguration",
+    path: "vehicle-configuration",
     component: VehicleconfigurationComponent
   },
   {
-    path: "aboutus",
+    path: "about-us",
     component: AboutusComponent
   },
   {
-    path: "ourservices",
+    path: "our-services",
     component: OurServicesComponent
   },
   {
