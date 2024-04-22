@@ -49,7 +49,6 @@ export class LoginRegisterArregladoComponent {
       const user: User = <User>{...this.registerForm.value, role: isAdmin ? "ADMIN" : "CUSTOMER"};
       this.userService.registerUser(user).subscribe({
         next: res => {
-          this.userService.sendEmail(user).subscribe();
           this.loginService.login(
             String(this.registerForm.controls['username'].value),
             String(this.registerForm.controls['password'].value)

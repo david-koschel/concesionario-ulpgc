@@ -34,8 +34,8 @@ export class UserService {
     return this.http.post<User>("http://localhost:8080/api/user/new", user);
   }
 
-  public sendEmail(user: User): Observable<User> {
-    return this.http.post<User>("http://localhost:8080/api/user/sendEmail", user);
+  public sendEmail(email: String): void {
+   this.http.post<String>("http://localhost:8080/api/user/sendEmail", email).subscribe();
   }
 
   public registerUser(user: User): Observable<User> {

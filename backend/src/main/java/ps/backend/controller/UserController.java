@@ -51,6 +51,11 @@ public class UserController {
     public User register(@RequestBody User user) {
         return userService.register(user);
     }
+    @PostMapping("/sendEmail")
+    public void sendEmail(@RequestBody String sendEmail) {
+        emailService.sendEmail(sendEmail, "Recuperación de Contraseña", "Enlace para recuperar contraseña");
+    }
+
     @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/update")
     public User update(@RequestBody User user) {
@@ -60,11 +65,6 @@ public class UserController {
     @PutMapping("/current")
     public User updatedLoggedUser(@RequestBody User user) {
         return userService.updatedLoggedUser(user);
-    }
-
-    @PostMapping("/sendEmail")
-    public void sendEmail(@RequestBody User user) {
-        emailService.sendEmail(user.getEmail(), "Mensaje de Bienvenida", "Bienvenido");
     }
 
     @ExceptionHandler(BasicException.class)

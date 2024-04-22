@@ -11,7 +11,7 @@ import ps.backend.entity.Role;
 import ps.backend.entity.User;
 import ps.backend.exception.BasicException;
 import ps.backend.repository.UserRepository;
-import ps.backend.security.LoginDto;
+import ps.backend.service.EmailService;
 
 import java.util.Collections;
 import java.util.List;
@@ -21,9 +21,11 @@ import java.util.Optional;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final EmailService emailService;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, EmailService emailService) {
         this.userRepository = userRepository;
+        this.emailService = emailService;
     }
 
     public List<User> findAll() {
@@ -47,7 +49,7 @@ public class UserService implements UserDetailsService {
         }
         return userRepository.save(user);
     }
-
+    
     public User register(User user) {
         if (this.userRepository.findByUsername(user.getUsername()).isPresent() && this.userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new BasicException("El nombre de usuario y el correo electrónico ya han sido registrados");
@@ -56,7 +58,7 @@ public class UserService implements UserDetailsService {
         } else if (this.userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new BasicException("El correo electrónico ya ha sido registrado");
         }
-
+        emailService.sendEmail(user.getEmail(), "Mensaje de Bienvenida", "Bienvenido");
         return userRepository.save(user);
     }
 
