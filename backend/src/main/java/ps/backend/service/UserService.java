@@ -49,11 +49,12 @@ public class UserService implements UserDetailsService {
     }
 
     public User register(User user) {
-        if (this.userRepository.findByUsername(user.getUsername()).isPresent()) {
-            throw new BasicException("El nombre de usuario ya está registrado");
-        }
-        if (this.userRepository.findByEmail(user.getEmail()).isPresent()) {
-            throw new BasicException("El correo electrónico ya está registrado");
+        if (this.userRepository.findByUsername(user.getUsername()).isPresent() && this.userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new BasicException("El nombre de usuario y el correo electrónico ya han sido registrados");
+        } else if (this.userRepository.findByUsername(user.getUsername()).isPresent()) {
+            throw new BasicException("El nombre de usuario ya ha sido registrado");
+        } else if (this.userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new BasicException("El correo electrónico ya ha sido registrado");
         }
 
         return userRepository.save(user);

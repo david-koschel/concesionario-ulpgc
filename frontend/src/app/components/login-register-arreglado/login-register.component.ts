@@ -10,6 +10,7 @@ import {CheckboxModule} from "primeng/checkbox";
 import {ToastModule} from "primeng/toast";
 import {LoginService} from "../../security/login.service";
 import {MessageService} from "primeng/api"; // Importa CommonModule
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-register-arreglado',
@@ -26,6 +27,7 @@ export class LoginRegisterArregladoComponent {
   private userService = inject(UserService);
   private formBuilder = inject(FormBuilder);
   private loginService = inject(LoginService);
+  private router = inject(Router);
   private messageService = inject(MessageService);
   protected loginForm = this.formBuilder.group({
     loginName: ['', [Validators.required]],
@@ -45,7 +47,22 @@ export class LoginRegisterArregladoComponent {
     if (this.registerForm.valid) {
       const isAdmin = this.registerForm.get("isAdmin")?.value;
       const user: User = <User>{...this.registerForm.value, role: isAdmin ? "ADMIN" : "CUSTOMER"};
-      this.userService.registerUser(user).subscribe();
+      this.userService.registerUser(user).subscribe({
+        next: res => {
+          this.userService.sendEmail(user).subscribe();
+          this.loginService.login(
+            String(this.registerForm.controls['username'].value),
+            String(this.registerForm.controls['password'].value)
+          ).then(() => {
+            window.location.href = '/home';
+          });
+        },
+        error: err => this.messageService.add({
+          summary: "Error al guardar el usuario",
+          detail: err.error.message || "Vuelva a intentarlo más tarde",
+          severity: "error"
+        }),
+      });
     } else {
       this.messageService.add({
         summary: "Rellene correctamente todos los campos",
@@ -82,7 +99,19 @@ export class LoginRegisterArregladoComponent {
     this.loginService.login(
       String(this.loginForm.controls['loginName'].value),
       String(this.loginForm.controls['loginPassword'].value)
-    );
+    ).then(() => {
+      window.location.href = '/home';
+    })
+      .catch(error => {
+        if(!this.loginService.userIsLoggedIn()){
+          this.messageService.add({
+            summary: "Usuario o contraseña incorrectos",
+            severity: "error"
+          });
+        }
+        console.error("La promesa fue rechazada:", error);
+      });
+
   }
 }
 

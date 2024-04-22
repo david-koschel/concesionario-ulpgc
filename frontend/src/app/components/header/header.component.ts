@@ -58,7 +58,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   fakeLogin() {
-    this.loginService.login("user-test", "test123");
+    this.loginService.login("admin", "admin");
   }
 
   logout() {
@@ -100,7 +100,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       {
         id: 6,
         name: 'Iniciar Sesión',
-        route: '/login',
+        route: '/login-register',
         icon: ''
       },
     ]

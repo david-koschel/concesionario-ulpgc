@@ -18,9 +18,11 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+    private final EmailService emailService;
 
     public UserController(UserService userService, EmailService emailService) {
         this.userService = userService;
+        this.emailService = emailService;
     }
 
     @GetMapping("/current")
@@ -60,6 +62,10 @@ public class UserController {
         return userService.updatedLoggedUser(user);
     }
 
+    @PostMapping("/sendEmail")
+    public void sendEmail(@RequestBody User user) {
+        emailService.sendEmail(user.getEmail(), "Mensaje de Bienvenida", "Bienvenido");
+    }
 
     @ExceptionHandler(BasicException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
