@@ -1,0 +1,56 @@
+$back-color: rgb(107, 110, 107);
+$back-color-hover: rgb(73, 70, 70);
+
+.home-image{
+  width: 100vw;
+  height: 50vh;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  margin-top: calc(-3vh);
+  background-image: url('/assets/home-car.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+.image-text {
+  position: absolute;
+  top: 25%;
+  left: 150px;
+  transform: translateY(-50%);
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.home-card {
+  border-radius: 10px;
+  background-color: $back-color;
+  color: white !important;
+  cursor: pointer;
+  text-align: center;
+  justify-content: center;
+  white-space: pre-line;
+  text-decoration: none;
+  width: 200px;
+  height: 250px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 18px;
+  padding: 14px;
+
+  &:hover {
+    background-color: $back-color-hover
+  }
+
+  label {
+    cursor: inherit;
+    font-size: 20px;
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+}

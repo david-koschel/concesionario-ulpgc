@@ -72,13 +72,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
       {
         id: 3,
         name: 'Nuestros Servicios',
-        route: '',
+        route: '/our-services',
         icon: ''
       },
       {
         id: 4,
         name: 'Sobre Nosotros',
-        route: '',
+        route: '/about-us',
         icon: ''
       },
       {
