@@ -12,5 +12,4 @@ public class LoginController {
     public void fakeLogin(@RequestBody LoginDto loginDto) {
         throw new IllegalStateException("This method shouldn't be called. It's implemented by Spring Security filters.");
     }
-
 }

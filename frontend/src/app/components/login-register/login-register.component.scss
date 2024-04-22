@@ -1,13 +1,71 @@
-.login-register-container{
-  border: 2px solid #212529;
+.contenedorPadre{
+  padding: 2%;
+  border: 2px solid black;
   border-radius: 10px;
-  width: 75%;
-  height: 60%;
+  display: flex;
+  flex-direction: row;
+  height: 87vh;
+}
+.registro{
+  height: 100%;
+  width: 50%;
+  display: none;
+}
+.login{
+  padding: 1%;
+  height: 100%;
+  width: 50%;
+  align-items:center;
+  justify-content:center;
+  display: block;
+}
+.loginStyle{
+  height: 100%;
+  width: 100%;
+  align-items:center;
+  justify-content:center;
+  flex-direction: column;
+  display: flex;
 }
 
-.semi-div{
-  width: 47%;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+.registroStyle{
+  height: 100%;
+  width: 100%;
+  align-items:center;
+  justify-content:center;
+  flex-direction: column;
+  display: flex;
 }
+.divider {
+  width: 1px;
+  height: 100%;
+  background-color: black;
+}
+
+.slogin{
+  display:none;
+  flex-direction: column;
+  padding: 1%;
+  justify-content:center;
+  align-items:center;
+  width: 50%;
+  height: 100%;
+}
+
+.sregistro{
+  display: flex;
+  flex-direction: column;
+  padding: 1%;
+  justify-content:center;
+  align-items:center;
+  width: 50%;
+  height: 100%;
+}
+
+.boton {
+  margin-top: 2%;
+  border-radius: 10px;
+}
+
+
+
