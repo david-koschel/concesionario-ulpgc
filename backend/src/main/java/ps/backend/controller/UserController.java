@@ -2,7 +2,15 @@ package ps.backend.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 import ps.backend.entity.User;
 import ps.backend.exception.BasicException;
 import ps.backend.service.EmailService;
@@ -17,9 +25,11 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+    private final EmailService emailService;
 
     public UserController(UserService userService, EmailService emailService) {
         this.userService = userService;
+        this.emailService = emailService;
     }
 
     @GetMapping("/current")
@@ -45,6 +55,16 @@ public class UserController {
         return userService.save(user);
     }
 
+    @PostMapping("/register")
+    public User register(@RequestBody User user) {
+        return userService.register(user);
+    }
+
+    @PostMapping("/sendEmail")
+    public void sendEmail(@RequestBody String sendEmail) {
+        emailService.sendEmail(sendEmail, "Recuperación de Contraseña", "Enlace para recuperar contraseña");
+    }
+
     @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/update")
     public User update(@RequestBody User user) {
@@ -55,7 +75,6 @@ public class UserController {
     public User updatedLoggedUser(@RequestBody User user) {
         return userService.updatedLoggedUser(user);
     }
-
 
     @ExceptionHandler(BasicException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)

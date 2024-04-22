@@ -7,7 +7,7 @@ import {CheckboxModule} from "primeng/checkbox";
 import {ButtonModule} from "primeng/button";
 import {ProgressSpinnerModule} from "primeng/progressspinner";
 import {NgIf} from "@angular/common";
-import {ContactMessageService} from "../../service/contact-message.service";
+import {ContactMessageService} from "../../services/contact-message.service";
 import {MessageService} from "primeng/api";
 import {ToastModule} from "primeng/toast";
 

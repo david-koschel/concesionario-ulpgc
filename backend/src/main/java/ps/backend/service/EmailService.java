@@ -2,6 +2,7 @@ package ps.backend.service;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.util.ByteArrayDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -17,9 +18,11 @@ public class EmailService {
 
     private static final String EMAIL_NAME = "Concesionario ULPGC";
     private final JavaMailSender emailSender;
+    private final PdfService pdfService;
 
-    public EmailService(JavaMailSender emailSender) {
+    public EmailService(JavaMailSender emailSender, PdfService pdfService) {
         this.emailSender = emailSender;
+        this.pdfService = pdfService;
     }
 
     public void sendEmail(String to, String subject, String body) {
@@ -28,6 +31,17 @@ public class EmailService {
             emailSender.send(helper.getMimeMessage());
         } catch (MessagingException | UnsupportedEncodingException e) {
             throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    public void sendInvoiceMail(String to, String subject, String body) {
+        try {
+            MimeMessageHelper helper = this.createEmailObject(to, subject, body);
+            ByteArrayDataSource attachment = this.pdfService.generateInvoicePDF();
+            helper.addAttachment(attachment.getName(), attachment);
+            emailSender.send(helper.getMimeMessage());
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
         }
     }
 

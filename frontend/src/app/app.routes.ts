@@ -1,17 +1,17 @@
 import {Routes} from '@angular/router';
-import {LoginComponent} from './components/login/login.component';
-import {RegisterComponent} from './components/register/register.component';
-import {ForgotpasswordComponent} from './components/forgotpassword/forgotpassword.component';
 import {ContactComponent} from "./components/contact/contact.component";
 import {HomeComponent} from "./components/home/home.component";
 import {CatalogueComponent} from './components/catalogue/catalogue.component';
 import {UserProfileComponent} from "./components/user-profile/user-profile.component";
-import {userIsAdminGuard, userIsLoggedInGuard} from "./security/guards";
-import { VehicleconfigurationComponent } from './components/vehicleconfiguration/vehicleconfiguration.component';
+import {userIsAdminGuard, userIsLoggedInGuard, userIsNotLoggedInGuard} from "./security/guards";
 import {AdminPanelComponent} from "./components/admin-panel/admin-panel.component";
 import {ContactMessagesComponent} from "./components/contact-messages/contact-messages.component";
 import {UserListComponent} from "./components/user-list/user-list.component";
 import {UserFormComponent} from "./components/user-form/user-form.component";
+import {ForgotPasswordComponent} from "./components/forgot-password/forgot-password.component";
+import {LoginRegisterArregladoComponent} from "./components/login-register/login-register.component";
+import {VehicleConfigurationComponent} from "./components/vehicle-configuration/vehicle-configuration.component";
+import {CatalogueVehiclesComponent} from "./components/catalogue-vehicles/catalogue-vehicles.component";
 import {DriveRequestFormComponent} from "./components/drive-request/drive-request-form/drive-request-form.component";
 import {DriveRequestListComponent} from "./components/drive-request/drive-request-list/drive-request-list.component";
 import {TestDriveCarListComponent} from "./components/test-drive-car-list/test-drive-car-list.component";
@@ -30,6 +30,11 @@ export const routes: Routes = [
     component: CatalogueComponent
   },
   {
+    path: "login-register",
+    component: LoginRegisterArregladoComponent,
+    canActivate: [userIsNotLoggedInGuard]
+   },
+   {
     path: "catalogue/drive-request",
     component: DriveRequestFormComponent
   },
@@ -38,12 +43,8 @@ export const routes: Routes = [
     component: LoginComponent
   },
   {
-    path: "register",
-    component: RegisterComponent
-  },
-  {
-    path: "forgotpassword",
-    component: ForgotpasswordComponent
+    path: "forgot-password",
+    component: ForgotPasswordComponent
   },
   {
     path: "user",
@@ -71,8 +72,8 @@ export const routes: Routes = [
     canActivate: [userIsAdminGuard]
   },
   {
-    path: "vehicleconfiguration",
-    component: VehicleconfigurationComponent
+    path: "vehicle-configurator/:id",
+    component: VehicleConfigurationComponent
   },
   {
     path: "user-list",
@@ -83,6 +84,10 @@ export const routes: Routes = [
     path: "user-form/:userId",
     component: UserFormComponent,
     canActivate: [userIsAdminGuard]
+  },
+  {
+    path: "catalogue-vehicles",
+    component: CatalogueVehiclesComponent
   },
   {
     path: '**',

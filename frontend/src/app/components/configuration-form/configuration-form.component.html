@@ -1,0 +1,27 @@
+<div class="container">
+  <h3>{{ editingObject ? 'Editar' : 'Añadir' }} {{titleLabel}}</h3>
+  <form *ngIf="form" [formGroup]="form">
+    <div class="mb-3">
+      <label for="name" class="required">Nombre</label>
+      <input type="text" id="name" formControlName="name" class="form-control"/>
+    </div>
+    <div class="mb-3">
+      <label for="description" class="required">Descripción</label>
+      <textarea type="text" id="description" formControlName="description" class="form-control" rows="4"></textarea>
+    </div>
+    <div class="mb-3" *ngIf="showImage">
+      <label for="image" class="required">Imagen</label>
+      <input #inputFile type="file" accept="image/*" id="image" class="form-control" (change)="handleUpload($event)"/>
+    </div>
+    <div class="mb-3">
+      <label for="price" class="required">Precio</label>
+      <input type="number" min="0" step=".01" id="price" formControlName="price" class="form-control"/>
+    </div>
+    <small *ngIf="error" class="text-danger">
+      Rellene todos los campos
+    </small>
+  </form>
+  <div class="d-flex justify-content-start gap-3">
+    <button class="btn btn-primary" (click)="submitForm()">{{ editingObject ? 'Editar' : 'Añadir' }}</button>
+  </div>
+</div>
