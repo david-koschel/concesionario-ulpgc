@@ -9,10 +9,10 @@ import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 import {ToastModule} from "primeng/toast";
 import {MessageService} from "primeng/api";
 import {CalendarModule} from "primeng/calendar";
-import {DriveRequestService} from "../../../service/drive-request.service";
+import {DriveRequestService} from "../../../services/drive-request.service";
 import {DropdownModule} from "primeng/dropdown";
-import {TestDriveCar} from "../../../models/test-drive-car.model";
 import {DriveRequest} from "../../../models/drive-request.model";
+import {TestDriveCarService} from "../../../services/test-drive-car.service";
 
 @Component({
   selector: 'app-drive-request-form',
@@ -45,7 +45,8 @@ export class DriveRequestFormComponent implements OnInit{
   constructor(
     private formBuilder: FormBuilder,
     private messageService: MessageService,
-    private driveRequestService: DriveRequestService
+    private driveRequestService: DriveRequestService,
+    private testDriveCarService: TestDriveCarService
   ) {}
 
   ngOnInit(): void {
@@ -68,7 +69,7 @@ export class DriveRequestFormComponent implements OnInit{
   }
 
   private getCars() {
-    this.driveRequestService.getTestDriveCars().subscribe(
+    this.testDriveCarService.getTestDriveCars().subscribe(
       cars => this.cars = cars.map(
           car => car.model
       )

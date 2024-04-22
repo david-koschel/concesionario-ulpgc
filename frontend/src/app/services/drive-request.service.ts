@@ -18,12 +18,4 @@ export class DriveRequestService {
   public addDriveRequest(driveRequest: DriveRequest): void {
     this.http.put("http://localhost:8080/api/test-drive-request/form", driveRequest);
   }
-
-  public getTestDriveCars(): Observable<TestDriveCar[]>{
-    return this.http.get<TestDriveCar[]>("http://localhost:8080/api/test-drive-car/all");
-  }
-
-  public saveTestDriveCar(testCar: TestDriveCar) {
-    return this.http.post("http://localhost:8080/api/test-drive-car/add", testCar);
-  }
 }

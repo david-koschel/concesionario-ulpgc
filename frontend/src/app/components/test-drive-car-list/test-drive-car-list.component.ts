@@ -2,12 +2,12 @@ import {Component, OnInit} from '@angular/core';
 import {DatePipe} from "@angular/common";
 import {SharedModule} from "primeng/api";
 import {TableModule} from "primeng/table";
-import {DriveRequestService} from "../../service/drive-request.service";
 import {TestDriveCar} from "../../models/test-drive-car.model";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {FloatLabelModule} from "primeng/floatlabel";
 import {InputTextModule} from "primeng/inputtext";
 import {ButtonModule} from "primeng/button";
+import {TestDriveCarService} from "../../services/test-drive-car.service";
 
 @Component({
   selector: 'app-test-drive-car-list',
@@ -33,7 +33,7 @@ export class TestDriveCarListComponent implements OnInit{
   loading: boolean = false;
 
   public constructor(
-    private driveRequestService: DriveRequestService,
+    private testDriveCarService: TestDriveCarService,
     private formBuilder: FormBuilder
   ) {
   }
@@ -43,7 +43,7 @@ export class TestDriveCarListComponent implements OnInit{
   }
 
   private loadCars() {
-    this.driveRequestService.getTestDriveCars().subscribe(
+    this.testDriveCarService.getTestDriveCars().subscribe(
       cars => this.cars = cars
     )
   }
@@ -76,7 +76,7 @@ export class TestDriveCarListComponent implements OnInit{
 
   addCar(testCar: TestDriveCar) {
     this.loading = true;
-    this.driveRequestService.saveTestDriveCar(testCar).subscribe({
+    this.testDriveCarService.saveTestDriveCar(testCar).subscribe({
         next: () => {
           this.loading = false;
           this.initializeTestCarForm();
