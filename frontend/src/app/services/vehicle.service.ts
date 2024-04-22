@@ -5,7 +5,7 @@ import {Observable} from "rxjs";
 import {ConfigurableVehicleEngine} from "../models/configurable-vehicle/configurable-vehicle-engine.model";
 import {ConfigurableVehicleRim} from "../models/configurable-vehicle/configurable-vehicle-rim.model";
 import {ConfigurableVehicleExtra} from "../models/configurable-vehicle/configurable-vehicle-extra.model";
-import {ConfiguredVehicle} from "../models/configurable-vehicle/configured-vehicle.model";
+import {UserConfiguration} from "../models/configurable-vehicle/configured-vehicle.model";
 
 @Injectable({
   providedIn: 'root'
@@ -41,11 +41,11 @@ export class VehicleService {
     return this.http.post("http://localhost:8080/api/vehicle/extra", extra);
   }
 
-  saveVehicle(vehicle: ConfiguredVehicle) {
+  saveVehicle(vehicle: UserConfiguration) {
     return this.http.post("http://localhost:8080/api/vehicle/configuration", vehicle);
   }
 
-  getUserVehicles(): Observable<ConfiguredVehicle[]> {
-    return this.http.get<ConfiguredVehicle[]>("http://localhost:8080/api/vehicle/configuration");
+  getUserVehicles(): Observable<UserConfiguration[]> {
+    return this.http.get<UserConfiguration[]>("http://localhost:8080/api/vehicle/configuration");
   }
 }

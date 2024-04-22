@@ -9,7 +9,7 @@ import {ConfigurableVehicleColor} from "../../models/configurable-vehicle/config
 import {ConfigurableVehicleRim} from "../../models/configurable-vehicle/configurable-vehicle-rim.model";
 import {ConfigurableVehicleExtra} from "../../models/configurable-vehicle/configurable-vehicle-extra.model";
 import {LoginService} from "../../security/login.service";
-import {ConfiguredVehicle} from "../../models/configurable-vehicle/configured-vehicle.model";
+import {UserConfiguration} from "../../models/configurable-vehicle/configured-vehicle.model";
 import {ButtonModule} from "primeng/button";
 import {DialogModule} from "primeng/dialog";
 import {DialogService} from "primeng/dynamicdialog";
@@ -84,7 +84,7 @@ export class VehicleConfigurationComponent implements OnInit {
   saveConfiguration() {
     if (this.formIsValid()) {
       if (this.loginService.userIsLoggedIn()) {
-        const configuredVehicle: ConfiguredVehicle = {
+        const configuredVehicle: UserConfiguration = {
           selectedVehicle: this.vehicle,
           selectedColor: this.selectedColor,
           selectedEngine: this.selectedEngine!,
