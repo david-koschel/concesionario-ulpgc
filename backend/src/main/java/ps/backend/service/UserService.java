@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 import ps.backend.entity.Role;
 import ps.backend.entity.User;
 import ps.backend.exception.BasicException;
@@ -21,10 +23,12 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final EmailService emailService;
+    private final TemplateEngine templateEngine;
 
-    public UserService(UserRepository userRepository, EmailService emailService) {
+    public UserService(UserRepository userRepository, EmailService emailService, TemplateEngine templateEngine) {
         this.userRepository = userRepository;
         this.emailService = emailService;
+        this.templateEngine = templateEngine;
     }
 
     public List<User> findAll() {
@@ -59,8 +63,14 @@ public class UserService implements UserDetailsService {
         }
         user.setRole(Role.CUSTOMER);
         User savedUser = this.save(user);
-        emailService.sendEmail(user.getEmail(), "Mensaje de Bienvenida", "Bienvenido");
+        emailService.sendEmail(user.getEmail(), "Bienvenido a Concesionario ULPGC", generateEmailBody(savedUser));
         return savedUser;
+    }
+
+    private String generateEmailBody(User user) {
+        Context context = new Context();
+        context.setVariable("username", user.getUsername());
+        return this.templateEngine.process("user-register.html", context);
     }
 
     public User update(User user) {
