@@ -92,21 +92,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
         name: 'Contacto',
         route: '/contacto',
         icon: ''
-      },
-      {
-        id: 6,
-        name: 'Iniciar Sesión',
-        route: '/login-register',
-        icon: ''
-      },
+      }
     ];
   }
 
   buildUserMenu() {
     this.menuItems = [];
-    this.buildAdministrationItems();
+    if (this.loginService.userIsAdmin()) this.buildAdministrationItems();
     this.menuItems.push(
-      {separator: true},
       {
         label: "Mi Perfil",
         icon: "pi pi-user",
@@ -125,7 +118,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
       {
         label: "Panel de Administración",
         command: () => this.router.navigate(["/admin-panel"])
-      }
+      },
+      {separator: true}
     );
   }
 }
