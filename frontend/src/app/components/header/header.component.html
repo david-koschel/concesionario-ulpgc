@@ -36,7 +36,10 @@
     </a>
     <div class="d-none d-md-block buttons-right">
       @if (!loggedIn) {
-        <button class="btn btn-outline-light" (click)="fakeLogin()">Iniciar Sesión</button>
+        <div class="d-flex gap-2">
+          <a class="btn btn-outline-light" routerLink="/login-register">Iniciar Sesión</a>
+          <a class="btn btn-outline-light" routerLink="/login-register" [queryParams]="{register: true}">Registrarse</a>
+        </div>
       } @else {
         <button
           type="button"

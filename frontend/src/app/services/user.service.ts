@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs";
-import { User } from "../models/user.model";
+import {Injectable} from '@angular/core';
+import {HttpClient} from "@angular/common/http";
+import {Observable} from "rxjs";
+import {User} from "../models/user.model";
 
 @Injectable({
   providedIn: 'root'
@@ -32,6 +32,14 @@ export class UserService {
 
   public addUser(user: User): Observable<User> {
     return this.http.post<User>("http://localhost:8080/api/user/new", user);
+  }
+
+  public sendEmail(email: String): void {
+   this.http.post<String>("http://localhost:8080/api/user/sendEmail", email).subscribe();
+  }
+
+  public registerUser(user: User): Observable<User> {
+    return this.http.post<User>("http://localhost:8080/api/user/register", user);
   }
 
 }
