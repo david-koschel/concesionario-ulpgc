@@ -8,7 +8,7 @@ import {CatalogueComponent} from './components/catalogue/catalogue.component';
 import {UserProfileComponent} from "./components/user-profile/user-profile.component";
 import {userIsLoggedInGuard} from "./security/guards";
 import { VehicleconfigurationComponent } from './components/vehicleconfiguration/vehicleconfiguration.component';
-import { AboutusComponent } from './components/about-us/aboutus.component';
+import { AboutUsComponent } from './components/about-us/about-us.component';
 import { OurServicesComponent } from './components/our-services/our-services.component';
 
 export const routes: Routes = [
@@ -47,7 +47,7 @@ export const routes: Routes = [
   },
   {
     path: "about-us",
-    component: AboutusComponent
+    component: AboutUsComponent
   },
   {
     path: "our-services",
