@@ -1,11 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {SidebarModule} from "primeng/sidebar";
 import {ButtonModule} from "primeng/button";
-import {RouterLink, Router} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {LoginService} from "../../security/login.service";
 import {Subscription} from "rxjs";
 import {MenuModule} from "primeng/menu";
-import {MenuItem, MenuItemCommandEvent} from "primeng/api";
+import {MenuItem} from "primeng/api";
 import {NgOptimizedImage} from "@angular/common";
 
 @Component({
@@ -29,34 +29,40 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private loggedInSubscription: Subscription;
 
   buttons: any[] | undefined;
-  menuItems: MenuItem[] = []
+  menuItems: MenuItem[] = [];
 
   constructor(
     protected loginService: LoginService,
     private router: Router
   ) {
-    this.loggedInSubscription = this.loginService.userIsLoggedIn$.subscribe(result => this.loggedIn = result);
+    this.loggedInSubscription = this.loginService.userIsLoggedIn$
+      .subscribe(result => this.onUserLoggedInChange(result));
   }
 
   ngOnInit(): void {
     this.buildSidebarButtons();
+    this.buildUserMenu();
   }
 
   ngOnDestroy(): void {
     this.loggedInSubscription.unsubscribe();
   }
 
-  fakeLogin() {
-    this.loginService.login("user-test", "test123");
-    this.buildUserMenu();
+  onUserLoggedInChange(loggedInStatus: boolean) {
+    this.loggedIn = loggedInStatus;
+    if (this.loggedIn) {
+      this.buildUserMenu();
+    } else {
+      this.menuItems = [];
+    }
   }
 
   logout() {
     this.loginService.logout();
   }
 
-  buildSidebarButtons(){
-   this.buttons = [
+  buildSidebarButtons() {
+    this.buttons = [
       {
         id: 1,
         name: ' Home',
@@ -86,21 +92,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
         name: 'Contacto',
         route: '/contacto',
         icon: ''
-      },
-      {
-        id: 6,
-        name: 'Iniciar Sesión',
-        route: '',
-        icon: ''
-      },
-    ]
+      }
+    ];
   }
 
-  buildUserMenu(){
+  buildUserMenu() {
     this.menuItems = [];
-    this.buildAdministrationItems();
+    if (this.loginService.userIsAdmin()) this.buildAdministrationItems();
     this.menuItems.push(
-      {separator:true},
+      {
+        label: "Mi Perfil",
+        icon: "pi pi-user",
+        routerLink: "user"
+      },
       {
         label: "Cerrar Sesión",
         icon: "pi pi-sign-out",
@@ -109,16 +113,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
     );
   }
 
-  private buildAdministrationItems(){
+  private buildAdministrationItems() {
     this.menuItems.push(
       {
         label: "Panel de Administración",
-        command: () => this.router.navigate(["/panel-administracion"])
-      }
-    )
-  }
-
-  private buildCustomerItems() {
-
+        command: () => this.router.navigate(["/admin-panel"])
+      },
+      {separator: true}
+    );
   }
 }

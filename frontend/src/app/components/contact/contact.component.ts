@@ -7,6 +7,9 @@ import {CheckboxModule} from "primeng/checkbox";
 import {ButtonModule} from "primeng/button";
 import {ProgressSpinnerModule} from "primeng/progressspinner";
 import {NgIf} from "@angular/common";
+import {ContactMessageService} from "../../services/contact-message.service";
+import {MessageService} from "primeng/api";
+import {ToastModule} from "primeng/toast";
 
 @Component({
   selector: 'app-contact',
@@ -19,11 +22,13 @@ import {NgIf} from "@angular/common";
     CheckboxModule,
     ButtonModule,
     ProgressSpinnerModule,
-    NgIf
+    NgIf,
+    ToastModule
   ],
   templateUrl: './contact.component.html',
   standalone: true,
-  styleUrl: './contact.component.scss'
+  styleUrl: './contact.component.scss',
+  providers: [MessageService]
 })
 export class ContactComponent implements OnInit{
 
@@ -33,6 +38,8 @@ export class ContactComponent implements OnInit{
 
   constructor(
     private formBuilder: FormBuilder,
+    private contactMessageService: ContactMessageService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
@@ -55,5 +62,25 @@ export class ContactComponent implements OnInit{
 
   submit() {
     this.submitted = true;
+    if(this.contactForm.valid){
+      this.loading = true;
+      const message = {...this.contactForm.value}
+      this.contactMessageService.sendContactMessage(message).subscribe({
+        next: () => this.onSuccessfulAnswer(),
+        error: () => this.onUnsuccessfulAnswer()
+      });
+    }
+  }
+
+  private onSuccessfulAnswer() {
+    this.loading = false;
+    this.messageService.add({summary: 'Éxito', detail: 'Se ha enviado correctamente su mensaje', severity: 'success'});
+    this.contactForm.reset();
+    this.submitted = false;
+  }
+
+  private onUnsuccessfulAnswer() {
+    this.loading = false;
+    this.messageService.add({summary: 'Error', detail: 'No se ha podido enviar su mensaje, vuelva a intentarlo', severity: 'error'});
   }
 }

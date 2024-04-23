@@ -3,30 +3,35 @@
   <div class="align-self-center card bg-body-secondary">
     <div class="py-4 px-4 px-md-5">
       <div class="d-flex justify-content-between gap-4 flex-column-reverse flex-sm-row">
-        <div class="d-flex flex-column h-100 justify-content-center">
-          @for (row of userCardRows; track $index) {
-            <h5 class="card-title">{{ row.name }}</h5>
-            <h6 class="card-subtitle mb-2 text-body-secondary">{{ row.value }}</h6>
+        <div class="d-flex flex-column w-100 justify-content-center">
+          @if (editing) {
+            <form [formGroup]="form">
+              @for (row of userCardRows; track $index) {
+                <h5 class="card-title" [ngClass]="{'required': row.formControl}">{{ row.name }}</h5>
+                @if (row.formControl) {
+                  <input pInputText max="255" [formControlName]="row.formControl" class="mb-2 w-100">
+                } @else {
+                  <h6 class="card-subtitle mb-2 text-body-secondary">{{ row.value }}</h6>
+                }
+              }
+            </form>
+          } @else {
+            @for (row of userCardRows; track $index) {
+              <h5 class="card-title">{{ row.name }}</h5>
+              <h6 class="card-subtitle mb-2 text-body-secondary">{{ row.value }}</h6>
+            }
           }
         </div>
         <div class="d-flex flex-column justify-content-center align-items-center gap-3">
           <!--suppress CheckImageSize -->
           <img ngSrc="assets/mockups/user_avatar.png" height="200" width="200" class="rounded-circle" alt="User Avatar">
-          <button
-            pButton
-            class="btn btn-primary d-none d-md-block"
-            style="width: fit-content;"
-            label="EDITAR PERFIL"
-          ></button>
+          <div class="d-none d-md-flex flex-column justify-content-between align-items-center gap-2">
+            <ng-container *ngTemplateOutlet="editButtons"></ng-container>
+          </div>
         </div>
       </div>
-      <div class="d-md-none col-12 text-center mt-3">
-        <button
-          pButton
-          class="btn btn-primary"
-          style="width: fit-content;"
-          label="EDITAR PERFIL"
-        ></button>
+      <div class="d-md-none d-flex justify-content-center gap-2 mt-3">
+        <ng-container *ngTemplateOutlet="editButtons"></ng-container>
       </div>
     </div>
   </div>
@@ -34,21 +39,87 @@
   <h3>Mis vehículos</h3>
   <div class="container text-center">
     <div class="row row-cols-2">
-      <div *ngFor="let i of [0 ,1,0, 0,1]" class="col">
-        <div class="card bg-body-secondary my-2">
-          <div class="card-body">
-            <img ngSrc="assets/mockups/{{ i ? 'car_blue.png' : 'car_red.png'}}" alt="..." width="136" height="64">
-            <div class="d-flex justify-content-evenly mt-4 mb-2">
-              <label><b>Modelo</b></label>
-              <span>Coche Chulo</span>
-            </div>
-            <div class="d-flex justify-content-evenly">
-              <label><b>Estado</b></label>
-              <span>Comprado</span>
+      @for (vehicle of userVehicles; track $index) {
+        <div class="col my-2">
+          <div class="card bg-body-secondary h-100">
+            <div class="card-body">
+              <img [ngSrc]="vehicle.image" alt="imagen" class="object-fit-cover rounded" width="136" height="64">
+              <div class="d-flex flex-wrap gap-1 justify-content-between px-1 px-md-3 px-xl-5 mt-4 mb-2">
+                <label><b>Modelo</b></label>
+                <span>{{ vehicle.model }}</span>
+              </div>
+              <div class="d-flex flex-wrap gap-1 justify-content-between px-1 px-md-3 px-xl-5">
+                <label><b>Estado</b></label>
+                <span>{{ vehicle.status }}</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      }
     </div>
   </div>
+  <hr>
+  <h3 id="configTable">Mis configuraciones guardadas</h3>
+  @if (userConfigurations.length > 0) {
+    <table class="table table-striped table-bordered">
+      <thead>
+      <tr>
+        <th></th>
+        <th>Modelo</th>
+        <th>Color</th>
+        <th>Motor</th>
+        <th>Llantas</th>
+        <th>Accesorios</th>
+        <th style="width: 1rem"></th>
+      </tr>
+      </thead>
+      <tbody>
+        @for (configuration of userConfigurations; track $index) {
+          <tr>
+            <th>{{ $index + 1 }}</th>
+            <td>{{ configuration.selectedVehicle.brand }} {{ configuration.selectedVehicle.model }}</td>
+            <td>{{ configuration.selectedColor.name }}</td>
+            <td>{{ configuration.selectedEngine.name }}</td>
+            <td>{{ configuration.selectedRim.name }}</td>
+            <td>
+              <ul class="mb-0">
+                @for (extra of configuration.selectedExtras; track $index) {
+                  <li>{{ extra.name }}</li>
+                }
+              </ul>
+            </td>
+            <td style="width: 1rem" class="text-center align-middle">
+              <button class="btn btn-outline-dark">
+                Comprar
+              </button>
+            </td>
+          </tr>
+        }
+    </table>
+  } @else {
+    <span>Aún no hay configuraciones guardadas, puedes empezar por ver
+      <a routerLink="/catalogue">nuestro catálogo</a>.
+    </span>
+  }
 </div>
+<p-toast></p-toast>
+<ng-template #editButtons>
+  <button
+    pButton
+    type="submit"
+    class="btn btn-primary"
+    style="width: fit-content;"
+    [label]="editing ? 'GUARDAR' : 'EDITAR PERFIL'"
+    (click)="editing ? save() : editProfile()"
+    [loading]="formLoading"
+  ></button>
+  <button
+    *ngIf="editing"
+    pButton
+    class="btn btn-danger"
+    style="width: fit-content;"
+    label="CANCELAR"
+    [disabled]="formLoading"
+    (click)="cancel()"
+  ></button>
+</ng-template>

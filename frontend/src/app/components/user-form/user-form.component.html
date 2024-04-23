@@ -1,0 +1,42 @@
+<div class="d-flex flex-column align-items-center">
+  <h1>
+    @if (userId) {
+      Editar Usuario
+    } @else {
+      Añadir Usuario
+    }
+    </h1>
+  <form class="w-50" *ngIf="form" [formGroup]="form">
+    <div>
+      <label class="card-title required">Nombre</label>
+      <input pInputText max="255" formControlName="name" class="mb-3 w-100">
+    </div>
+    <div>
+      <label class="card-title required">Correo electrónico</label>
+      <input pInputText max="255" formControlName="email" class="mb-3 w-100">
+    </div>
+    <div>
+      <label class="card-title required">Dirección</label>
+      <input pInputText max="255" formControlName="address" class="mb-3 w-100">
+    </div>
+    <div>
+      <label class="card-title required">Nombre de usuario</label>
+      <input pInputText max="255" formControlName="username" class="mb-3 w-100">
+    </div>
+    <div>
+      <label class="card-title required">Contraseña</label>
+      <input pInputText max="255" formControlName="password" type="password" class="mb-3 w-100">
+    </div>
+    <div>
+      <p-checkbox label="Administrador" formControlName="isAdmin" [binary]="true"></p-checkbox>
+    </div>
+  </form>
+  <button class="btn btn-outline-dark text-center mt-2" (click)="submitForm()">
+    @if (userId) {
+      Editar
+    } @else {
+      Añadir
+    }
+  </button>
+</div>
+<p-toast></p-toast>
