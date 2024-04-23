@@ -13,6 +13,7 @@ import {DriveRequestService} from "../../../services/drive-request.service";
 import {DropdownModule} from "primeng/dropdown";
 import {DriveRequest} from "../../../models/drive-request.model";
 import {TestDriveCarService} from "../../../services/test-drive-car.service";
+import {TestDriveCar} from "../../../models/test-drive-car.model";
 
 @Component({
   selector: 'app-drive-request-form',
@@ -36,7 +37,11 @@ import {TestDriveCarService} from "../../../services/test-drive-car.service";
 })
 export class DriveRequestFormComponent implements OnInit{
 
-  cars: String[] = [];
+  cars: TestDriveCar[] = [];
+  occupiedDates: Set<String> = new Set<String>;
+  currentDate: Date = new Date();
+  private selectedStartDate: Date = new Date();
+  private selectedEndDate: Date = new Date();
 
   driveRequestForm !: FormGroup;
   loading: boolean = false;
@@ -60,9 +65,9 @@ export class DriveRequestFormComponent implements OnInit{
   private initializeDriveRequestForm() {
     this.getCars();
     this.driveRequestForm = this.formBuilder.group({
-      username: ["", Validators.required],
+      name: ["", Validators.required],
       email: ["", [Validators.required, Validators.email]],
-      carModel: ["", Validators.required],
+      testDriveCar: ["", Validators.required],
       dates: ["", Validators.required],
       privacy: ["", Validators.requiredTrue]
     })
@@ -70,9 +75,7 @@ export class DriveRequestFormComponent implements OnInit{
 
   private getCars() {
     this.testDriveCarService.getTestDriveCars().subscribe(
-      cars => this.cars = cars.map(
-          car => car.model
-      )
+      cars => this.cars = cars
     )
   }
 
@@ -85,17 +88,58 @@ export class DriveRequestFormComponent implements OnInit{
   public submit() {
     this.submitted = true;
 
-    this.trimControl("username");
+    this.trimControl("name");
     this.trimControl("email");
 
-
-    if(!this.driveRequestForm.invalid){
+    if(!this.driveRequestForm.invalid && this.validateAndTrimDate()){
       const driveRequest: DriveRequest = {...this.driveRequestForm.value};
-        this.addDriveRequest(driveRequest);
+      driveRequest.startDate = this.selectedStartDate;
+      driveRequest.endDate = this.selectedEndDate;
+      driveRequest.accepted = false;
+      this.addDriveRequest(driveRequest);
     }
   }
 
   private addDriveRequest(driveRequest: DriveRequest){
-    this.driveRequestService.addDriveRequest(driveRequest);
+    this.driveRequestService.addDriveRequest(driveRequest).subscribe({
+      next: value => {
+        this.initializeDriveRequestForm();
+        this.submitted = false;
+      }
+    });
+  }
+
+  getSelectedDates(): void {
+    const testDriveCar: TestDriveCar = this.driveRequestForm.controls["testDriveCar"].value;
+    this.occupiedDates = new Set();
+    this.driveRequestService.getSelectedDatesByTestDriveCar(testDriveCar).subscribe(
+      dates => dates.forEach(date => this.occupiedDates.add(
+          new Date(date).toDateString()
+        )
+      )
+    );
+  }
+
+  getDateClass(date: any) {
+    const calendarDate = new Date(date.year, date.month, date.day).toDateString();
+    if (this.occupiedDates.has(calendarDate)){
+      return "occupied";
+    }
+    return null;
+  }
+
+  private validateAndTrimDate() :  boolean {
+    this.selectedStartDate = this.driveRequestForm.controls["dates"].value[0];
+    this.selectedEndDate = this.driveRequestForm.controls["dates"].value[1];
+    if (this.selectedEndDate.getDate() - this.selectedStartDate.getDate() > 2){
+      this.messageService.add({
+        summary: 'Error',
+        detail: 'Debe seleccionar un máximo de 2 días de prueba',
+        severity: 'error'}
+      );
+      return false;
+    } else {
+      return true;
+    }
   }
 }

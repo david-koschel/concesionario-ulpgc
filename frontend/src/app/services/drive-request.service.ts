@@ -15,7 +15,11 @@ export class DriveRequestService {
     return this.http.get<DriveRequest[]>("http://localhost:8080/api/test-drive-request/all");
   }
 
-  public addDriveRequest(driveRequest: DriveRequest): void {
-    this.http.put("http://localhost:8080/api/test-drive-request/form", driveRequest);
+  public addDriveRequest(driveRequest: DriveRequest) {
+    return this.http.put("http://localhost:8080/api/test-drive-request/form", driveRequest);
+  }
+
+  public getSelectedDatesByTestDriveCar(testDriveCar: TestDriveCar): Observable<Date[]> {
+    return this.http.put<Date[]>("http://localhost:8080/api/test-drive-request/occupied-dates", testDriveCar);
   }
 }
