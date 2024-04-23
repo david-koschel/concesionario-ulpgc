@@ -1,57 +1,59 @@
-<div class="d-flex align-items-center menu">
-    <div class="buttons-left">
-      <p-sidebar [(visible)]="sidebarVisible">
-        <div class="d-flex flex-column">
-          @for (button of buttons; track $index) {
-            <a
-              class="btn btn-outline-dark"
-              routerLink="{{button.route}}"
-              (click)="sidebarVisible = false"
-            ><i class="{{button.icon}}"></i>{{button.name}}</a>
-          }
-        </div>
-      </p-sidebar>
+<nav class="d-flex align-items-center justify-content-between px-2">
+  <div>
+    <button
+      class="btn btn-outline-light"
+      (click)="sidebarVisible = true"
+    >
+      <i class="pi pi-bars"></i>
+    </button>
+  </div>
+  <div class="text-center">
+    <a routerLink="/home" class="d-none d-md-block">
+      <img
+        src="/assets/logos/logo.png"
+        class="hover"
+        alt="Concesionario ULPGC Logo"
+      >
+    </a>
+    <a routerLink="/home" class="d-sm-none buttons-right">
+      <img
+        src="/assets/logos/logo-sm.png"
+        class="hover"
+        alt="Concesionario ULPGC Logo" height="70" width="220"
+      >
+    </a>
+  </div>
+  <div class="d-none d-md-block text-end">
+    @if (!loggedIn) {
+      <div class="d-flex gap-2">
+        <a class="btn btn-outline-light" routerLink="/login-register">Iniciar Sesión</a>
+        <a class="btn btn-outline-light" routerLink="/login-register" [queryParams]="{register: true}">Registrarse</a>
+      </div>
+    } @else {
       <button
-        class="btn btn-outline-light"
-        (click)="sidebarVisible = true"
-      ><i class="pi pi-bars"></i></button>
-    </div>
-    <a
-      style="margin: 0 auto;"
-      routerLink="/home"
-      class="d-none d-md-block"
-    ><img
-      src="/assets/logos/logo.png"
-      class="hover"
-      alt="Concesionario ULPGC Logo">
-    </a>
-    <a
-      style="margin: 0 auto;"
-      routerLink="/home"
-      class="d-sm-none buttons-right"
-    ><img
-      src="/assets/logos/logo-sm.png"
-      class="hover"
-      alt="Concesionario ULPGC Logo" height="70" width="220">
-    </a>
-    <div class="d-none d-md-block buttons-right">
-      @if (!loggedIn) {
-        <button class="btn btn-outline-light" (click)="fakeLogin()">Iniciar Sesión</button>
-      } @else {
-        <button
-          type="button"
-          pButton
-          icon="pi pi-list"
-          (click)="userMenu.toggle($event)"
-          label="Menú de Usuario"
-          class="btn btn-outline-light overflow-visible"
-        ></button>
-      }
-    </div>
-    <p-menu
-      #userMenu
-      [model]="menuItems"
-      [popup]="true"
-    ></p-menu>
-</div>
-
+        type="button"
+        pButton
+        icon="pi pi-list"
+        (click)="userMenu.toggle($event)"
+        label="Menú de Usuario"
+        class="btn btn-outline-light overflow-visible"
+      ></button>
+    }
+  </div>
+</nav>
+<p-sidebar [(visible)]="sidebarVisible">
+  <div class="d-flex flex-column">
+    @for (button of buttons; track $index) {
+      <a
+        class="btn btn-outline-dark"
+        routerLink="{{button.route}}"
+        (click)="sidebarVisible = false"
+      ><i class="{{button.icon}}"></i>{{ button.name }}</a>
+    }
+  </div>
+</p-sidebar>
+<p-menu
+  #userMenu
+  [model]="menuItems"
+  [popup]="true"
+></p-menu>

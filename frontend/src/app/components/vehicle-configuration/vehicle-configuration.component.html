@@ -16,7 +16,7 @@
   </div>
   <div class="characteristicsMain">
     <div class="selectorMenu">
-      <button class="engineOption selectorButton selected" (click)="selectedButton('engineOption')">Motor</button>
+      <button class="engineOption selectorButton" (click)="selectedButton('engineOption')">Motor</button>
       <button class="colorOption selectorButton" (click)="selectedButton('colorOption')">Color</button>
       <button class="rimsOption selectorButton" (click)="selectedButton('rimsOption')">Llantas</button>
       <button class="extrasOption selectorButton" (click)="selectedButton('extrasOption')">Extras</button>
@@ -142,3 +142,9 @@
 >
   <p class="m-0">{{ dialogText }}</p>
 </p-dialog>
+<p-confirmDialog
+  header="Iniciar sesión"
+  message="Para guardar esta configuración debe iniciar sesión. Si no está registrado, puede registrarse."
+  acceptLabel="Continuar"
+  rejectLabel="Cancelar"
+></p-confirmDialog>

@@ -1,11 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {SidebarModule} from "primeng/sidebar";
 import {ButtonModule} from "primeng/button";
-import {RouterLink, Router} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {LoginService} from "../../security/login.service";
 import {Subscription} from "rxjs";
 import {MenuModule} from "primeng/menu";
-import {MenuItem, MenuItemCommandEvent} from "primeng/api";
+import {MenuItem} from "primeng/api";
 import {NgOptimizedImage} from "@angular/common";
 
 @Component({
@@ -29,7 +29,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private loggedInSubscription: Subscription;
 
   buttons: any[] | undefined;
-  menuItems: MenuItem[] = []
+  menuItems: MenuItem[] = [];
 
   constructor(
     protected loginService: LoginService,
@@ -57,16 +57,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  fakeLogin() {
-    this.loginService.login("user-test", "test123");
-  }
-
   logout() {
     this.loginService.logout();
   }
 
-  buildSidebarButtons(){
-   this.buttons = [
+  buildSidebarButtons() {
+    this.buttons = [
       {
         id: 1,
         name: ' Home',
@@ -82,13 +78,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
       {
         id: 3,
         name: 'Nuestros Servicios',
-        route: '',
+        route: '/our-services',
         icon: ''
       },
       {
         id: 4,
         name: 'Sobre Nosotros',
-        route: '',
+        route: '/about-us',
         icon: ''
       },
       {
@@ -96,21 +92,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
         name: 'Contacto',
         route: '/contacto',
         icon: ''
-      },
-      {
-        id: 6,
-        name: 'Iniciar Sesión',
-        route: '',
-        icon: ''
-      },
-    ]
+      }
+    ];
   }
 
-  buildUserMenu(){
+  buildUserMenu() {
     this.menuItems = [];
-    this.buildAdministrationItems();
+    if (this.loginService.userIsAdmin()) this.buildAdministrationItems();
     this.menuItems.push(
-      {separator:true},
       {
         label: "Mi Perfil",
         icon: "pi pi-user",
@@ -124,16 +113,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
     );
   }
 
-  private buildAdministrationItems(){
+  private buildAdministrationItems() {
     this.menuItems.push(
       {
         label: "Panel de Administración",
         command: () => this.router.navigate(["/admin-panel"])
-      }
-    )
-  }
-
-  private buildCustomerItems() {
-
+      },
+      {separator: true}
+    );
   }
 }

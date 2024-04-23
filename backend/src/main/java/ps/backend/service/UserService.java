@@ -7,6 +7,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
+import ps.backend.entity.Role;
 import ps.backend.entity.User;
 import ps.backend.exception.BasicException;
 import ps.backend.repository.UserRepository;
@@ -19,9 +22,13 @@ import java.util.Optional;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final EmailService emailService;
+    private final TemplateEngine templateEngine;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, EmailService emailService, TemplateEngine templateEngine) {
         this.userRepository = userRepository;
+        this.emailService = emailService;
+        this.templateEngine = templateEngine;
     }
 
     public List<User> findAll() {
@@ -44,6 +51,26 @@ public class UserService implements UserDetailsService {
             throw new BasicException("El correo electrónico ya está registrado");
         }
         return userRepository.save(user);
+    }
+
+    public User register(User user) {
+        if (this.userRepository.findByUsername(user.getUsername()).isPresent() && this.userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new BasicException("El nombre de usuario y el correo electrónico ya han sido registrados");
+        } else if (this.userRepository.findByUsername(user.getUsername()).isPresent()) {
+            throw new BasicException("El nombre de usuario ya ha sido registrado");
+        } else if (this.userRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new BasicException("El correo electrónico ya ha sido registrado");
+        }
+        user.setRole(Role.CUSTOMER);
+        User savedUser = this.save(user);
+        emailService.sendEmail(user.getEmail(), "Bienvenido a Concesionario ULPGC", generateEmailBody(savedUser));
+        return savedUser;
+    }
+
+    private String generateEmailBody(User user) {
+        Context context = new Context();
+        context.setVariable("username", user.getUsername());
+        return this.templateEngine.process("user-register.html", context);
     }
 
     public User update(User user) {

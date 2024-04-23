@@ -1,4 +1,4 @@
-<h1>Catálogo de vehículos</h1>
+<h1 class="mb-4">Catálogo de vehículos</h1>
 <article>
   @for (vehicle of vehicles; track $index) {
     <section class="d-flex gap-3 mb-4" [ngClass]="{'justify-content-end': $index % 2 == 1}">
@@ -7,7 +7,7 @@
         [ngClass]="{'order-2': $index % 2 == 1}"
       >
         <img
-          src="data:image/jpg;base64,{{ vehicle.image }}"
+          src="{{ vehicle.image }}"
           class="object-fit-cover mt-2"
           width="350px"
           height="200px"

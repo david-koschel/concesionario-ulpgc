@@ -1,6 +1,6 @@
 import {Injectable, signal, WritableSignal} from '@angular/core';
 import {HttpClient, HttpResponse} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {Observable, tap} from "rxjs";
 import {toObservable} from "@angular/core/rxjs-interop";
 import {Router} from "@angular/router";
 import {UserService} from "../services/user.service";
@@ -14,7 +14,7 @@ export class LoginService {
   public userIsLoggedIn$: Observable<boolean>;
 
   constructor(private http: HttpClient, private router: Router, private userService: UserService) {
-    this.userIsLoggedInSignal = signal(this.userIsLoggedIn())
+    this.userIsLoggedInSignal = signal(this.userIsLoggedIn());
     this.userIsLoggedIn$ = toObservable(this.userIsLoggedInSignal);
   }
 
@@ -27,40 +27,38 @@ export class LoginService {
   }
 
   public login(username: string, password: string) {
-    this.http.post("http://localhost:8080/api/login", {username, password}, {observe: 'response'})
-      .subscribe({
-        next: response => {
-          this.userIsLoggedInSignal.set(this.onLogin(response));
-        },
+    return this.http.post("http://localhost:8080/api/login", {username, password}, {observe: 'response'})
+      .pipe(tap({
+        next: response => this.onLogin(response),
         error: () => {
           console.error("Invalid Login");
           this.userIsLoggedInSignal.set(false);
         }
-      })
+      }));
   }
 
   public logout(): void {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
     this.userIsLoggedInSignal.set(false);
-    this.router.navigate(["home"])
+    this.router.navigate(["home"]);
   }
 
-  private onLogin(response: HttpResponse<any>): boolean {
-    const token = response?.headers.get("Authorization")
+  private onLogin(response: HttpResponse<any>): void {
+    const token = response?.headers.get("Authorization");
     if (token) {
       localStorage.setItem("token", token);
       this.getUserRole();
-      return true;
     } else {
-      console.error("No token in authorization")
-      return false;
+      console.error("No token in authorization");
+      this.userIsLoggedInSignal.set(false);
     }
   }
 
   private getUserRole() {
     this.userService.getCurrentUser().subscribe(userData => {
-       localStorage.setItem("role", userData.role);
-    })
+      localStorage.setItem("role", userData.role);
+      this.userIsLoggedInSignal.set(true);
+    });
   }
 }
