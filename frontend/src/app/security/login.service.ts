@@ -29,9 +29,7 @@ export class LoginService {
   public login(username: string, password: string) {
     return this.http.post("http://localhost:8080/api/login", {username, password}, {observe: 'response'})
       .pipe(tap({
-        next: response => {
-          this.userIsLoggedInSignal.set(this.onLogin(response));
-        },
+        next: response => this.onLogin(response),
         error: () => {
           console.error("Invalid Login");
           this.userIsLoggedInSignal.set(false);
@@ -46,21 +44,21 @@ export class LoginService {
     this.router.navigate(["home"]);
   }
 
-  private onLogin(response: HttpResponse<any>): boolean {
+  private onLogin(response: HttpResponse<any>): void {
     const token = response?.headers.get("Authorization");
     if (token) {
       localStorage.setItem("token", token);
       this.getUserRole();
-      return true;
     } else {
       console.error("No token in authorization");
-      return false;
+      this.userIsLoggedInSignal.set(false);
     }
   }
 
   private getUserRole() {
     this.userService.getCurrentUser().subscribe(userData => {
       localStorage.setItem("role", userData.role);
+      this.userIsLoggedInSignal.set(true);
     });
   }
 }

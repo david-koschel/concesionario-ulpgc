@@ -33,6 +33,7 @@ export class LoginRegisterArregladoComponent implements OnInit {
   private messageService = inject(MessageService);
 
   protected loading = false;
+  private configuredVehicle!: number;
 
   protected loginForm = this.formBuilder.group({
     loginName: ['', [Validators.required]],
@@ -51,6 +52,7 @@ export class LoginRegisterArregladoComponent implements OnInit {
   }
 
   private subscribeToParams() {
+    this.configuredVehicle = +this.route.snapshot.queryParams["configuration"];
     this.route.queryParams.pipe(map(query => !!query["register"])).subscribe(
       register => this.showLogin(!register));
   }
@@ -127,7 +129,7 @@ export class LoginRegisterArregladoComponent implements OnInit {
 
   private login(username: string, password: string) {
     this.loginService.login(username, password).subscribe({
-      next: () => this.router.navigate(["user"]),
+      next: () => this.successfulLogin(),
       error: () => {
         this.messageService.add({
           summary: "Error",
@@ -136,6 +138,16 @@ export class LoginRegisterArregladoComponent implements OnInit {
         });
       }
     });
+  }
 
+  private successfulLogin() {
+    if (this.configuredVehicle) {
+      this.router.navigate(
+        [`vehicle-configurator/${this.configuredVehicle}`],
+        {queryParams: {continue: true}}
+      );
+    } else {
+      this.router.navigate(["user"]);
+    }
   }
 }

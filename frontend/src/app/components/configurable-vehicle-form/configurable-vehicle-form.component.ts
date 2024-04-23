@@ -146,7 +146,7 @@ export class ConfigurableVehicleFormComponent implements OnInit {
   handleVehicleUpload(event: any): void {
     const file = event.target.files[0];
     const reader = new FileReader();
-    reader.onload = () => this.form.get('image')?.setValue(reader.result?.slice(23));
+    reader.onload = () => this.form.get('image')?.setValue(reader.result);
     reader.readAsDataURL(file);
   }
 
