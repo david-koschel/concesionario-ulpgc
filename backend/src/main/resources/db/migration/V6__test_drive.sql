@@ -9,6 +9,7 @@ create table test_drive_request (
     test_drive_car_id int not null,
     start_date datetime not null,
     end_date datetime not null,
-    user_id int not null,
+    name varchar(255) not null,
+    email varchar(255) not null,
     accepted boolean not null
 );
