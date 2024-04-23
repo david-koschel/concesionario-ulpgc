@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div>
+    <h4>Solicitud de Prueba Realizada con Éxito</h4>
+    <hr>
+    <p>
+        La solicitud de su vehículo de prueba a sido procesada con éxito, le confirmamos
+        por la presente, que podrá acceder a una prueba con los siguientes datos:
+    </p>
+    <p><b>Modelo: </b><span th:text="${model}"></span></p>
+    <p><b>Día de retirada del vehículo: </b><span th:text="${startDate}"></span></p>
+    <p><b>Día de devolución del vehículo: </b><span th:text="${endDate}"></span></p>
+    <div>
+        <br>
+        <span>Atentamente,<br></span>
+        <span>Concesionario ULPGC</span>
+    </div>
+</div>
+</html>

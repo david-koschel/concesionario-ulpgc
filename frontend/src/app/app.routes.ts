@@ -12,6 +12,9 @@ import {ForgotPasswordComponent} from "./components/forgot-password/forgot-passw
 import {LoginRegisterArregladoComponent} from "./components/login-register/login-register.component";
 import {VehicleConfigurationComponent} from "./components/vehicle-configuration/vehicle-configuration.component";
 import {CatalogueVehiclesComponent} from "./components/catalogue-vehicles/catalogue-vehicles.component";
+import {DriveRequestFormComponent} from "./components/drive-request/drive-request-form/drive-request-form.component";
+import {DriveRequestListComponent} from "./components/drive-request/drive-request-list/drive-request-list.component";
+import {TestDriveCarListComponent} from "./components/test-drive-car-list/test-drive-car-list.component";
 import {AboutUsComponent} from './components/about-us/about-us.component';
 import {OurServicesComponent} from './components/our-services/our-services.component';
 import {TermsAndConditionsComponent} from "./components/terms-and-conditions/terms-and-conditions.component";
@@ -44,6 +47,10 @@ export const routes: Routes = [
     canActivate: [userIsNotLoggedInGuard]
   },
   {
+    path: "drive-request",
+    component: DriveRequestFormComponent
+  },
+  {
     path: "forgot-password",
     component: ForgotPasswordComponent
   },
@@ -60,7 +67,17 @@ export const routes: Routes = [
   {
     path: "contact-messages",
     component: ContactMessagesComponent,
-    canActivate: [userIsLoggedInGuard]
+    canActivate: [userIsAdminGuard]
+  },
+  {
+    path: "drive-requests",
+    component: DriveRequestListComponent,
+    canActivate: [userIsAdminGuard]
+  },
+  {
+    path: "test-drive-cars",
+    component: TestDriveCarListComponent,
+    canActivate: [userIsAdminGuard]
   },
   {
     path: "vehicle-configurator/:id",
@@ -78,7 +95,8 @@ export const routes: Routes = [
   },
   {
     path: "catalogue-vehicles",
-    component: CatalogueVehiclesComponent
+    component: CatalogueVehiclesComponent,
+    canActivate: [userIsAdminGuard]
   },
   {
     path: "about-us",

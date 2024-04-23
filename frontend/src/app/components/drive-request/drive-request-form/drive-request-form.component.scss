@@ -1,0 +1,23 @@
+$occupied: #c50909;
+
+.occupied-date {
+  > span:hover {
+    background-color: unset !important;
+  }
+
+  .occupied {
+    border-radius: 50%;
+    padding: .25em;
+    width: 2em;
+    height: 2em;
+    text-align: center;
+    color: white;
+    display: block;
+    background-color: $occupied !important;
+    font-weight: bolder;
+
+    &:hover {
+      background-color: $occupied !important;
+    }
+  }
+}

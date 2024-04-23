@@ -12,7 +12,10 @@ final class SecurityConstant {
             "/api/catalogue/all",
             "/api/vehicle/public/**",
             "/api/user/register",
-            "/api/user/sendEmail"
+            "/api/user/sendEmail",
+            "/api/test-drive-car/all",
+            "/api/test-drive-request/form",
+            "/api/test-drive-request/occupied-dates",
     };
     static final String API_URL = "/api/**";
     static final SecretKey JWT_KEY = Keys.hmacShaKeyFor("kBLPoylVFL5yWsPuBRkGltt9W3n5yNxkILchku8xEGTCkZsYlLVDkR1AB7sWuLlz".getBytes());

@@ -1,0 +1,58 @@
+<div class="container justify-content-center mt-4">
+  <h1 class="pt-2 text-align-left"><b>Coches de Prueba</b></h1>
+  <div class="d-flex flex-row justify-content-evenly">
+    <div>
+      <p-table
+        #table
+        [loading]="!cars"
+        [value]="cars"
+      >
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Id</th>
+            <th>Vehículo</th>
+            <th>Matrícula</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-car>
+          <tr>
+            <td>{{ car.id }}</td>
+            <td>{{ car.model }}</td>
+            <td>{{ car.carLicense }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+    <div>
+      <form [formGroup]="testCarForm">
+        <div class="d-flex flex-column justify-content-center">
+          <div class="text-center">
+            <h4>Añadir vehículo</h4>
+          </div>
+          <div class="mt-3 mb-3">
+            <p-floatLabel>
+              <input id="vehicle" type="text" pInputText formControlName="model" class="w-100"/>
+              <label for="vehicle" class="required">Vehículo</label>
+            </p-floatLabel>
+          </div>
+          <div class="mt-3 mb-3">
+            <p-floatLabel>
+              <input id="car_license" type="text" pInputText formControlName="carLicense" class="w-100"/>
+              <label for="car_license" class="required">Matrícula</label>
+            </p-floatLabel>
+          </div>
+          <div class="d-flex flex-column text-center mt-1">
+            <div>
+              <button
+                pButton
+                class="btn btn-secondary"
+                (click)="submit()"
+                label="AÑADIR COCHE"
+              ></button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
