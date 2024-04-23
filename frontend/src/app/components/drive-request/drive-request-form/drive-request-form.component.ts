@@ -66,10 +66,10 @@ export class DriveRequestFormComponent implements OnInit {
   private initializeDriveRequestForm() {
     this.getCars();
     this.driveRequestForm = this.formBuilder.group({
-      name: ["asd", Validators.required],
-      email: ["aasd@asdasd", [Validators.required, Validators.email]],
+      name: ["", Validators.required],
+      email: ["", [Validators.required, Validators.email]],
       testDriveCar: ["", Validators.required],
-      privacy: [true, Validators.requiredTrue]
+      privacy: [false, Validators.requiredTrue]
     });
   }
 
