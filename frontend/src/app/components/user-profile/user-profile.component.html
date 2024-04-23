@@ -154,10 +154,10 @@
     }
     <div>Total a pagar {{ currentTotalPrice }} €</div>
     <div class="d-flex gap-3 mt-4 justify-content-start">
-      <button class="btn btn-danger" (click)="paymentCancelled()">
+      <button class="btn btn-danger" (click)="paymentCancelled()" [disabled]="purchaseLoading">
         Cancelar
       </button>
-      <button class="btn btn-secondary" (click)="paymentConfirmed()">
+      <button pButton class="btn btn-secondary" (click)="paymentConfirmed()" loadingIcon="pi pi-spinner pi-spin" [loading]="purchaseLoading">
         Confirmar pago
       </button>
     </div>

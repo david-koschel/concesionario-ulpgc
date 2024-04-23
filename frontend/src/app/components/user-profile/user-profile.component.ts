@@ -57,6 +57,7 @@ export class UserProfileComponent implements OnInit {
   currentExtrasPrice: any;
   currentTotalPrice: any;
   selectedConfig: UserConfiguration | undefined;
+  purchaseLoading = false;
 
 
   ngOnInit(): void {
@@ -139,12 +140,14 @@ export class UserProfileComponent implements OnInit {
   }
 
   paymentConfirmed(): void {
+    this.purchaseLoading = true;
     this.vehicleService.buyConfiguration(this.selectedConfig!.id!).subscribe(() => {
+      this.purchaseLoading = false;
+      this.sidebarVisible = false;
+      this.selectedConfig = undefined;
       this.getUserVehicles();
       this.getUserConfigurations();
     });
-    this.sidebarVisible = false;
-    this.selectedConfig = undefined;
   }
 
   paymentCancelled(): void {

@@ -20,12 +20,14 @@ public class ConfigurableVehicleService {
     private final UserService userService;
     private final UserConfigurationRepository userConfigurationRepository;
     private final UserVehicleRepository userVehicleRepository;
+    private final InvoiceMessageService invoiceMessageService;
 
-    public ConfigurableVehicleService(ConfigurableVehicleRepository configurableVehicleRepository, UserService userService, UserConfigurationRepository userConfigurationRepository, UserVehicleRepository userVehicleRepository) {
+    public ConfigurableVehicleService(ConfigurableVehicleRepository configurableVehicleRepository, UserService userService, UserConfigurationRepository userConfigurationRepository, UserVehicleRepository userVehicleRepository, InvoiceMessageService invoiceMessageService) {
         this.configurableVehicleRepository = configurableVehicleRepository;
         this.userService = userService;
         this.userConfigurationRepository = userConfigurationRepository;
         this.userVehicleRepository = userVehicleRepository;
+        this.invoiceMessageService = invoiceMessageService;
     }
 
     public List<ConfigurableVehicle> getCatalogue() {
@@ -82,7 +84,8 @@ public class ConfigurableVehicleService {
                 //TODO .extras()
                 .build();
 
-        userVehicleRepository.save(userVehicle);
+        UserVehicle saved = userVehicleRepository.save(userVehicle);
+        invoiceMessageService.sendInvoiceMessageEmail(currentUser.getEmail(), saved);
         userConfigurationRepository.delete(userConfiguration);
     }
 

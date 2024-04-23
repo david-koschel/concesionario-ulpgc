@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+import ps.backend.entity.userVehicle.UserVehicle;
 
 import java.awt.*;
 import java.io.ByteArrayOutputStream;
@@ -35,11 +36,11 @@ public class PdfService {
 
     public PdfService(){}
 
-    public ByteArrayDataSource generateInvoicePDF(){
+    public ByteArrayDataSource generateInvoicePDF(UserVehicle userVehicle){
         PdfPTable pdfPTable = new PdfPTable(12);
 
         this.createInvoiceHeader(pdfPTable);
-        this.createInvoiceBody(pdfPTable);
+        this.createInvoiceBody(pdfPTable, userVehicle);
 
         ByteArrayDataSource dataSource = generatePdfByteArrayDataSourceFromPdfPTable(pdfPTable);
         dataSource.setName(
@@ -84,10 +85,10 @@ public class PdfService {
         }
     }
 
-    private void createInvoiceBody(PdfPTable table) {
+    private void createInvoiceBody(PdfPTable table, UserVehicle userVehicle) {
         PdfPCell cell;
 
-        cell = this.addInlineParagraph("Factura: ", "2024-04-1245", boldFont, normalFont);
+        cell = this.addInlineParagraph("Factura: ", "2024-04-" + userVehicle.getId(), boldFont, normalFont);
         cell.setColspan(12);
         cell.setVerticalAlignment(Element.ALIGN_BASELINE);
         table.addCell(cell);
@@ -122,20 +123,20 @@ public class PdfService {
 
         this.addDivider(table);
 
-        this.generateBoughtElementsRows(table);
+        this.generateBoughtElementsRows(table, userVehicle);
 
         this.addDivider(table);
 
-        cell = this.addInlineParagraph("IMPORTE TOTAL (€): ", "18.000", endBoldFont, endNormalFont);
+        cell = this.addInlineParagraph("IMPORTE TOTAL (€): ", String.format("%.2f", userVehicle.getTotalPrice()), endBoldFont, endNormalFont);
         cell.setColspan(12);
         cell.setPaddingRight(20);
         this.addAlignCell(table, cell, 2);
     }
 
-    private void generateBoughtElementsRows(PdfPTable table) {
+    private void generateBoughtElementsRows(PdfPTable table, UserVehicle userVehicle) {
         PdfPCell cell;
 
-        cell = new PdfPCell(new Phrase("Skoda Kamiq 2018"));
+        cell = new PdfPCell(new Phrase(String.format("%s %s", userVehicle.getBrand(), userVehicle.getModel()), normalFont));
         cell.setColspan(6);
         cell.setBorder(0);
         this.addAlignCell(table, cell, Element.ALIGN_LEFT);
@@ -145,12 +146,12 @@ public class PdfService {
         cell.setBorder(0);
         this.addAlignCell(table, cell, Element.ALIGN_CENTER);
 
-        cell = new PdfPCell(new Phrase("18.000€"));
+        cell = new PdfPCell(new Phrase(String.format("%.2f", userVehicle.getTotalPrice())));
         cell.setColspan(2);
         cell.setBorder(0);
         this.addAlignCell(table, cell, Element.ALIGN_CENTER);
 
-        cell = new PdfPCell(new Phrase("18.000€"));
+        cell = new PdfPCell(new Phrase(String.format("%.2f", userVehicle.getTotalPrice())));
         cell.setColspan(2);
         cell.setBorder(0);
         this.addAlignCell(table, cell, Element.ALIGN_CENTER);

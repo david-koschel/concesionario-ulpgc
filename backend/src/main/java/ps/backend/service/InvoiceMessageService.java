@@ -3,6 +3,7 @@ package ps.backend.service;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
+import ps.backend.entity.userVehicle.UserVehicle;
 
 @Service
 public class InvoiceMessageService {
@@ -15,9 +16,9 @@ public class InvoiceMessageService {
         this.templateEngine = templateEngine;
     }
 
-    public void sendInvoiceMessageEmail() {
+    public void sendInvoiceMessageEmail(String to, UserVehicle userVehicle) {
         String emailBody = this.generateEmailBody();
-        this.emailService.sendInvoiceMail("", "Factura Concesionario ULPGC", emailBody);
+        this.emailService.sendInvoiceMail(to, "Factura Concesionario ULPGC", emailBody, userVehicle);
     }
 
     private String generateEmailBody() {
