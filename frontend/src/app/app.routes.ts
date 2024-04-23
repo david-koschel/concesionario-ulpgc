@@ -14,8 +14,8 @@ import {VehicleConfigurationComponent} from "./components/vehicle-configuration/
 import {CatalogueVehiclesComponent} from "./components/catalogue-vehicles/catalogue-vehicles.component";
 import {AboutUsComponent} from './components/about-us/about-us.component';
 import {OurServicesComponent} from './components/our-services/our-services.component';
-import {TermsandconditionsComponent} from "./components/termsandconditions/termsandconditions.component";
-import {PrivacycookiesComponent} from "./components/privacycookies/privacycookies.component";
+import {TermsAndConditionsComponent} from "./components/terms-and-conditions/terms-and-conditions.component";
+import {PrivacyCookiesComponent} from "./components/privacy-cookies/privacy-cookies.component";
 
 export const routes: Routes = [
   {
@@ -24,11 +24,11 @@ export const routes: Routes = [
   },
   {
     path: "terms-and-conditions",
-    component: TermsandconditionsComponent
+    component: TermsAndConditionsComponent
   },
   {
     path: "privacy-cookies",
-    component: PrivacycookiesComponent
+    component: PrivacyCookiesComponent
   },
   {
     path: "home",
