@@ -1,7 +1,9 @@
+import {TestDriveCar} from "./test-drive-car.model";
+
 export interface DriveRequest {
-  username: String,
+  name: String,
   email: String,
-  carModel: String,
+  testDriveCar: TestDriveCar,
   startDate: Date,
   endDate: Date,
   accepted: boolean
