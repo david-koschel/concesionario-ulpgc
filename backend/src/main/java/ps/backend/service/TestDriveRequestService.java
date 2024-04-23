@@ -4,10 +4,14 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import ps.backend.dto.TestDriveRequestDto;
+import ps.backend.entity.TestDriveCar;
 import ps.backend.entity.TestDriveRequest;
 import ps.backend.entity.User;
 import ps.backend.repository.TestDriveRequestRepository;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -26,8 +30,9 @@ public class TestDriveRequestService {
     public List<TestDriveRequestDto> findAll(){
         return testDriveRequestRepository.findAll().stream().map(
                 testDriveRequest -> new TestDriveRequestDto(
-                        testDriveRequest.getUser().getUsername(),
-                        testDriveRequest.getTestDriveCar().getModel(),
+                        testDriveRequest.getName(),
+                        testDriveRequest.getEmail(),
+                        testDriveRequest.getTestDriveCar(),
                         testDriveRequest.getStartDate(),
                         testDriveRequest.getEndDate(),
                         testDriveRequest.isAccepted()
@@ -40,14 +45,35 @@ public class TestDriveRequestService {
         sendConfirmationEmail(testDriveRequest);
     }
 
+    public List<Date> getOccupiedDatesByTestDriveCar(TestDriveCar testDriveCar) {
+        List<TestDriveRequest> testDriveRequestsList = testDriveRequestRepository.findAllByTestDriveCar(testDriveCar);
+        List<Date> occupiedDates = new ArrayList<>();
+        Date currentDate = new Date();
+
+        for (TestDriveRequest testDriveRequest : testDriveRequestsList) {
+            Date startDate = testDriveRequest.getStartDate();
+            Date endDate = testDriveRequest.getEndDate();
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(startDate);
+
+            while (!calendar.getTime().after(endDate)) {
+                Date currentCalendarDate = calendar.getTime();
+                if (currentCalendarDate.equals(startDate) || currentCalendarDate.equals(endDate) || currentCalendarDate.after(currentDate)) {
+                    occupiedDates.add(currentCalendarDate);
+                }
+                calendar.add(Calendar.DATE, 1);
+            }
+        }
+        return occupiedDates;
+    }
+
     public void sendConfirmationEmail(TestDriveRequest testDriveRequest){
-        User user = testDriveRequest.getUser();
+        String email = testDriveRequest.getEmail();
         String subject = "Confirmación Solicitud de Prueba de Vehículo";
 
         String emailBody = this.generateEmailBody(testDriveRequest);
-        this.emailService.sendEmail(user.getEmail(), subject, emailBody);
-
-        this.save(testDriveRequest);
+        this.emailService.sendEmail(email, subject, emailBody);
     }
 
     private String generateEmailBody(TestDriveRequest testDriveRequest) {
