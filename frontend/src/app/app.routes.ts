@@ -35,12 +35,8 @@ export const routes: Routes = [
     canActivate: [userIsNotLoggedInGuard]
    },
    {
-    path: "catalogue/drive-request",
+    path: "drive-request",
     component: DriveRequestFormComponent
-  },
-  {
-    path: "login",
-    component: LoginComponent
   },
   {
     path: "forgot-password",
