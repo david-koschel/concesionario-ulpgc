@@ -13,6 +13,7 @@ import jakarta.persistence.OneToMany;
 import lombok.Getter;
 import lombok.Setter;
 import ps.backend.entity.userVehicle.UserConfiguration;
+import ps.backend.entity.userVehicle.UserVehicle;
 
 import java.util.List;
 
@@ -42,4 +43,8 @@ public class User {
     @JsonIgnore
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<UserConfiguration> userConfigurations;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<UserVehicle> userVehicles;
 }

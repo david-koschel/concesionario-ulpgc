@@ -11,6 +11,7 @@ import {VehicleService} from "../../services/vehicle.service";
 import {UserConfiguration} from "../../models/configurable-vehicle/configured-vehicle.model";
 import {RouterLink} from "@angular/router";
 import {SidebarModule} from "primeng/sidebar";
+import {UserVehicle} from "../../models/user-vehicle.model";
 
 @Component({
   selector: 'app-user-profile',
@@ -42,7 +43,7 @@ export class UserProfileComponent implements OnInit {
   protected editing: boolean = false;
 
   protected userCardRows: { name: string; value: string; formControl?: string }[] = [];
-  protected userVehicles: { model: string; status: string; image: string; }[] = [];
+  protected userVehicles: UserVehicle[] = [];
   protected userConfigurations: UserConfiguration[] = [];
 
   protected form!: FormGroup;
@@ -53,18 +54,9 @@ export class UserProfileComponent implements OnInit {
 
   sidebarVisible: boolean = false;
 
-  currentBasePrice: any;
-  currentConfigBrandName: any;
-  currentConfigModel: any;
-  currentColorPrice: any;
-  currentColorName: any;
-  currentEnginePrice: any;
-  currentEngineName: any;
-  currentRimPrice: any;
-  currentRimName: any;
-  currentExtraPrice: any;
-  currentExtraName: any;
+  currentExtrasPrice: any;
   currentTotalPrice: any;
+  selectedConfig: UserConfiguration | undefined;
 
 
   ngOnInit(): void {
@@ -89,16 +81,11 @@ export class UserProfileComponent implements OnInit {
   }
 
   private getUserVehicles() {
-    this.userVehicles = [
-      {model: "Skoda Enyaq 60", status: "Comprado", image: "assets/Skoda_Enyaq_iv_60.jpg"},
-      {model: "Renault Scenic", status: "Comprado", image: "assets/mockups/car_blue.png"},
-      {model: "RS 6 Avant GT", status: "Comprado", image: "assets/mockups/car_red.png"},
-      {model: "Lamborghini Urus", status: "Alquilado", image: "assets/lamborghiniurus.jpg"}
-    ];
+    this.vehicleService.getUserVehicles().subscribe(res => this.userVehicles = res);
   }
 
   private getUserConfigurations() {
-    this.vehicleService.getUserVehicles().subscribe(res => this.userConfigurations = res);
+    this.vehicleService.getUserConfigurations().subscribe(res => this.userConfigurations = res);
   }
 
   protected editProfile() {
@@ -137,45 +124,30 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
-  showDialog(userConfig: UserConfiguration): void{
+  showDialog(userConfig: UserConfiguration): void {
+    this.selectedConfig = userConfig;
     this.sidebarVisible = true;
 
-    this.currentConfigBrandName = userConfig.selectedVehicle.brand;
-    this.currentConfigModel = userConfig.selectedVehicle.model;
-    this.currentBasePrice = userConfig.selectedVehicle.basePrice;
 
-    this.currentColorPrice = userConfig.selectedColor.price;
-    this.currentColorName = userConfig.selectedColor.name;
-    
-    this.currentEnginePrice = userConfig.selectedEngine.price;
-    this.currentEngineName = userConfig.selectedEngine.name;
-    
-    this.currentRimPrice = userConfig.selectedRim.price;
-    this.currentRimName = userConfig.selectedRim.name;
-    
-    this.currentExtraPrice = userConfig.selectedExtras[4]; // NO LO OBTIENE
-    this.currentExtraName = userConfig.selectedExtras[1];
+    this.currentExtrasPrice = userConfig.selectedExtras.reduce((total, extra) => total + extra.price, 0);
 
-    this.currentTotalPrice = this.currentBasePrice as number 
-      + this.currentColorPrice as number 
-      + this.currentEnginePrice as number 
-      + this.currentRimPrice as number;
-
-      //FALTA AÑADIR EL PRECIO DE LAS extras PERO NO APARECE
-    return;
+    this.currentTotalPrice = userConfig.selectedVehicle.basePrice +
+      userConfig.selectedRim.price +
+      userConfig.selectedEngine.price +
+      userConfig.selectedColor.price! +
+      this.currentExtrasPrice;
   }
 
-  paymentConfirmed():void{
-    const newVehicle = {
-      model: this.currentConfigBrandName + " " + this.currentConfigModel,
-      status: "Comprado",
-      image: "asd"
-    }
-    this.userVehicles.push(newVehicle);
+  paymentConfirmed(): void {
+    this.vehicleService.buyConfiguration(this.selectedConfig!.id!).subscribe(() => {
+      this.getUserVehicles();
+      this.getUserConfigurations();
+    });
     this.sidebarVisible = false;
+    this.selectedConfig = undefined;
   }
 
-  paymentCancelled():void{
+  paymentCancelled(): void {
     this.sidebarVisible = false;
   }
 }

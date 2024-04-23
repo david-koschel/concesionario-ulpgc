@@ -12,6 +12,7 @@ import ps.backend.entity.configurableVehicle.ConfigurableVehicleEngine;
 import ps.backend.entity.configurableVehicle.ConfigurableVehicleExtra;
 import ps.backend.entity.configurableVehicle.ConfigurableVehicleRim;
 import ps.backend.entity.userVehicle.UserConfiguration;
+import ps.backend.entity.userVehicle.UserVehicle;
 import ps.backend.service.ConfigurableVehicleService;
 import ps.backend.service.configurableVehicle.EngineService;
 import ps.backend.service.configurableVehicle.ExtraService;
@@ -84,5 +85,15 @@ public class VehicleController {
     @GetMapping("/configuration")
     public List<UserConfiguration> getUserConfigurations() {
         return configurableVehicleService.getConfigurations();
+    }
+
+    @GetMapping("/buy/{id}")
+    public void saveUserVehicle(@PathVariable Integer id) {
+        configurableVehicleService.saveVehicle(id);
+    }
+
+    @GetMapping("/bought")
+    public List<UserVehicle> getUserVehicles() {
+        return configurableVehicleService.getUserVehicles();
     }
 }
