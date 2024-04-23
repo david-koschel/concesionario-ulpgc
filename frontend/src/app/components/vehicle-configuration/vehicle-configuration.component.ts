@@ -9,7 +9,7 @@ import {ConfigurableVehicleColor} from "../../models/configurable-vehicle/config
 import {ConfigurableVehicleRim} from "../../models/configurable-vehicle/configurable-vehicle-rim.model";
 import {ConfigurableVehicleExtra} from "../../models/configurable-vehicle/configurable-vehicle-extra.model";
 import {LoginService} from "../../security/login.service";
-import {ConfiguredVehicle} from "../../models/configurable-vehicle/configured-vehicle.model";
+import {UserConfiguration} from "../../models/configurable-vehicle/configured-vehicle.model";
 import {ButtonModule} from "primeng/button";
 import {DialogModule} from "primeng/dialog";
 import {DialogService} from "primeng/dynamicdialog";
@@ -99,7 +99,7 @@ export class VehicleConfigurationComponent implements OnInit {
 
   saveConfiguration() {
     if (this.formIsValid()) {
-      const configuredVehicle: ConfiguredVehicle = {
+      const configuredVehicle: UserConfiguration = {
         selectedVehicle: this.vehicle,
         selectedColor: this.selectedColor,
         selectedEngine: this.selectedEngine!,
@@ -107,6 +107,13 @@ export class VehicleConfigurationComponent implements OnInit {
         selectedExtras: this.selectedExtras
       };
       if (this.loginService.userIsLoggedIn()) {
+        const configuredVehicle: UserConfiguration = {
+          selectedVehicle: this.vehicle,
+          selectedColor: this.selectedColor,
+          selectedEngine: this.selectedEngine!,
+          selectedRim: this.selectedRim!,
+          selectedExtras: this.selectedExtras
+        };
         this.vehiculeService.saveVehicle(configuredVehicle)
           .subscribe(() => this.router.navigate(["user"])
             .then(() => {
@@ -122,7 +129,7 @@ export class VehicleConfigurationComponent implements OnInit {
     }
   }
 
-  private goToLogin(configuredVehicle: ConfiguredVehicle) {
+  private goToLogin(configuredVehicle: UserConfiguration) {
     this.sessionSaveConfiguredVehicle(configuredVehicle);
     this.router.navigate(
       ["login-register"],
@@ -130,7 +137,7 @@ export class VehicleConfigurationComponent implements OnInit {
     );
   }
 
-  private sessionSaveConfiguredVehicle(configuredVehicle: ConfiguredVehicle) {
+  private sessionSaveConfiguredVehicle(configuredVehicle: UserConfiguration) {
     const configuredVehicleIds = {
       selectedVehicleId: configuredVehicle.selectedVehicle.id,
       selectedColor: configuredVehicle.selectedColor.id,

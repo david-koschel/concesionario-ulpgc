@@ -8,8 +8,9 @@ import {ToastModule} from "primeng/toast";
 import {UserService} from "../../services/user.service";
 import {User} from "../../models/user.model";
 import {VehicleService} from "../../services/vehicle.service";
-import {ConfiguredVehicle} from "../../models/configurable-vehicle/configured-vehicle.model";
+import {UserConfiguration} from "../../models/configurable-vehicle/configured-vehicle.model";
 import {RouterLink} from "@angular/router";
+import {SidebarModule} from "primeng/sidebar";
 
 @Component({
   selector: 'app-user-profile',
@@ -24,7 +25,8 @@ import {RouterLink} from "@angular/router";
     InputTextModule,
     NgClass,
     ToastModule,
-    RouterLink
+    RouterLink,
+    SidebarModule
   ],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.scss',
@@ -41,7 +43,7 @@ export class UserProfileComponent implements OnInit {
 
   protected userCardRows: { name: string; value: string; formControl?: string }[] = [];
   protected userVehicles: { model: string; status: string; image: string; }[] = [];
-  protected userConfigurations: ConfiguredVehicle[] = [];
+  protected userConfigurations: UserConfiguration[] = [];
 
   protected form!: FormGroup;
   protected formLoading = false;

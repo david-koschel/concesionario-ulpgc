@@ -4,7 +4,7 @@ import {ConfigurableVehicleEngine} from "./configurable-vehicle-engine.model";
 import {ConfigurableVehicleRim} from "./configurable-vehicle-rim.model";
 import {ConfigurableVehicleExtra} from "./configurable-vehicle-extra.model";
 
-export interface ConfiguredVehicle {
+export interface UserConfiguration {
   id?: number;
   selectedVehicle: ConfigurableVehicle;
   selectedColor: ConfigurableVehicleColor;
