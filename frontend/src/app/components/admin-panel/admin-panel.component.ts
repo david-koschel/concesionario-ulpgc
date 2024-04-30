@@ -17,6 +17,7 @@ export class AdminPanelComponent {
     {routerLink: "/user-list", label: "Usuarios"},
     {routerLink: "/catalogue-vehicles", label: "Catálogo de Vehículos"},
     {routerLink: "/drive-requests", label: "Solicitudes de Prueba"},
-    {routerLink: "/test-drive-cars", label:"Coches de Prueba"}
+    {routerLink: "/test-drive-cars", label:"Coches de Prueba"},
+    {routerLink: "/blog-list", label:"Lista de blogs"}
   ]
 }

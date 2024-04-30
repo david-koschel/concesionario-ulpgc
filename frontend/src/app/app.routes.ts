@@ -19,6 +19,7 @@ import {AboutUsComponent} from './components/about-us/about-us.component';
 import {OurServicesComponent} from './components/our-services/our-services.component';
 import {TermsAndConditionsComponent} from "./components/terms-and-conditions/terms-and-conditions.component";
 import {PrivacyCookiesComponent} from "./components/privacy-cookies/privacy-cookies.component";
+import {BlogListComponent} from "./components/blogs/blog-list/blog-list.component";
 
 export const routes: Routes = [
   {
@@ -77,6 +78,11 @@ export const routes: Routes = [
   {
     path: "test-drive-cars",
     component: TestDriveCarListComponent,
+    canActivate: [userIsAdminGuard]
+  },
+  {
+    path: "blog-list",
+    component: BlogListComponent,
     canActivate: [userIsAdminGuard]
   },
   {

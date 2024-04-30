@@ -1,0 +1,135 @@
+<div class="container-fluid container-padding">
+  <div class="d-flex justify-content-between align-items-center pt-3">
+    <h2>Lista de publicaciones</h2>
+    <div>
+      <button
+        pButton
+        label="Añadir Entrada"
+        routerLink="/blog-form/new"
+        class="btn btn-outline-dark"
+      ></button>
+    </div>
+  </div>
+  <hr>
+  @if(loading || blogList){
+    <p-table
+      #blogTable
+      styleClass="p-datatable-gridlines"
+      [value]="blogList"
+      responsiveLayout="stack"
+      [paginator]="true"
+      [rows]="10"
+      [rowsPerPageOptions]="[5,10,25,50]"
+      [globalFilterFields]="['title']"
+      [loading]="loading"
+    >
+      <ng-template pTemplate="caption">
+        <div class="d-flex flex-wrap justify-content-between gap-2">
+        <span class="p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input
+          pInputText
+          type="text"
+          (input)="applyFilterGlobal($event, blogTable)"
+          placeholder="Buscar entrada"
+        />
+      </span>
+          <p-checkbox
+            label="Mostrar publicaciones finalizadas"
+            [binary]="true"
+            (onChange)="filterFinished($event.checked)"
+          ></p-checkbox>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="title">
+            Nombre
+            <p-sortIcon field="title"></p-sortIcon>
+          </th>
+          <th pSortableColumn="modificationDate">
+            Fecha de modificación
+            <p-sortIcon field="modificationDate"></p-sortIcon>
+          </th>
+          <th pSortableColumn="endDate">
+            Fecha de fin
+            <p-sortIcon field="endDate"></p-sortIcon>
+          </th>
+          <th style="width: 5em;" pSortableColumn="event">
+            <div class="d-flex align-items-center gap-2">
+              <span>Tipo</span>
+              <p-sortIcon field="event"></p-sortIcon>
+            </div>
+          </th>
+          <th style="width: 5em;">
+            <div class="d-flex align-items-center gap-2">
+              <span>Publicado</span>
+              <p-columnFilter
+                type="boolean"
+                field="published"
+                [showClearButton]="false"
+              ></p-columnFilter>
+            </div>
+          </th>
+          <th></th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-blog>
+        <tr>
+          <td>
+            <span class="p-column-title">Nombre</span>
+            {{blog.title}}
+          </td>
+          <td>
+            <span class="p-column-title">Fecha de modificación</span>
+            {{blog.modificationDate | date: "EEEE, d 'de' MMMM, Y 'a las' HH:mm":"":"es"}}
+          </td>
+          <td>
+            <span class="p-column-title">Fecha de fin</span>
+            {{blog.endDate | date: "EEEE, d 'de' MMMM, Y":"":"es"}}
+          </td>
+          <td>
+            <span class="p-column-title">Tipo</span>
+            {{blog.event ? "Evento" : "Noticia"}}
+          </td>
+          <td>
+            <span class="p-column-title">Publicado</span>
+            {{blog.published ? "Sí" : "No"}}
+          </td>
+          <td style="width: 7em;">
+            <span class="p-column-title"></span>
+            <div class="d-flex flex-row gap-2 justify-content-center">
+              <button
+                pButton
+                title="Editar"
+                icon="pi pi-pencil"
+                routerLink="/blog-form/{{blog.id}}"
+              ></button>
+              <button
+                pButton
+                title="Archivar"
+                *ngIf="blog.published"
+                class="p-button-danger"
+                icon="pi pi-inbox"
+                (click)="confirmPublishing($event, blog)"
+              ></button>
+              <button
+                pButton
+                title="Publicar"
+                *ngIf="!blog.published && blog.description && blog.endDate && blog.image"
+                class="p-button-success"
+                icon="pi pi-upload"
+                (click)="confirmPublishing($event, blog)"
+              ></button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="6">No se han encontrado entradas bajo estos parámetros</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  }
+</div>
