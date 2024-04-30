@@ -38,25 +38,25 @@ public class BlogController {
         return blogService.findPublishedByName(name);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/all")
     public List<Blog> findAll(){
         return blogService.findAll();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/{id}")
     public Blog findById(@PathVariable Integer id){
         return blogService.findById(id);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{id}")
     public Blog update(@RequestBody Blog blog, @PathVariable Integer id) {
         return blogService.update(blog, id);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     public Blog save(@RequestBody Blog blog) {
         return blogService.save(blog);
