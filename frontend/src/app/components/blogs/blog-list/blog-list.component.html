@@ -26,7 +26,6 @@
       <ng-template pTemplate="caption">
         <div class="d-flex flex-wrap justify-content-between gap-2">
         <span class="p-input-icon-left">
-        <i class="pi pi-search"></i>
         <input
           pInputText
           type="text"
@@ -101,15 +100,16 @@
             <div class="d-flex flex-row gap-2 justify-content-center">
               <button
                 pButton
+                class="btn btn-outline-primary"
                 title="Editar"
                 icon="pi pi-pencil"
                 routerLink="/blog-form/{{blog.id}}"
               ></button>
               <button
                 pButton
+                class="btn btn-outline-danger"
                 title="Archivar"
                 *ngIf="blog.published"
-                class="p-button-danger"
                 icon="pi pi-inbox"
                 (click)="confirmPublishing($event, blog)"
               ></button>

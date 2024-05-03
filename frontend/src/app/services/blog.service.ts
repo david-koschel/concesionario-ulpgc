@@ -13,4 +13,16 @@ export class BlogService {
   getAll(): Observable<Blog[]> {
     return this.http.get<Blog[]>("http://localhost:8080/api/blog/all");
   }
+
+  update(blog: Blog) : any {
+
+  }
+
+  save(blog: Blog) : any {
+
+  }
+
+  getById(blogId: string): Observable<Blog> {
+    return new Observable<Blog>();
+  }
 }

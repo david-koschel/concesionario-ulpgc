@@ -2,10 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {Blog} from "../../../models/blog.model";
 import {Table, TableModule} from "primeng/table";
 import {CheckboxModule} from "primeng/checkbox";
-import {DatePipe} from "@angular/common";
+import {DatePipe, NgIf} from "@angular/common";
 import {RouterLink} from "@angular/router";
 import {BlogService} from "../../../services/blog.service";
 import {ButtonModule} from "primeng/button";
+import {InputTextModule} from "primeng/inputtext";
 
 @Component({
   selector: 'app-blog-list',
@@ -15,7 +16,9 @@ import {ButtonModule} from "primeng/button";
     CheckboxModule,
     DatePipe,
     RouterLink,
-    ButtonModule
+    ButtonModule,
+    NgIf,
+    InputTextModule
   ],
   templateUrl: './blog-list.component.html',
   styleUrl: './blog-list.component.scss'
@@ -38,9 +41,12 @@ export class BlogListComponent implements OnInit{
   }
 
   getBlogs() {
-    this.blogService.getAll().subscribe(
-      blogs => this.blogList = blogs
-    );
+    this.blogService.getAll().subscribe({
+        next: blogs => {
+          this.blogList = blogs;
+          this.loading = false;
+        }
+    });
   }
 
   filterFinished(filterAll: any) {
