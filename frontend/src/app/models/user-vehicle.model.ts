@@ -9,4 +9,7 @@ export interface UserVehicle {
   engineName: string;
   rimName: string;
   extras: string[];
+  paymentStatus: PaymentStatus;
 }
+
+export type PaymentStatus = "IN_PROCESS" | "BOUGHT" | "CANCELED";

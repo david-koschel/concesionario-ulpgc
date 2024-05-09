@@ -59,7 +59,12 @@
                 </div>
                 <div class="d-flex flex-wrap gap-1 justify-content-between px-1 px-md-3 px-xl-5">
                   <label><b>Estado</b></label>
-                  <span>Comprado</span>
+                  <span>{{ vehicle.paymentStatus | vehiclePaymentStatus }}</span>
+                </div>
+                <div class="d-flex justify-content-center px-1 px-md-3 px-xl-5">
+                  <button class="btn btn-outline-dark" (click)="continuePayment(vehicle.id)">
+                    Continuar Compra
+                  </button>
                 </div>
               </div>
             </div>
@@ -163,3 +168,8 @@
     </div>
   </div>
 </p-sidebar>
+<form #tpvForm action="https://sis-t.redsys.es:25443/sis/realizarPago" method="POST" class="d-none">
+  <input #i1 type="hidden" name="Ds_SignatureVersion"/>
+  <input #i2 type="hidden" name="Ds_MerchantParameters"/>
+  <input #i3 type="hidden" name="Ds_Signature"/>
+</form>

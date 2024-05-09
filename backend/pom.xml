@@ -92,6 +92,27 @@
             <artifactId>lombok</artifactId>
             <scope>provided</scope>
         </dependency>
+
+		<!--DEPENDENCIAS API REDSYS-->
+		<dependency>
+			<groupId>sis.redsys.api</groupId>
+			<artifactId>api-sha256</artifactId>
+			<version>2.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20230227</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcprov-jdk15on</artifactId>
+			<version>1.70</version>
+		</dependency>
 	</dependencies>
 
 	<build>

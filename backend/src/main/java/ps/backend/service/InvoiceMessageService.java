@@ -16,9 +16,9 @@ public class InvoiceMessageService {
         this.templateEngine = templateEngine;
     }
 
-    public void sendInvoiceMessageEmail(String to, UserVehicle userVehicle) {
+    public void sendInvoiceMessageEmail(UserVehicle userVehicle) {
         String emailBody = this.generateEmailBody();
-        this.emailService.sendInvoiceMail(to, "Factura Concesionario ULPGC", emailBody, userVehicle);
+        this.emailService.sendInvoiceMail(userVehicle.getUser().getEmail(), "Factura Concesionario ULPGC", emailBody, userVehicle);
     }
 
     private String generateEmailBody() {

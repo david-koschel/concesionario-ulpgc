@@ -52,4 +52,6 @@ public class UserConfiguration {
             inverseJoinColumns = @JoinColumn(name = "configurable_vehicle_extra_id")
     )
     private List<ConfigurableVehicleExtra> selectedExtras;
+
+    private boolean hidden;
 }

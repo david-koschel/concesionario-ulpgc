@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, ViewChild} from '@angular/core';
 import {NgClass, NgForOf, NgIf, NgOptimizedImage, NgTemplateOutlet} from "@angular/common";
 import {ButtonModule} from "primeng/button";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
@@ -12,6 +12,7 @@ import {UserConfiguration} from "../../models/configurable-vehicle/configured-ve
 import {RouterLink} from "@angular/router";
 import {SidebarModule} from "primeng/sidebar";
 import {UserVehicle} from "../../models/user-vehicle.model";
+import {VehiclePaymentStatusPipe} from "./vehicle-payment-status.pipe";
 
 @Component({
   selector: 'app-user-profile',
@@ -27,7 +28,8 @@ import {UserVehicle} from "../../models/user-vehicle.model";
     NgClass,
     ToastModule,
     RouterLink,
-    SidebarModule
+    SidebarModule,
+    VehiclePaymentStatusPipe
   ],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.scss',
@@ -58,6 +60,15 @@ export class UserProfileComponent implements OnInit {
   currentTotalPrice: any;
   selectedConfig: UserConfiguration | undefined;
   purchaseLoading = false;
+
+  @ViewChild("tpvForm")
+  tpvForm: any;
+  @ViewChild("i1")
+  signatureVersion: any;
+  @ViewChild("i2")
+  parameters: any;
+  @ViewChild("i3")
+  signature: any;
 
 
   ngOnInit(): void {
@@ -141,7 +152,9 @@ export class UserProfileComponent implements OnInit {
 
   paymentConfirmed(): void {
     this.purchaseLoading = true;
-    this.vehicleService.buyConfiguration(this.selectedConfig!.id!).subscribe(() => {
+    this.vehicleService.buyConfiguration(this.selectedConfig!.id!).subscribe((res) => {
+      console.log(res);
+      this.submitTpvForm(res);
       this.purchaseLoading = false;
       this.sidebarVisible = false;
       this.selectedConfig = undefined;
@@ -152,5 +165,16 @@ export class UserProfileComponent implements OnInit {
 
   paymentCancelled(): void {
     this.sidebarVisible = false;
+  }
+
+  private submitTpvForm(data: any) {
+    this.signatureVersion.nativeElement.value = data.ds_SignatureVersion;
+    this.parameters.nativeElement.value = data.ds_MerchantParameters;
+    this.signature.nativeElement.value = data.ds_Signature;
+    this.tpvForm.nativeElement.submit();
+  }
+
+  protected continuePayment(id: number) {
+    this.vehicleService.continueVehiclePurchase(id).subscribe(res => this.submitTpvForm(res));
   }
 }
