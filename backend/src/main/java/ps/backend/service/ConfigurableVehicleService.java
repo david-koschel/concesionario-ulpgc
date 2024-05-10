@@ -1,6 +1,7 @@
 package ps.backend.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import ps.backend.dto.PaymentInfoDto;
 import ps.backend.entity.Payment;
@@ -8,6 +9,7 @@ import ps.backend.entity.User;
 import ps.backend.entity.configurableVehicle.ConfigurableVehicle;
 import ps.backend.entity.userVehicle.UserConfiguration;
 import ps.backend.entity.userVehicle.UserVehicle;
+import ps.backend.entity.userVehicle.VehicleExtra;
 import ps.backend.entity.userVehicle.VehiclePaymentStatusEnum;
 import ps.backend.exception.BasicException;
 import ps.backend.repository.ConfigurableVehicleRepository;
@@ -15,6 +17,7 @@ import ps.backend.repository.UserConfigurationRepository;
 import ps.backend.repository.UserVehicleRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static ps.backend.entity.PaymentType.VEHICLE_PURCHASE;
 
@@ -69,12 +72,15 @@ public class ConfigurableVehicleService {
                 .toList();
     }
 
+    @Transactional
     public PaymentInfoDto buyVehicle(Integer id) {
         User currentUser = userService.findLoggedUser();
 
         UserConfiguration userConfiguration = currentUser.getUserConfigurations().stream()
                 .filter(config -> config.getId().equals(id))
                 .findFirst().orElseThrow(BasicException::new);
+
+        if (userConfiguration.isHidden()) throw new BasicException("Ya hay una compra en proceso");
 
         float totalPrice = userConfiguration.getSelectedVehicle().getBasePrice() +
                 userConfiguration.getSelectedColor().getPrice() +
@@ -103,7 +109,19 @@ public class ConfigurableVehicleService {
                 //TODO .extras()
                 .build();
 
-        userVehicleRepository.save(userVehicle);
+        UserVehicle savedVehicle = userVehicleRepository.save(userVehicle);
+
+
+        savedVehicle.setExtras(userConfiguration.getSelectedExtras().stream()
+                .map(extra ->
+                        VehicleExtra.builder()
+                                .name(extra.getName())
+                                .description(extra.getDescription())
+                                .build()
+                ).collect(Collectors.toList())
+        );
+
+        userVehicleRepository.save(savedVehicle);
 
         userConfiguration.setHidden(true);
         userConfigurationRepository.save(userConfiguration);
@@ -115,8 +133,10 @@ public class ConfigurableVehicleService {
         UserVehicle vehicle = payment.getUserVehicle();
         if (payment.paymentWasSuccessful()) {
             vehicle.setPaymentStatus(VehiclePaymentStatusEnum.BOUGHT);
-            invoiceMessageService.sendInvoiceMessageEmail(vehicle);
-            userConfigurationRepository.deleteById(vehicle.getUserConfigurationId());
+            userVehicleRepository.save(vehicle);
+            UserConfiguration userConfiguration = userConfigurationRepository.findById(vehicle.getUserConfigurationId()).orElseThrow(EntityNotFoundException::new);
+            invoiceMessageService.sendInvoiceMessageEmail(vehicle, userConfiguration);
+            userConfigurationRepository.delete(userConfiguration);
         } else {
             UserConfiguration userConfiguration = userConfigurationRepository.findById(vehicle.getUserConfigurationId()).orElseThrow(EntityNotFoundException::new);
             userConfiguration.setHidden(false);

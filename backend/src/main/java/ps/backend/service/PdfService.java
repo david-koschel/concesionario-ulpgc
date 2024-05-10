@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
-import ps.backend.entity.userVehicle.UserVehicle;
+import ps.backend.entity.userVehicle.UserConfiguration;
 
 import java.awt.*;
 import java.io.ByteArrayOutputStream;
@@ -34,13 +34,14 @@ public class PdfService {
     private static final String LOGO_IMG = "img/LOGO.png";
     private static final Color GRIS = WebColors.getRGBColor("#4B4947");
 
-    public PdfService(){}
+    public PdfService() {
+    }
 
-    public ByteArrayDataSource generateInvoicePDF(UserVehicle userVehicle){
+    public ByteArrayDataSource generateInvoicePDF(UserConfiguration userConfiguration) {
         PdfPTable pdfPTable = new PdfPTable(12);
 
         this.createInvoiceHeader(pdfPTable);
-        this.createInvoiceBody(pdfPTable, userVehicle);
+        this.createInvoiceBody(pdfPTable, userConfiguration);
 
         ByteArrayDataSource dataSource = generatePdfByteArrayDataSourceFromPdfPTable(pdfPTable);
         dataSource.setName(
@@ -50,7 +51,7 @@ public class PdfService {
         return dataSource;
     }
 
-    private void createInvoiceHeader(PdfPTable table){
+    private void createInvoiceHeader(PdfPTable table) {
         table.setWidthPercentage(100);
         PdfPCell cell;
         try {
@@ -70,7 +71,7 @@ public class PdfService {
                 cell.setColspan(7);
                 cell.setPadding(0);
                 cell.setPaddingRight(10);
-                if(i == 0){
+                if (i == 0) {
                     cell.setVerticalAlignment(Element.ALIGN_BASELINE);
                 } else if (i == 1) {
                     cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -80,12 +81,12 @@ public class PdfService {
                 }
                 table.addCell(cell);
             }
-        } catch (IOException e){
+        } catch (IOException e) {
             log.error("Error creating header for pdf", e.getMessage());
         }
     }
 
-    private void createInvoiceBody(PdfPTable table, UserVehicle userVehicle) {
+    private void createInvoiceBody(PdfPTable table, UserConfiguration userVehicle) {
         PdfPCell cell;
 
         cell = this.addInlineParagraph("Factura: ", "2024-04-" + userVehicle.getId(), boldFont, normalFont);
@@ -123,20 +124,24 @@ public class PdfService {
 
         this.addDivider(table);
 
-        this.generateBoughtElementsRows(table, userVehicle);
+        float totalPrice = this.generateBoughtElementsRows(table, userVehicle);
 
         this.addDivider(table);
 
-        cell = this.addInlineParagraph("IMPORTE TOTAL (€): ", String.format("%.2f", userVehicle.getTotalPrice()), endBoldFont, endNormalFont);
+        cell = this.addInlineParagraph("IMPORTE TOTAL (€): ", String.format("%.2f", totalPrice), endBoldFont, endNormalFont);
         cell.setColspan(12);
         cell.setPaddingRight(20);
         this.addAlignCell(table, cell, 2);
     }
 
-    private void generateBoughtElementsRows(PdfPTable table, UserVehicle userVehicle) {
+    private float generateBoughtElementsRows(PdfPTable table, UserConfiguration userConfiguration) {
         PdfPCell cell;
 
-        cell = new PdfPCell(new Phrase(String.format("%s %s", userVehicle.getBrand(), userVehicle.getModel()), normalFont));
+        cell = new PdfPCell(new Phrase(String.format(
+                "%s %s",
+                userConfiguration.getSelectedVehicle().getBrand(),
+                userConfiguration.getSelectedVehicle().getModel()
+        ), normalFont));
         cell.setColspan(6);
         cell.setBorder(0);
         this.addAlignCell(table, cell, Element.ALIGN_LEFT);
@@ -146,15 +151,17 @@ public class PdfService {
         cell.setBorder(0);
         this.addAlignCell(table, cell, Element.ALIGN_CENTER);
 
-        cell = new PdfPCell(new Phrase(String.format("%.2f", userVehicle.getTotalPrice())));
+        cell = new PdfPCell(new Phrase(String.format("%.2f", userConfiguration.getSelectedVehicle().getBasePrice())));
         cell.setColspan(2);
         cell.setBorder(0);
         this.addAlignCell(table, cell, Element.ALIGN_CENTER);
 
-        cell = new PdfPCell(new Phrase(String.format("%.2f", userVehicle.getTotalPrice())));
+        cell = new PdfPCell(new Phrase(String.format("%.2f", userConfiguration.getSelectedVehicle().getBasePrice())));
         cell.setColspan(2);
         cell.setBorder(0);
         this.addAlignCell(table, cell, Element.ALIGN_CENTER);
+
+        return 12f;
     }
 
     private ByteArrayDataSource generatePdfByteArrayDataSourceFromPdfPTable(PdfPTable table) {
