@@ -20,6 +20,7 @@ import {OurServicesComponent} from './components/our-services/our-services.compo
 import {TermsAndConditionsComponent} from "./components/terms-and-conditions/terms-and-conditions.component";
 import {PrivacyCookiesComponent} from "./components/privacy-cookies/privacy-cookies.component";
 import {BlogListComponent} from "./components/blogs/blog-list/blog-list.component";
+import {BlogFormComponent} from "./components/blogs/blog-form/blog-form.component";
 
 export const routes: Routes = [
   {
@@ -83,6 +84,11 @@ export const routes: Routes = [
   {
     path: "blog-list",
     component: BlogListComponent,
+    canActivate: [userIsAdminGuard]
+  },
+  {
+    path: "blog-form/new",
+    component: BlogFormComponent,
     canActivate: [userIsAdminGuard]
   },
   {

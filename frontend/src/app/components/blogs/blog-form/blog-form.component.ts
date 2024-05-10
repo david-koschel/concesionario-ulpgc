@@ -11,6 +11,8 @@ import {ProgressSpinnerModule} from "primeng/progressspinner";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {DialogModule} from "primeng/dialog";
 import {FormsModule} from "@angular/forms";
+import {ActivatedRoute, Router} from "@angular/router";
+import {RippleModule} from "primeng/ripple";
 
 @Component({
   selector: 'app-blog-form',
@@ -25,7 +27,8 @@ import {FormsModule} from "@angular/forms";
     ConfirmDialogModule,
     DialogModule,
     EditorModule,
-    FormsModule
+    FormsModule,
+    RippleModule
   ],
   templateUrl: './blog-form.component.html',
   styleUrl: './blog-form.component.scss'
@@ -45,7 +48,7 @@ export class BlogFormComponent implements OnInit, AfterContentInit{
 
   disable = false;
   saveLoading = false;
-  getterIsLoading = true;
+  getterIsLoading = false;
   showInfo = false;
 
   filter: RegExp = /[abcdefghijklmnopqrstuvwxyz0123456789\-_]+/;

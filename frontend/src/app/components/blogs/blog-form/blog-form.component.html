@@ -1,14 +1,6 @@
 <div class="container pt-4">
   <div class="d-flex justify-content-between mb-2">
-    <h2>EDITAR ENTRADA</h2>
-    <button
-      pButton
-      pRipple
-      type="button"
-      icon="pi pi-info"
-      class="p-button-rounded p-button-info p-button-outlined"
-      (click)="showInfo=true"
-    ></button>
+    <h2>Editar Entrada</h2>
   </div>
   <div *ngIf="!disable">
     <p-editor
@@ -83,12 +75,14 @@
           pButton
           (click)="showPreview()"
           label="Mostrar Avance"
+          class="btn btn-outline-primary"
         ></button>
         <button
           pButton
           (click)="onSubmit()"
           [disabled]="isDisabled() || saveLoading || getterIsLoading"
           label="Guardar"
+          class="btn btn-outline-primary"
         ></button>
       </div>
     </div>
@@ -103,42 +97,3 @@
   </div>
 </div>
 <p-progressSpinner *ngIf="getterIsLoading"></p-progressSpinner>
-
-<p-confirmDialog
-  header="Confirmación de publicación"
-  acceptLabel="Guardar y Publicar"
-  rejectLabel="Cancelar"
-></p-confirmDialog>
-
-<p-dialog
-  header="Información"
-  [(visible)]="showInfo"
-  [modal]="true"
-  [style]="{'width': '600px'}"
-  [draggable]="false"
-  [resizable]="false"
->
-  <p>
-    <span style="color: red; font-weight: bold">*</span>
-    : Campos obligatorios.
-  </p>
-  <p>
-    <span style="color: cadetblue; font-weight: bold">*</span>
-    : Campos obligatorios a la hora de publicar.
-  </p>
-  Información de cada campo:
-  <ul>
-    <li>nombre-de-la-entrada: nombre que saldrá en la url para navegar a la entrada. Tiene que ser único.</li>
-    <li>Fecha de fin: fecha en la que la entrada dejará de mostrarse en la pantalla de inicio.</li>
-    <li>Título: texto que saldrá en la pantalla de inicio junto a la imagen.</li>
-    <li>
-      Link de la imagen: link de la imagen que saldrá en la pantalla de inicio. Es preferible que la imagen esté en
-      formato 4:3. Para comprobar que el link funcione, al pegarlo en la barra de búsqueda solo puede aparecer la imagen.
-    </li>
-    <li>
-      Evento o Noticia: de qué tipo de entrada se trata. La única diferencia es que estarán separadas en la pantalla de
-      inicio.
-    </li>
-    <li>Publicar: si al guardar la entrada será pública o no.</li>
-  </ul>
-</p-dialog>
