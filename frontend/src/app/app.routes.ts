@@ -19,8 +19,13 @@ import {AboutUsComponent} from './components/about-us/about-us.component';
 import {OurServicesComponent} from './components/our-services/our-services.component';
 import {TermsAndConditionsComponent} from "./components/terms-and-conditions/terms-and-conditions.component";
 import {PrivacyCookiesComponent} from "./components/privacy-cookies/privacy-cookies.component";
+import {TranslateWidgetComponent} from "./components/translate-widget/translate-widget.component";
 
 export const routes: Routes = [
+  {
+    path: "translate",
+    component: TranslateWidgetComponent
+  },
   {
     path: "contacto",
     component: ContactComponent
