@@ -12,6 +12,8 @@ import {UserConfiguration} from "../../models/configurable-vehicle/configured-ve
 import {RouterLink} from "@angular/router";
 import {SidebarModule} from "primeng/sidebar";
 import {UserVehicle} from "../../models/user-vehicle.model";
+import { IndependentExtra } from '../../models/independentextra.model';
+import { ExtraService } from '../../services/extra.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -39,6 +41,7 @@ export class UserProfileComponent implements OnInit {
   private formBuilder = inject(FormBuilder);
   private messageService = inject(MessageService);
   private vehicleService = inject(VehicleService);
+  private extraService = inject(ExtraService)
 
   protected editing: boolean = false;
 
@@ -59,10 +62,13 @@ export class UserProfileComponent implements OnInit {
   selectedConfig: UserConfiguration | undefined;
   purchaseLoading = false;
 
+  protected userExtras: IndependentExtra[] =[];
+
 
   ngOnInit(): void {
     this.getUserData();
     this.getUserVehicles();
+    this.getUserExtras();
     this.getUserConfigurations();
   }
 
@@ -84,6 +90,13 @@ export class UserProfileComponent implements OnInit {
   private getUserVehicles() {
     this.vehicleService.getUserVehicles().subscribe(res => this.userVehicles = res);
   }
+
+////
+  private getUserExtras(){
+    this.extraService.getUserExtras().subscribe(data => this.userExtras = data)
+  }
+////
+
 
   private getUserConfigurations() {
     this.vehicleService.getUserConfigurations().subscribe(res => this.userConfigurations = res);
