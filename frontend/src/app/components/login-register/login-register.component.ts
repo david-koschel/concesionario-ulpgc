@@ -58,7 +58,7 @@ export class LoginRegisterArregladoComponent implements OnInit {
   }
 
   submitForm() {
-    if (this.registerForm.valid) {
+    if (this.registerForm.valid && this.validarContrasenia(this.registerForm.controls['password'].value)) {
       this.loading = true;
       const user: User = {...this.registerForm.value};
       this.userService.registerUser(user)
@@ -78,7 +78,7 @@ export class LoginRegisterArregladoComponent implements OnInit {
         });
     } else {
       this.messageService.add({
-        summary: "error",
+        summary: "Error",
         detail: "Rellene correctamente todos los campos",
         severity: "error"
       });
@@ -151,5 +151,31 @@ export class LoginRegisterArregladoComponent implements OnInit {
     } else {
       this.router.navigate(["user"]);
     }
+  }
+
+  validarContrasenia(contrasenia: string): boolean {
+    const longitudMinima = 8;
+    if (contrasenia.length < longitudMinima) {
+      this.messageService.add({severity: 'error', summary: 'Error', detail: "La contraseña debe tener al menos una longitud de 8 caracteres"});
+      return false;
+    }
+    if (!/\d/.test(contrasenia)) {
+      this.messageService.add({severity: 'error', summary: 'Error', detail: "La contraseña debe contener al menos un caracter numerico"});
+      return false;
+    }
+    if (!/[A-Z]/.test(contrasenia)) {
+      this.messageService.add({severity: 'error', summary: 'Error', detail: "La contraseña debe contener al menos un caracter en mayuscula"});
+      return false;
+    }
+    if (!/[a-z]/.test(contrasenia)) {
+      this.messageService.add({severity: 'error', summary: 'Error', detail: "La contraseña debe contener al menos un caracter en minuscula"});
+      return false;
+    }
+    if (!/[^A-Za-z0-9]/.test(contrasenia)) {
+      this.messageService.add({severity: 'error', summary: 'Error', detail: "La contraseña debe contener al menos un caracter especial"});
+      return false;
+    }
+    this.messageService.add({severity: 'success', summary: 'Éxito', detail: "Contraseña modificada con exito"});
+    return true;
   }
 }
