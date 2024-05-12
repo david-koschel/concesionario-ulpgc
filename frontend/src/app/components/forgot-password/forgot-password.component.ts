@@ -59,8 +59,10 @@ export class ForgotPasswordComponent implements OnInit{
   }
   recuperarContrasenia(){
     if(this.forgotPasswordForm.controls.email.value != null) {
-      this.messageService.add({severity: 'success', summary: 'Éxito', detail: "Correo para restaurar la contraseña enviado"});
+      this.messageService.add({severity: 'success', summary: 'Éxito', detail: "Correo para restaurar contraseña enviado"});
       this.userService.sendEmail(this.forgotPasswordForm.controls.email.value);
+    } else {
+      this.messageService.add({severity: 'error', summary: 'Error', detail: "Introduzca un correo valido"});
     }
   }
 
