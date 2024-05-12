@@ -78,7 +78,8 @@ export class LoginRegisterArregladoComponent implements OnInit {
         });
     } else {
       this.messageService.add({
-        summary: "Rellene correctamente todos los campos",
+        summary: "error",
+        detail: "Rellene correctamente todos los campos",
         severity: "error"
       });
     }
@@ -121,7 +122,8 @@ export class LoginRegisterArregladoComponent implements OnInit {
       );
     } else {
       this.messageService.add({
-        summary: "Rellene correctamente todos los campos",
+        summary: "Error",
+        detail: "Rellene correctamente todos los campos",
         severity: "error"
       });
     }

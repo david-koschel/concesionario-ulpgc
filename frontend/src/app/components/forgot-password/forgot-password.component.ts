@@ -6,6 +6,7 @@ import {FormBuilder, ReactiveFormsModule, Validators} from "@angular/forms";
 import {UserService} from "../../services/user.service";
 import { ActivatedRoute } from '@angular/router';
 import {MessageService} from "primeng/api";
+import {ToastModule} from "primeng/toast";
 
 @Component({
   selector: 'app-forgot-password',
@@ -14,7 +15,8 @@ import {MessageService} from "primeng/api";
     ButtonModule,
     InputTextModule,
     PaginatorModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ToastModule
   ],
   templateUrl: './forgot-password.component.html',
   styleUrl: './forgot-password.component.scss',
@@ -57,10 +59,8 @@ export class ForgotPasswordComponent implements OnInit{
   }
   recuperarContrasenia(){
     if(this.forgotPasswordForm.controls.email.value != null) {
-      this.messageService.add({severity: 'success', summary: 'Éxito', detail: 'Datos de usuario actualizados'});
+      this.messageService.add({severity: 'success', summary: 'Éxito', detail: "Correo para restaurar la contraseña enviado"});
       this.userService.sendEmail(this.forgotPasswordForm.controls.email.value);
-    } else {
-      this.messageService.add({severity: 'success', summary: 'Éxito', detail: 'Datos de usuario actualizados'});
     }
   }
 
