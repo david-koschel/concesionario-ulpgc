@@ -42,4 +42,9 @@ export class UserService {
     return this.http.post<User>("http://localhost:8080/api/user/register", user);
   }
 
+  public restorePassword(email: String, password: String): void {
+    const requestedBody = {email, password}
+    this.http.post<String>("http://localhost:8080/api/user/restorePassword", requestedBody).subscribe();
+  }
+
 }

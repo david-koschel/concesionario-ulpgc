@@ -67,6 +67,14 @@ public class UserService implements UserDetailsService {
         return savedUser;
     }
 
+    public void restorePassword(String email, String password){
+        if(userRepository.findByEmail(email).isPresent()){
+            User user = userRepository.findByEmail(email).get();
+            user.setPassword(password);
+            userRepository.save(user);
+        }
+    }
+
     private String generateEmailBody(User user) {
         Context context = new Context();
         context.setVariable("username", user.getUsername());

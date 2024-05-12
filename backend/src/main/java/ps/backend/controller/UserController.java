@@ -15,6 +15,7 @@ import ps.backend.entity.User;
 import ps.backend.exception.BasicException;
 import ps.backend.service.EmailService;
 import ps.backend.service.UserService;
+import ps.backend.dto.RestorePasswordRequest;
 
 import java.util.HashMap;
 import java.util.List;
@@ -62,7 +63,13 @@ public class UserController {
 
     @PostMapping("/sendEmail")
     public void sendEmail(@RequestBody String sendEmail) {
-        emailService.sendEmail(sendEmail, "Recuperación de Contraseña", "Enlace para recuperar contraseña");
+        emailService.sendEmail(sendEmail, "Recuperación de Contraseña", "http://localhost:4200/forgot-password?email=" + sendEmail);
+    }
+
+    @PostMapping("/restorePassword")
+    public void restorePassword(@RequestBody RestorePasswordRequest request) {
+        System.out.println(request.getPassword());
+        this.userService.restorePassword(request.getEmail(), request.getPassword());
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
