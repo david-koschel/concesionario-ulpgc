@@ -21,6 +21,8 @@ import {TermsAndConditionsComponent} from "./components/terms-and-conditions/ter
 import {PrivacyCookiesComponent} from "./components/privacy-cookies/privacy-cookies.component";
 import {BlogListComponent} from "./components/blogs/blog-list/blog-list.component";
 import {BlogFormComponent} from "./components/blogs/blog-form/blog-form.component";
+import {BlogsComponent} from "./components/blogs/blogs/blogs.component";
+import {BlogEntryComponent} from "./components/blogs/blog-entry/blog-entry.component";
 
 export const routes: Routes = [
   {
@@ -117,6 +119,18 @@ export const routes: Routes = [
   {
     path: "our-services",
     component: OurServicesComponent
+  },
+  {
+    path: "blogs",
+    component: BlogsComponent
+  },
+  {
+    path: "blogs/:blogId",
+    component: BlogEntryComponent
+  },
+  {
+    path: "blog-form/:blogId",
+    component: BlogFormComponent
   },
   {
     path: '**',

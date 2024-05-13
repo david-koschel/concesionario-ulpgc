@@ -13,6 +13,7 @@ import {DialogModule} from "primeng/dialog";
 import {FormsModule} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {RippleModule} from "primeng/ripple";
+import {ConfirmationService, MessageService} from "primeng/api";
 
 @Component({
   selector: 'app-blog-form',
@@ -31,32 +32,32 @@ import {RippleModule} from "primeng/ripple";
     RippleModule
   ],
   templateUrl: './blog-form.component.html',
-  styleUrl: './blog-form.component.scss'
+  styleUrl: './blog-form.component.scss',
+  providers: [ConfirmationService, MessageService]
 })
 export class BlogFormComponent implements OnInit, AfterContentInit{
 
-  @ViewChild("previewer")
-  previewer!: ElementRef;
   @ViewChild("editor")
   editor!: Editor;
+  @ViewChild('inputFile')
+  inputFile!: ElementRef;
 
   module: any;
 
   blogId!: string;
   blog: Blog;
-  typeOptions = [{label: 'Evento', value: true}, {label: "Noticia", value: false}];
 
   disable = false;
   saveLoading = false;
   getterIsLoading = false;
   showInfo = false;
 
-  filter: RegExp = /[abcdefghijklmnopqrstuvwxyz0123456789\-_]+/;
-
   constructor(
     private blogService: BlogService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
   ) {
     const toolbarOptions = [
       [{'header': [1, 2, 3, 4, 5, false]}],
@@ -66,18 +67,14 @@ export class BlogFormComponent implements OnInit, AfterContentInit{
       ['blockquote', 'code-block'],
       [{'list': 'ordered'}, {'list': 'bullet'}],
       [{'script': 'sub'}, {'script': 'super'}],
-      [{'color': []}, {'background': []}],
-      ['image', 'video', 'link']
+      [{'color': []}, {'background': []}]
     ];
     this.module = {
       toolbar: {
-        container: toolbarOptions,
-        handlers: {
-          image: this.imageHandler
-        }
+        container: toolbarOptions
       }
     };
-    this.blog = {title: "", description: "", image: "", published: false, data: "", endDate: null!};
+    this.blog = {title: "", published: false, data: "", endDate: null!};
   }
 
   ngOnInit(): void {
@@ -122,10 +119,10 @@ export class BlogFormComponent implements OnInit, AfterContentInit{
   }
 
   saveOrUpdateToPublish() {
-    /*this.confirmationService.confirm({
+    this.confirmationService.confirm({
       message: "Publicar esta entrada hará que sea visible para todo el mundo, ¿eso es lo que quiere?",
       accept: () => this.saveOrUpdate()
-    });*/
+    });
   }
 
   onSubmit() {
@@ -141,16 +138,31 @@ export class BlogFormComponent implements OnInit, AfterContentInit{
     const blog: Blog = {...this.blog, data: deltaData};
 
     this.blogService.save(blog).subscribe({
-
+      next: (blog : any) => {
+        this.messageService.add({
+          summary: "Publicación guardada",
+          detail: `La entrada "${blog.title}" se ha guardado con éxito`,
+          severity: "success"
+        });
+        this.router.navigate([`blog-form/${blog.id}`]).then(
+          () => window.location.reload()
+        );
+      },
+      error: (error: { error: { message: any; }; }) => {
+        this.messageService.add({
+          summary: "Error al guardar",
+          detail: error.error.message,
+          severity: "error"
+        });
+        this.saveLoading = false;
+      }
     });
   }
 
   isDisabled(): boolean {
     if (this.blog.published) {
       return !this.blog.title ||
-        !this.blog.endDate ||
-        !this.blog.description ||
-        !this.blog.image;
+        !this.blog.endDate
     }
     return !this.blog.title;
   }
@@ -160,30 +172,24 @@ export class BlogFormComponent implements OnInit, AfterContentInit{
     const blog: Blog = {...this.blog, data: deltaData};
 
     this.blogService.update(blog).subscribe({
-    });
-  }
-
-  imageHandler(this: any) {
-    const tooltip = this.quill.theme.tooltip;
-    const originalSave = tooltip.save;
-    const originalHide = tooltip.hide;
-    tooltip.save = function (this: any) {
-      const range = this.quill.getSelection(true);
-      const value = this.textbox.value;
-      if (value) {
-        this.quill.insertEmbed(range.index, 'image', value, 'user');
+      next: (blog:any) => {
+        this.messageService.add({
+          summary: "Publicación actualizada",
+          detail: `La entrada "${blog.title}" se ha actualizado con éxito`,
+          severity: "success"
+        });
+        this.blog = blog;
+        this.blog.endDate = blog.endDate ? new Date(blog.endDate) : null!;
+        this.saveLoading = false;
+      },
+      error: (error: { error: { message: any; }; }) => {
+        this.messageService.add({
+          summary: "Error al actualizar",
+          detail: error.error.message,
+          severity: "error"
+        });
+        this.saveLoading = false;
       }
-    };
-    tooltip.hide = function (this: any) {
-      tooltip.save = originalSave;
-      tooltip.hide = originalHide;
-      tooltip.hide();
-    };
-    tooltip.edit('image');
-    tooltip.textbox.placeholder = "Embed URL";
-  }
-
-  showPreview() {
-
+    });
   }
 }

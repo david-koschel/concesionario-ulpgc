@@ -7,6 +7,8 @@ import {RouterLink} from "@angular/router";
 import {BlogService} from "../../../services/blog.service";
 import {ButtonModule} from "primeng/button";
 import {InputTextModule} from "primeng/inputtext";
+import {ConfirmationService, MessageService} from "primeng/api";
+import {ConfirmPopupModule} from "primeng/confirmpopup";
 
 @Component({
   selector: 'app-blog-list',
@@ -18,10 +20,12 @@ import {InputTextModule} from "primeng/inputtext";
     RouterLink,
     ButtonModule,
     NgIf,
-    InputTextModule
+    InputTextModule,
+    ConfirmPopupModule
   ],
   templateUrl: './blog-list.component.html',
-  styleUrl: './blog-list.component.scss'
+  styleUrl: './blog-list.component.scss',
+  providers: [MessageService, ConfirmationService]
 })
 export class BlogListComponent implements OnInit{
   blogs!: Blog[];
@@ -29,8 +33,11 @@ export class BlogListComponent implements OnInit{
   loading = true;
   today = new Date();
 
-  public constructor(private blogService: BlogService) {
-  }
+  public constructor(
+    private blogService: BlogService,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
+  ) {}
 
   ngOnInit(): void {
     this.getBlogs();
@@ -56,11 +63,35 @@ export class BlogListComponent implements OnInit{
   }
 
   confirmPublishing(event: Event, blog: Blog) {
-
+    console.log("HOLAA");
+    this.confirmationService.confirm({
+      target: event.target!,
+      message: blog.published ?
+        "¿Quiere archivar esta entrada?" :
+        "¿Quiere publicar esta entrada?",
+      icon: "pi pi-exclamation-triangle",
+      accept: () => this.invertBlogPublishing(blog)
+    });
   }
 
   invertBlogPublishing(blog: Blog) {
     const blogToUpdate = {...blog, published: !blog.published};
-
+    this.blogService.update(blogToUpdate).subscribe({
+      next: () => {
+        this.messageService.add({
+          summary: "Éxito",
+          detail: `El blog se ha ${blog.published ? "archivado" : "publicado"} con éxito`,
+          severity: "success",
+        });
+        this.getBlogs();
+      },
+      error: () => {
+        this.messageService.add({
+          summary: "Error",
+          detail: `Error al ${blog.published ? "archivar" : "publicar"} el blog`,
+          severity: "error",
+        });
+      }
+    });
   }
 }

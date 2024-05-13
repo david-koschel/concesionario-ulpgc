@@ -1,6 +1,14 @@
 <div class="container pt-4">
   <div class="d-flex justify-content-between mb-2">
     <h2>Editar Entrada</h2>
+    <button
+      pButton
+      pRipple
+      type="button"
+      icon="pi pi-info"
+      class="btn btn-outline-info"
+      (click)="showInfo=true"
+    ></button>
   </div>
   <div *ngIf="!disable">
     <p-editor
@@ -20,8 +28,7 @@
           type="text"
           class="w-100"
         >
-        <!--[pKeyFilter]="filter-->
-        <label class="required" for="title">nombre-de-la-entrada</label>
+        <label class="required" for="title">Título</label>
       </span>
       <span class="p-float-label w-100 mt-3">
         <p-calendar
@@ -31,28 +38,6 @@
           [(ngModel)]="blog.endDate"
         ></p-calendar>
         <label class="semi-required" for="cal">Fecha de fin</label>
-      </span>
-      <span class="p-float-label w-100 mt-3">
-        <input
-          pInputText
-          id="desc"
-          [(ngModel)]="blog.description"
-          type="text"
-          class="w-100"
-        >
-        <label class="semi-required" for="desc">Título</label>
-      </span>
-    </div>
-    <div class="my-4">
-      <span class="p-float-label w-100">
-        <input
-          pInputText
-          id="link"
-          class="w-100"
-          [(ngModel)]="blog.image"
-          type="text"
-        >
-        <label class="semi-required" for="link">Link de la imagen (4:3)</label>
       </span>
     </div>
     <div class="d-flex flex-wrap gap-2 justify-content-between">
@@ -73,22 +58,11 @@
         ></i>
         <button
           pButton
-          (click)="showPreview()"
-          label="Mostrar Avance"
-          class="btn btn-outline-primary"
-        ></button>
-        <button
-          pButton
           (click)="onSubmit()"
           [disabled]="isDisabled() || saveLoading || getterIsLoading"
           label="Guardar"
           class="btn btn-outline-primary"
         ></button>
-      </div>
-    </div>
-    <div #previewer class="ql-viewer my-3" style="width: 100%;" id="converted-view">
-      <div class="text-center">
-        <i>Aquí se mostrará el avance de como se verá la entrada</i>
       </div>
     </div>
   </div>
@@ -97,3 +71,33 @@
   </div>
 </div>
 <p-progressSpinner *ngIf="getterIsLoading"></p-progressSpinner>
+
+<p-confirmDialog
+  header="Confirmación de publicación"
+  acceptLabel="Guardar y Publicar"
+  rejectLabel="Cancelar"
+></p-confirmDialog>
+<p-dialog
+  header="Información"
+  [(visible)]="showInfo"
+  [modal]="true"
+  [style]="{'width': '600px'}"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <p>
+    <span style="color: red; font-weight: bold">*</span>
+    : Campos obligatorios.
+  </p>
+  <p>
+    <span style="color: cadetblue; font-weight: bold">*</span>
+    : Campos obligatorios a la hora de publicar.
+  </p>
+  Información de cada campo:
+  <ul>
+    <li>nombre-de-la-entrada: nombre que saldrá en la url para navegar a la entrada. Tiene que ser único.</li>
+    <li>Fecha de fin: fecha en la que la entrada dejará de mostrarse la noticia.</li>
+    <li>Título: texto que saldrá en la pantalla junto a la imagen.</li>
+    <li>Publicar: si al guardar la entrada será pública o no.</li>
+  </ul>
+</p-dialog>

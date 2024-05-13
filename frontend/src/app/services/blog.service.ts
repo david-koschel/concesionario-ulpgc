@@ -14,15 +14,19 @@ export class BlogService {
     return this.http.get<Blog[]>("http://localhost:8080/api/blog/all");
   }
 
-  update(blog: Blog) : any {
-
-  }
-
-  save(blog: Blog) : any {
-
-  }
-
   getById(blogId: string): Observable<Blog> {
-    return new Observable<Blog>();
+    return this.http.get<Blog>(`http://localhost:8080/api/blog/${blogId}`);
+  }
+
+  getPublicAllBeforeToday(): Observable<Blog[]> {
+    return this.http.get<Blog[]>(`http://localhost:8080/api/blog/public/show`);
+  }
+
+  update(blog: Blog) : any {
+    return this.http.put<Blog>(`http://localhost:8080/api/blog/${blog.id}`, blog);
+  }
+
+  save(blog: Blog) : Observable<Blog> {
+    return this.http.post<Blog>("http://localhost:8080/api/blog", blog);
   }
 }

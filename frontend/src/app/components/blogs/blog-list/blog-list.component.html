@@ -23,23 +23,6 @@
       [globalFilterFields]="['title']"
       [loading]="loading"
     >
-      <ng-template pTemplate="caption">
-        <div class="d-flex flex-wrap justify-content-between gap-2">
-        <span class="p-input-icon-left">
-        <input
-          pInputText
-          type="text"
-          (input)="applyFilterGlobal($event, blogTable)"
-          placeholder="Buscar entrada"
-        />
-      </span>
-          <p-checkbox
-            label="Mostrar publicaciones finalizadas"
-            [binary]="true"
-            (onChange)="filterFinished($event.checked)"
-          ></p-checkbox>
-        </div>
-      </ng-template>
       <ng-template pTemplate="header">
         <tr>
           <th pSortableColumn="title">
@@ -53,12 +36,6 @@
           <th pSortableColumn="endDate">
             Fecha de fin
             <p-sortIcon field="endDate"></p-sortIcon>
-          </th>
-          <th style="width: 5em;" pSortableColumn="event">
-            <div class="d-flex align-items-center gap-2">
-              <span>Tipo</span>
-              <p-sortIcon field="event"></p-sortIcon>
-            </div>
           </th>
           <th style="width: 5em;">
             <div class="d-flex align-items-center gap-2">
@@ -88,10 +65,6 @@
             {{blog.endDate | date: "EEEE, d 'de' MMMM, Y":"":"es"}}
           </td>
           <td>
-            <span class="p-column-title">Tipo</span>
-            {{blog.event ? "Evento" : "Noticia"}}
-          </td>
-          <td>
             <span class="p-column-title">Publicado</span>
             {{blog.published ? "Sí" : "No"}}
           </td>
@@ -116,8 +89,8 @@
               <button
                 pButton
                 title="Publicar"
-                *ngIf="!blog.published && blog.description && blog.endDate && blog.image"
-                class="p-button-success"
+                *ngIf="!blog.published && blog.endDate"
+                class="btn btn-outline-success"
                 icon="pi pi-upload"
                 (click)="confirmPublishing($event, blog)"
               ></button>
@@ -133,3 +106,4 @@
     </p-table>
   }
 </div>
+<p-confirmPopup></p-confirmPopup>
