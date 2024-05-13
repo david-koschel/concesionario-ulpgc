@@ -19,6 +19,8 @@ import {AboutUsComponent} from './components/about-us/about-us.component';
 import {OurServicesComponent} from './components/our-services/our-services.component';
 import {TermsAndConditionsComponent} from "./components/terms-and-conditions/terms-and-conditions.component";
 import {PrivacyCookiesComponent} from "./components/privacy-cookies/privacy-cookies.component";
+import { ExtrasShopComponent } from './components/extras-shop/extras-shop.component';
+import { IndependentExtrasComponent } from './components/independent-extras/independent-extras.component';
 
 export const routes: Routes = [
   {
@@ -105,6 +107,15 @@ export const routes: Routes = [
   {
     path: "our-services",
     component: OurServicesComponent
+  },
+  {
+    path: "extras-shop",
+    component: ExtrasShopComponent
+  },
+  {
+    path: "independent-extras",
+    component: IndependentExtrasComponent,
+    canActivate: [userIsAdminGuard]
   },
   {
     path: '**',

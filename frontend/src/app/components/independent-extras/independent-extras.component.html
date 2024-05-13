@@ -1,0 +1,108 @@
+<h1>Editar catálogo de accesorios</h1>
+<article>
+
+  <section class="d-flex gap-3 mb-4 justify-content-center">
+    <button (click)="addExtraForm()" type="button" class="btn btn-success px-5 py-2">
+      Añadir accesorio independiente
+    </button>
+  </section>
+
+  @for (extra of independentExtras; track extra.id) {
+    <h2 class="name">{{extra.name}}</h2>
+    <div class="row mb-3">
+        <div class="col-9">
+          <div class="description">
+            {{ extra.description }}
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="d-flex flex-column align-items-center justify-content-start gap-2">
+            <img
+              src="{{ extra.image }}"
+              class="object-fit-cover mt-1"
+              width="200px"
+              height="100px"
+              alt
+            >
+            <button
+              class="btn btn-secondary"
+              (click)="editExtraForm(extra)"
+            >
+              Editar
+            </button>
+          </div>
+        </div>
+      </div>
+  }
+</article>
+
+<p-sidebar [(visible)]="addBarVisible" position="right" [fullScreen]="true">
+  <div class="px-5">
+    <h3>Añadir accesorio</h3>
+    <form [formGroup]="addForm">
+      <div class="row">
+        <div class="col-4">
+          <label for="extraname" class="required">Nombre</label>
+          <input type="text" id="extraname" formControlName="name" class="form-control"/>
+        </div>
+        <div class="col-12 my-3">
+          <label for="extradesc" class="required">Descripción</label>
+          <input type="text" id="extradesc" formControlName="description" class="form-control"/>
+        </div>
+        <div class="col-12 my-3">
+          <label for="extraprice" class="required">Precio</label>
+          <input type="number" min="0" step=".01" id="extraprice" formControlName="price" class="form-control"/>
+        </div>
+        <div class="col-12">
+          <label for="image" class="required">Imagen</label>
+          <input #inputFile type="file" accept="image/*" id="image" class="form-control" (change)="handleExtraAdd($event)"/>
+        </div>
+      </div>
+    
+      <div class="d-flex gap-3 mt-4 justify-content-start">
+        <button (click)="cancelAdd()" class="btn btn-danger">
+          Cancelar
+        </button>
+        <button pButton (click)="addIndependentExtra()" class="btn btn-secondary">
+          Confirmar
+        </button>
+      </div>
+    </form>
+  </div>
+</p-sidebar>
+
+
+<p-sidebar [(visible)]="editBarVisible" position="right" [fullScreen]="true">
+  <div class="px-5">
+    <h3>Editar accesorio</h3>
+    <form [formGroup]="editForm">
+      <div class="row">
+        <div class="col-4">
+          <label for="extraname2" class="required">Nombre</label>
+          <input type="text" id="extraname2" formControlName="editedname" class="form-control"/>
+        </div>
+        <div class="col-12 my-3">
+          <label for="extradesc2" class="required">Descripción</label>
+          <input type="text" id="extradesc2" formControlName="editeddescription" class="form-control"/>
+        </div>
+        <div class="col-12 my-3">
+          <label for="extraprice2" class="required">Precio</label>
+          <input type="number" min="0" step=".01" id="extraprice2" formControlName="editedprice" class="form-control"/>
+        </div>
+        <div class="col-12">
+          <label for="image" class="required2">Imagen</label>
+          <input #editFile type="file" accept="image/*" id="image2" class="form-control" (change)="handleExtraEdit($event)"/>
+        </div>
+      </div>
+    
+      <div class="d-flex gap-3 mt-4 justify-content-start">
+        <button (click)="cancelEdit()" class="btn btn-danger">
+          Cancelar
+        </button>
+        <button pButton (click)="editIndependentExtra()" class="btn btn-secondary">
+          Confirmar edición
+        </button>
+      </div>
+    </form>
+  </div>
+</p-sidebar>
