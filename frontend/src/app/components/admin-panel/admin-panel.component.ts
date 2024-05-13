@@ -18,6 +18,8 @@ export class AdminPanelComponent {
     {routerLink: "/catalogue-vehicles", label: "Catálogo de Vehículos"},
     {routerLink: "/drive-requests", label: "Solicitudes de Prueba"},
     {routerLink: "/test-drive-cars", label:"Coches de Prueba"},
+    {routerLink: "/rent-admin-create-vehicule", label:"Crear coches de alquiler"},
+    {routerLink: "/independent-extras", label: "Accesorios independientes"},
     {routerLink: "/blog-list", label:"Lista de blogs"}
   ]
 }

@@ -9,6 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.Setter;
 import ps.backend.entity.User;
@@ -52,4 +53,15 @@ public class UserConfiguration {
             inverseJoinColumns = @JoinColumn(name = "configurable_vehicle_extra_id")
     )
     private List<ConfigurableVehicleExtra> selectedExtras;
+
+    private boolean hidden;
+
+    @Transient
+    public float getTotalPrice() {
+        return this.getSelectedVehicle().getBasePrice() +
+                this.getSelectedColor().getPrice() +
+                this.getSelectedRim().getPrice() +
+                this.getSelectedEngine().getPrice() +
+                this.getSelectedExtras().stream().reduce(0f, (subtotal, element) -> subtotal + element.getPrice(), Float::sum);
+    }
 }

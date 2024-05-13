@@ -1,56 +1,82 @@
 package ps.backend.service;
 
-import com.lowagie.text.*;
-
-import com.lowagie.text.Font;
+import com.lowagie.text.Element;
 import com.lowagie.text.Image;
-import com.lowagie.text.html.WebColors;
-import com.lowagie.text.pdf.*;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.PdfPTable;
 import jakarta.mail.util.ByteArrayDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
-import ps.backend.entity.userVehicle.UserVehicle;
+import ps.backend.entity.UserIndependentExtras;
+import ps.backend.entity.configurableVehicle.ConfigurableVehicle;
+import ps.backend.entity.configurableVehicle.ConfigurableVehicleColor;
+import ps.backend.entity.configurableVehicle.ConfigurableVehicleEngine;
+import ps.backend.entity.configurableVehicle.ConfigurableVehicleExtra;
+import ps.backend.entity.configurableVehicle.ConfigurableVehicleRim;
+import ps.backend.entity.userVehicle.UserConfiguration;
 
-import java.awt.*;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
+
+import static ps.backend.util.PdfUtil.GRIS;
+import static ps.backend.util.PdfUtil.addAlignCell;
+import static ps.backend.util.PdfUtil.addDivider;
+import static ps.backend.util.PdfUtil.addInlineParagraph;
+import static ps.backend.util.PdfUtil.bold;
+import static ps.backend.util.PdfUtil.boldFont;
+import static ps.backend.util.PdfUtil.endBoldFont;
+import static ps.backend.util.PdfUtil.endNormalFont;
+import static ps.backend.util.PdfUtil.generatePdfByteArrayDataSourceFromPdfPTable;
+import static ps.backend.util.PdfUtil.generateSingleBoldRow;
+import static ps.backend.util.PdfUtil.generateSingleTabbedRow;
+import static ps.backend.util.PdfUtil.headFont;
+import static ps.backend.util.PdfUtil.normalFont;
 
 @Service
 public class PdfService {
 
     private static final Logger log = LoggerFactory.getLogger(PdfService.class);
-
-    private final Font headBoldFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 9, WebColors.getRGBColor("#FFFFFF"));
-    private final Font headFont = FontFactory.getFont(FontFactory.HELVETICA, 9, WebColors.getRGBColor("#FFFFFF"));
-    private final Font boldFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 10);
-    private final Font normalFont = FontFactory.getFont(FontFactory.HELVETICA, 10);
-    private final Font endBoldFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 12);
-    private final Font endNormalFont = FontFactory.getFont(FontFactory.HELVETICA, 12);
-    private final Font bold = FontFactory.getFont(FontFactory.HELVETICA_BOLD);
-
     private static final String LOGO_IMG = "img/LOGO.png";
-    private static final Color GRIS = WebColors.getRGBColor("#4B4947");
 
-    public PdfService(){}
+    public PdfService() {
+    }
 
-    public ByteArrayDataSource generateInvoicePDF(UserVehicle userVehicle){
+    public ByteArrayDataSource generateVehicleInvoicePDF(UserConfiguration userConfiguration, String orderNumber) {
         PdfPTable pdfPTable = new PdfPTable(12);
 
-        this.createInvoiceHeader(pdfPTable);
-        this.createInvoiceBody(pdfPTable, userVehicle);
+        this.createInvoiceHeader(pdfPTable, orderNumber);
+        this.createVehicleInvoiceBody(pdfPTable, userConfiguration);
 
         ByteArrayDataSource dataSource = generatePdfByteArrayDataSourceFromPdfPTable(pdfPTable);
         dataSource.setName(
-                "Factura_Concesionario_ULPGC.pdf"
+                "Factura_Vehículo_Concesionario_ULPGC.pdf"
         );
 
         return dataSource;
     }
 
-    private void createInvoiceHeader(PdfPTable table){
+
+
+    public ByteArrayDataSource generateExtraInvoicePDF(UserIndependentExtras extra, String orderNumber) {
+        PdfPTable pdfPTable = new PdfPTable(12);
+
+        this.createInvoiceHeader(pdfPTable, orderNumber);
+        this.createExtraInvoiceBody(pdfPTable, extra);
+
+        ByteArrayDataSource dataSource = generatePdfByteArrayDataSourceFromPdfPTable(pdfPTable);
+        dataSource.setName(
+                "Factura_Accesorio_Concesionario_ULPGC.pdf"
+        );
+
+        return dataSource;
+
+    }
+
+    private void createInvoiceHeader(PdfPTable table, String orderNumber) {
         table.setWidthPercentage(100);
         PdfPCell cell;
         try {
@@ -60,17 +86,17 @@ public class PdfService {
             cell.setRowspan(3);
             cell.setBackgroundColor(GRIS);
             cell.setBorder(0);
-            this.addAlignCell(table, cell, Element.ALIGN_CENTER);
+            addAlignCell(table, cell, Element.ALIGN_CENTER);
 
             String[] titles = {"Correo Electrónico: ", "Dirección: ", "Teléfono: "};
             String[] fields = {"ulpgc.concesionario@gmail.com", "Campus de Tafira, 35017 Las Palmas de Gran Canaria", "(+34) 928 xxx 105"};
             for (int i = 0; i < titles.length; i++) {
-                cell = this.addInlineParagraph(titles[i], fields[i], headFont, headFont);
+                cell = addInlineParagraph(titles[i], fields[i], headFont, headFont);
                 cell.setBackgroundColor(GRIS);
                 cell.setColspan(7);
                 cell.setPadding(0);
                 cell.setPaddingRight(10);
-                if(i == 0){
+                if (i == 0) {
                     cell.setVerticalAlignment(Element.ALIGN_BASELINE);
                 } else if (i == 1) {
                     cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -80,123 +106,84 @@ public class PdfService {
                 }
                 table.addCell(cell);
             }
-        } catch (IOException e){
-            log.error("Error creating header for pdf", e.getMessage());
+
+            cell = addInlineParagraph("Factura: ", orderNumber, boldFont, normalFont);
+            cell.setColspan(12);
+            cell.setVerticalAlignment(Element.ALIGN_BASELINE);
+            table.addCell(cell);
+
+            cell = addInlineParagraph("Fecha: ", String.valueOf(new Date()), boldFont, normalFont);
+            cell.setColspan(12);
+            cell.setVerticalAlignment(Element.ALIGN_TOP);
+            cell.setPaddingBottom(10);
+            table.addCell(cell);
+
+            addDivider(table);
+
+            cell = new PdfPCell(new Paragraph("Descripción", bold));
+            cell.setColspan(6);
+            cell.setBorder(0);
+            addAlignCell(table, cell, Element.ALIGN_LEFT);
+
+            cell = new PdfPCell(new Paragraph("Cantidad", bold));
+            cell.setColspan(2);
+            cell.setBorder(0);
+            addAlignCell(table, cell, Element.ALIGN_CENTER);
+
+            cell = new PdfPCell(new Paragraph("Precio Unitario", bold));
+            cell.setColspan(2);
+            cell.setBorder(0);
+            addAlignCell(table, cell, Element.ALIGN_CENTER);
+
+            cell = new PdfPCell(new Paragraph("Importe", bold));
+            cell.setColspan(2);
+            cell.setBorder(0);
+            addAlignCell(table, cell, Element.ALIGN_CENTER);
+
+            addDivider(table);
+        } catch (IOException e) {
+            log.error("Error creating header for pdf {}", e.getMessage());
         }
     }
 
-    private void createInvoiceBody(PdfPTable table, UserVehicle userVehicle) {
-        PdfPCell cell;
+    private void createExtraInvoiceBody(PdfPTable table, UserIndependentExtras extra) {
+        generateSingleBoldRow(table, extra.getName(), 1, extra.getPrice());
 
-        cell = this.addInlineParagraph("Factura: ", "2024-04-" + userVehicle.getId(), boldFont, normalFont);
-        cell.setColspan(12);
-        cell.setVerticalAlignment(Element.ALIGN_BASELINE);
-        table.addCell(cell);
+        this.generateInvoiceEnd(table, extra.getPrice());
+    }
 
-        cell = this.addInlineParagraph("Fecha: ", String.valueOf(new Date()), boldFont, normalFont);
-        cell.setColspan(12);
-        cell.setVerticalAlignment(Element.ALIGN_TOP);
-        cell.setPaddingBottom(10);
-        table.addCell(cell);
+    private void createVehicleInvoiceBody(PdfPTable table, UserConfiguration userConfiguration) {
+        ConfigurableVehicle selectedVehicle = userConfiguration.getSelectedVehicle();
+        String vehicleName = String.format("%s %s", selectedVehicle.getBrand(), selectedVehicle.getModel());
+        generateSingleBoldRow(table, vehicleName, 1, selectedVehicle.getBasePrice());
 
-        this.addDivider(table);
+        ConfigurableVehicleColor color = userConfiguration.getSelectedColor();
+        String colorName = String.format("Color %s", color.getName());
+        generateSingleTabbedRow(table, colorName, 1, color.getPrice());
 
-        cell = new PdfPCell(new Paragraph("Descripción", bold));
-        cell.setColspan(6);
-        cell.setBorder(0);
-        this.addAlignCell(table, cell, Element.ALIGN_LEFT);
+        ConfigurableVehicleEngine engine = userConfiguration.getSelectedEngine();
+        String engineName = String.format("Motor %s", color.getName());
+        generateSingleTabbedRow(table, engineName, 1, engine.getPrice());
 
-        cell = new PdfPCell(new Paragraph("Cantidad", bold));
-        cell.setColspan(2);
-        cell.setBorder(0);
-        this.addAlignCell(table, cell, Element.ALIGN_CENTER);
+        ConfigurableVehicleRim rim = userConfiguration.getSelectedRim();
+        String rimName = String.format("Llantas %s", color.getName());
+        generateSingleTabbedRow(table, rimName, 1, rim.getPrice());
 
-        cell = new PdfPCell(new Paragraph("Precio Unitario", bold));
-        cell.setColspan(2);
-        cell.setBorder(0);
-        this.addAlignCell(table, cell, Element.ALIGN_CENTER);
+        List<ConfigurableVehicleExtra> extras = userConfiguration.getSelectedExtras();
+        extras.forEach(extra -> generateSingleTabbedRow(table, extra.getName(), 1, extra.getPrice()));
 
-        cell = new PdfPCell(new Paragraph("Importe", bold));
-        cell.setColspan(2);
-        cell.setBorder(0);
-        this.addAlignCell(table, cell, Element.ALIGN_CENTER);
 
-        this.addDivider(table);
+        this.generateInvoiceEnd(table, userConfiguration.getTotalPrice());
+    }
 
-        this.generateBoughtElementsRows(table, userVehicle);
+    private void generateInvoiceEnd(PdfPTable table, float totalPrice) {
+        addDivider(table);
 
-        this.addDivider(table);
+        PdfPCell cell = addInlineParagraph("IMPORTE TOTAL (IGIC incluido): ", String.format("%.2f€", totalPrice), endBoldFont, endNormalFont);
 
-        cell = this.addInlineParagraph("IMPORTE TOTAL (€): ", String.format("%.2f", userVehicle.getTotalPrice()), endBoldFont, endNormalFont);
         cell.setColspan(12);
         cell.setPaddingRight(20);
-        this.addAlignCell(table, cell, 2);
-    }
+        addAlignCell(table, cell, 2);
 
-    private void generateBoughtElementsRows(PdfPTable table, UserVehicle userVehicle) {
-        PdfPCell cell;
-
-        cell = new PdfPCell(new Phrase(String.format("%s %s", userVehicle.getBrand(), userVehicle.getModel()), normalFont));
-        cell.setColspan(6);
-        cell.setBorder(0);
-        this.addAlignCell(table, cell, Element.ALIGN_LEFT);
-
-        cell = new PdfPCell(new Phrase("1"));
-        cell.setColspan(2);
-        cell.setBorder(0);
-        this.addAlignCell(table, cell, Element.ALIGN_CENTER);
-
-        cell = new PdfPCell(new Phrase(String.format("%.2f", userVehicle.getTotalPrice())));
-        cell.setColspan(2);
-        cell.setBorder(0);
-        this.addAlignCell(table, cell, Element.ALIGN_CENTER);
-
-        cell = new PdfPCell(new Phrase(String.format("%.2f", userVehicle.getTotalPrice())));
-        cell.setColspan(2);
-        cell.setBorder(0);
-        this.addAlignCell(table, cell, Element.ALIGN_CENTER);
-    }
-
-    private ByteArrayDataSource generatePdfByteArrayDataSourceFromPdfPTable(PdfPTable table) {
-        Document document = new Document();
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        final PdfWriter instance = PdfWriter.getInstance(document, outputStream);
-
-        document.open();
-        instance.getInfo().put(new PdfName(""), new PdfString(Document.getVersion()));
-        document.add(table);
-        document.close();
-
-        byte[] bytes = outputStream.toByteArray();
-        return new ByteArrayDataSource(bytes, "application/pdf");
-    }
-
-    private PdfPCell addInlineParagraph(String title, String field, Font titleFont, Font fieldFont) {
-        PdfPCell cell = new PdfPCell();
-
-        Paragraph p = new Paragraph();
-        p.add(new Chunk(title, titleFont));
-        p.add(new Chunk(field, fieldFont));
-        p.setAlignment(Element.ALIGN_RIGHT);
-        cell.addElement(p);
-        cell.setBorder(0);
-
-        return cell;
-    }
-
-    private void addDivider(PdfPTable table) {
-        PdfPCell separatorCell = new PdfPCell();
-        separatorCell.setColspan(12);
-        separatorCell.setBorder(0);
-        separatorCell.setBorderWidthBottom(2);
-        separatorCell.setBorderColor(GRIS);
-        table.addCell(separatorCell);
-    }
-
-    private void addAlignCell(PdfPTable table, PdfPCell cell, int align) {
-        cell.setFixedHeight(23);
-        cell.setHorizontalAlignment(align);
-        cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
-        table.addCell(cell);
     }
 }

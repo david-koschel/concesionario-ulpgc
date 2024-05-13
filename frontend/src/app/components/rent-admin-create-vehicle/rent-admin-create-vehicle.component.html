@@ -1,0 +1,52 @@
+<form [formGroup]="vehicleForm" (ngSubmit)="onSubmit()" class="vehicle-form">
+    <div class="form-group">
+      <label for="img">Imagen URL:</label>
+      <input type="text" id="img" formControlName="img" class="form-control">
+      <div *ngIf="vehicleForm.get('img')?.errors && vehicleForm.get('img')?.touched" class="error-message">
+        La URL de la imagen es requerida.
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="make">Marca:</label>
+      <input type="text" id="make" formControlName="make" class="form-control">
+      <div *ngIf="vehicleForm.get('make')?.errors && vehicleForm.get('make')?.touched" class="error-message">
+        La marca es requerida.
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="model">Modelo:</label>
+      <input type="text" id="model" formControlName="model" class="form-control">
+      <div *ngIf="vehicleForm.get('model')?.errors && vehicleForm.get('model')?.touched" class="error-message">
+        El modelo es requerido.
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="year">Año:</label>
+      <input type="text" id="year" formControlName="year" class="form-control">
+      <div *ngIf="vehicleForm.get('year')?.errors && vehicleForm.get('year')?.touched" class="error-message">
+        El año es requerido.
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="engine">Motor:</label>
+      <input type="text" id="engine" formControlName="engine" class="form-control">
+      <div *ngIf="vehicleForm.get('engine')?.errors && vehicleForm.get('engine')?.touched" class="error-message">
+        El motor es requerido.
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label for="price">Precio:</label>
+      <input type="number" id="price" formControlName="price" class="form-control">
+      <div *ngIf="vehicleForm.get('price')?.errors && vehicleForm.get('price')?.touched" class="error-message">
+        El precio es requerido y debe ser un número positivo.
+      </div>
+    </div>
+    
+    <button type="submit" [disabled]="!vehicleForm.valid" class="btn btn-primary" id="crearVehiculo">Crear Vehículo</button>
+  </form>
+  

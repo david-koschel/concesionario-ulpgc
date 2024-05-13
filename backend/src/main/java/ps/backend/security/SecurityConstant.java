@@ -17,6 +17,7 @@ final class SecurityConstant {
             "/api/test-drive-request/form",
             "/api/test-drive-request/occupied-dates",
             "/api/blog/public/**",
+            "/api/tpv/notification/**"
     };
     static final String API_URL = "/api/**";
     static final SecretKey JWT_KEY = Keys.hmacShaKeyFor("kBLPoylVFL5yWsPuBRkGltt9W3n5yNxkILchku8xEGTCkZsYlLVDkR1AB7sWuLlz".getBytes());

@@ -7,7 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import ps.backend.entity.userVehicle.UserVehicle;
+import ps.backend.entity.UserIndependentExtras;
+import ps.backend.entity.userVehicle.UserConfiguration;
 
 import java.io.UnsupportedEncodingException;
 
@@ -35,10 +36,21 @@ public class EmailService {
         }
     }
 
-    public void sendInvoiceMail(String to, String subject, String body, UserVehicle userVehicle) {
+    public void sendVehicleInvoiceMail(String to, String subject, String body, UserConfiguration userConfiguration, String orderNumber) {
         try {
             MimeMessageHelper helper = this.createEmailObject(to, subject, body);
-            ByteArrayDataSource attachment = this.pdfService.generateInvoicePDF(userVehicle);
+            ByteArrayDataSource attachment = this.pdfService.generateVehicleInvoicePDF(userConfiguration, orderNumber);
+            helper.addAttachment(attachment.getName(), attachment);
+            emailSender.send(helper.getMimeMessage());
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void sendExtraInvoiceMail(String to, String subject, String body, UserIndependentExtras extra) {
+        try {
+            MimeMessageHelper helper = this.createEmailObject(to, subject, body);
+            ByteArrayDataSource attachment = this.pdfService.generateExtraInvoicePDF(extra, extra.getPayment().getOrderNumber());
             helper.addAttachment(attachment.getName(), attachment);
             emailSender.send(helper.getMimeMessage());
         } catch (MessagingException | UnsupportedEncodingException e) {

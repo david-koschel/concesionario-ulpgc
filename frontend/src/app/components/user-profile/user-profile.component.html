@@ -59,7 +59,12 @@
                 </div>
                 <div class="d-flex flex-wrap gap-1 justify-content-between px-1 px-md-3 px-xl-5">
                   <label><b>Estado</b></label>
-                  <span>Comprado</span>
+                  <span>{{ vehicle.paymentStatus | vehiclePaymentStatus }}</span>
+                </div>
+                <div *ngIf="vehicle.paymentStatus === 'IN_PROCESS'" class="d-flex justify-content-center px-1 px-md-3 px-xl-5">
+                  <button class="btn btn-outline-dark" (click)="continuePayment(vehicle.id)">
+                    Continuar Compra
+                  </button>
                 </div>
               </div>
             </div>
@@ -70,6 +75,36 @@
   } @else {
     <span class="text-start">Aún no tienes vehículos.</span>
   }
+  <hr>
+  <h3>Mis accesorios</h3>
+  @if(userExtras.length > 0){
+    <div class="container text-center">
+      <div class="row row-cols-2">
+    @for (acc of userExtras; track acc.id) {
+      <div class="col my-2">
+        <div class="card bg-body-secondary h-100">
+          <div class="card-body">
+            <img src="{{acc.image}}" alt="imagen" class="object-fit-cover rounded" width="136" height="64">
+            <div class="d-flex flex-wrap gap-1 justify-content-between px-1 px-md-3 px-xl-5 mt-4">
+              <label><b>Nombre</b></label>
+              <span>{{acc.name}}</span>
+            </div>
+            <div class="d-flex flex-wrap gap-1 justify-content-between px-1 px-md-3 px-xl-5">
+              <label><b>Precio</b></label>
+              <span>{{ acc.price }}€</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+      </div>
+    </div>
+  } @else {
+    <span class="text-start">Aún no tienes accesorios, puedes empezar por visitar
+      <a routerLink="/extras-shop">nuestra tienda</a>.</span>
+  }
+
+
   <hr>
   <h3 id="configTable">Mis configuraciones guardadas</h3>
   @if (userConfigurations.length > 0) {
@@ -163,3 +198,4 @@
     </div>
   </div>
 </p-sidebar>
+<app-tpv-form #tpvForm></app-tpv-form>

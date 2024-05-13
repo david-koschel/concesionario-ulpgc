@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, ViewChild} from '@angular/core';
 import {NgClass, NgForOf, NgIf, NgOptimizedImage, NgTemplateOutlet} from "@angular/common";
 import {ButtonModule} from "primeng/button";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
@@ -12,6 +12,10 @@ import {UserConfiguration} from "../../models/configurable-vehicle/configured-ve
 import {RouterLink} from "@angular/router";
 import {SidebarModule} from "primeng/sidebar";
 import {UserVehicle} from "../../models/user-vehicle.model";
+import { IndependentExtra } from '../../models/independentextra.model';
+import { ExtraService } from '../../services/extra.service';
+import {VehiclePaymentStatusPipe} from "./vehicle-payment-status.pipe";
+import {TpvFormComponent} from "../tpv-form/tpv-form.component";
 
 @Component({
   selector: 'app-user-profile',
@@ -27,7 +31,9 @@ import {UserVehicle} from "../../models/user-vehicle.model";
     NgClass,
     ToastModule,
     RouterLink,
-    SidebarModule
+    SidebarModule,
+    VehiclePaymentStatusPipe,
+    TpvFormComponent
   ],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.scss',
@@ -39,6 +45,7 @@ export class UserProfileComponent implements OnInit {
   private formBuilder = inject(FormBuilder);
   private messageService = inject(MessageService);
   private vehicleService = inject(VehicleService);
+  private extraService = inject(ExtraService)
 
   protected editing: boolean = false;
 
@@ -59,10 +66,17 @@ export class UserProfileComponent implements OnInit {
   selectedConfig: UserConfiguration | undefined;
   purchaseLoading = false;
 
+  @ViewChild("tpvForm")
+  tpvForm!: TpvFormComponent;
+
+
+  protected userExtras: IndependentExtra[] =[];
+
 
   ngOnInit(): void {
     this.getUserData();
     this.getUserVehicles();
+    this.getUserExtras();
     this.getUserConfigurations();
   }
 
@@ -84,6 +98,13 @@ export class UserProfileComponent implements OnInit {
   private getUserVehicles() {
     this.vehicleService.getUserVehicles().subscribe(res => this.userVehicles = res);
   }
+
+////
+  private getUserExtras(){
+    this.extraService.getUserExtras().subscribe(data => this.userExtras = data)
+  }
+////
+
 
   private getUserConfigurations() {
     this.vehicleService.getUserConfigurations().subscribe(res => this.userConfigurations = res);
@@ -141,7 +162,8 @@ export class UserProfileComponent implements OnInit {
 
   paymentConfirmed(): void {
     this.purchaseLoading = true;
-    this.vehicleService.buyConfiguration(this.selectedConfig!.id!).subscribe(() => {
+    this.vehicleService.buyConfiguration(this.selectedConfig!.id!).subscribe((res) => {
+      this.tpvForm.submitData(res);
       this.purchaseLoading = false;
       this.sidebarVisible = false;
       this.selectedConfig = undefined;
@@ -152,5 +174,9 @@ export class UserProfileComponent implements OnInit {
 
   paymentCancelled(): void {
     this.sidebarVisible = false;
+  }
+
+  protected continuePayment(id: number) {
+    this.vehicleService.continueVehiclePurchase(id).subscribe(res => this.tpvForm.submitData(res));
   }
 }

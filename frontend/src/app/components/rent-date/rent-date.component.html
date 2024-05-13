@@ -1,0 +1,18 @@
+<mat-form-field class="date-input">
+    <input matInput [matDatepicker]="picker1" placeholder="Día de recogida" [formControl]="fechaRecogida">
+    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+    <mat-datepicker #picker1></mat-datepicker>
+  </mat-form-field>
+  
+  <mat-form-field class="date-input">
+    <input matInput [matDatepicker]="picker2" placeholder="Día de llegada" [formControl]="fechaLlegada">
+    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+    <mat-datepicker #picker2></mat-datepicker>
+  </mat-form-field>
+  
+  <button id="show-vehicles" (click)="onBuscarVehiculosDisponibles()">BUSCAR VEHICULOS DISPONIBLES</button>
+
+  <div class="alert alert-danger" *ngIf="fechaInvalida" role="alert">
+    La fecha de llegada no puede ser anterior a la fecha de recogida.
+  </div>
+  

@@ -57,4 +57,8 @@ export class VehicleService {
   getUserVehicles(): Observable<UserVehicle[]> {
     return this.http.get<UserVehicle[]>("http://localhost:8080/api/vehicle/bought");
   }
+
+  continueVehiclePurchase(id: number) {
+    return this.http.get(`http://localhost:8080/api/vehicle/continue-purchase/${id}`);
+  }
 }

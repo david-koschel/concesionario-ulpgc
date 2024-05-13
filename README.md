@@ -1,4 +1,5 @@
 # Concesionario ULPGC
+
 ### Proyecto de curso – Producción de Software
 
 ## Diseño
@@ -7,7 +8,8 @@
 
 ## Pasos antes de ejecutar la aplicación por primera vez
 
-1. Ejecutar el comando ```docker-compose up``` desde el directorio del backend para crear el contenedor de docker con la base de datos.
+1. Ejecutar el comando ```docker-compose up``` desde el directorio del backend para crear el contenedor de docker con la
+   base de datos.
 1. Descargar las dependencias de Maven en el backend.
 1. Ejecutar el comando ```npm ci``` desde el directorio del frontend.
 
@@ -16,3 +18,5 @@
 1. Inciar el contenedor de Docker con la base de datos.
 1. Para lanzar el backend ejecutar el archivo ```backend/src/main/java/ps/backend/BackendApplication.java```
 1. Para lanzar el frontend ejecutar el comando ```ng serve``` desde el directorio del frontend
+2. Para conectar el TPV de prueba, ejecutar ```ngrok http http://localhost:8080``` en la consola, previa instalación y
+   configuración. La dirección resultante de la ejecución, añadirla a la variable de entorno TPV_URL

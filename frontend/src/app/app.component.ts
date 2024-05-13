@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { HeaderComponent } from "./components/header/header.component";
-import { ToastModule } from "primeng/toast";
-import { MessageService } from "primeng/api";
+import {RouterOutlet} from '@angular/router';
+import {HeaderComponent} from "./components/header/header.component";
+import {ToastModule} from "primeng/toast";
+import {MessageService} from "primeng/api";
 import {FooterComponent} from "./components/footer/footer.component";
-import localeEs from '@angular/common/locales/es'
 import {registerLocaleData} from "@angular/common";
+import localeEs from '@angular/common/locales/es'
 
 @Component({
   selector: 'app-root',
@@ -15,7 +15,7 @@ import {registerLocaleData} from "@angular/common";
   styleUrl: './app.component.scss',
   providers: [MessageService]
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   title = 'frontend';
 
   ngOnInit(): void {
