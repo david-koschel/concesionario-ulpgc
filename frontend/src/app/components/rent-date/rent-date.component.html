@@ -1,18 +1,28 @@
-<mat-form-field class="date-input">
-    <input matInput [matDatepicker]="picker1" placeholder="Día de recogida" [formControl]="fechaRecogida">
-    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-    <mat-datepicker #picker1></mat-datepicker>
-  </mat-form-field>
-  
-  <mat-form-field class="date-input">
-    <input matInput [matDatepicker]="picker2" placeholder="Día de llegada" [formControl]="fechaLlegada">
-    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-    <mat-datepicker #picker2></mat-datepicker>
-  </mat-form-field>
-  
-  <button id="show-vehicles" (click)="onBuscarVehiculosDisponibles()">BUSCAR VEHICULOS DISPONIBLES</button>
-
-  <div class="alert alert-danger" *ngIf="fechaInvalida" role="alert">
-    La fecha de llegada no puede ser anterior a la fecha de recogida.
+<div class="d-flex gap-4 align-items-start">
+  <p-calendar
+    [formControl]="fechaRecogida"
+    [minDate]="currentDate"
+  >
+    <ng-template pTemplate="date" let-date>
+      <div class="occupied-date">
+        <span [class]="getDateClass(date)">{{ date.day }}</span>
+      </div>
+    </ng-template>
+  </p-calendar>
+  <p-calendar
+    [formControl]="fechaLlegada"
+    [minDate]="currentDate"
+  >
+    <ng-template pTemplate="date" let-date>
+      <div class="occupied-date">
+        <span [class]="getDateClass(date)">{{ date.day }}</span>
+      </div>
+    </ng-template>
+  </p-calendar>
+  <div class="d-flex flex-column gap-3">
+    <button id="show-vehicles" (click)="onBuscarVehiculosDisponibles()">BUSCAR VEHICULOS DISPONIBLES</button>
+    <div class="alert alert-danger" *ngIf="fechaInvalida" role="alert">
+      La fecha de llegada no puede ser anterior a la fecha de recogida.
+    </div>
   </div>
-  
+</div>
