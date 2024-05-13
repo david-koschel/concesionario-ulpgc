@@ -10,6 +10,7 @@ import ps.backend.entity.Payment;
 import ps.backend.entity.PaymentType;
 import ps.backend.exception.BasicException;
 import ps.backend.repository.PaymentRepository;
+import ps.backend.service.configurableVehicle.ExtraService;
 import sis.redsys.api.ApiMacSha256;
 
 import javax.crypto.BadPaddingException;
@@ -29,6 +30,7 @@ public class PaymentService {
     private final String key = "sq7HjrUOBfKmC576ILgskD5srU870gJ7";
     private final String shopId = "999008881";
     private final ConfigurableVehicleService configurableVehicleService;
+    private final IndependentExtraService independentExtraService;
 
     @Value("${redsys.notification.url}")
     private String notificationUrl;
@@ -37,9 +39,10 @@ public class PaymentService {
 
     private static final DateTimeFormatter DATE_AND_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
 
-    public PaymentService(PaymentRepository paymentRepository, @Lazy ConfigurableVehicleService configurableVehicleService) {
+    public PaymentService(PaymentRepository paymentRepository, @Lazy ConfigurableVehicleService configurableVehicleService, @Lazy IndependentExtraService independentExtraService) {
         this.paymentRepository = paymentRepository;
         this.configurableVehicleService = configurableVehicleService;
+        this.independentExtraService = independentExtraService;
     }
 
 
@@ -102,8 +105,10 @@ public class PaymentService {
         payment.setStatus(status);
         payment.setModificationDate(ZonedDateTime.now());
         paymentRepository.save(payment);
-        if (type == PaymentType.VEHICLE_PURCHASE) {
-            configurableVehicleService.paymentConfirmation(payment);
+        switch (type) {
+            case VEHICLE_PURCHASE -> configurableVehicleService.paymentConfirmation(payment);
+            case EXTRA_PURCHASE -> independentExtraService.paymentConfirmation(payment);
+            default -> throw new BasicException("Tipo de pago no implementado");
         }
     }
 

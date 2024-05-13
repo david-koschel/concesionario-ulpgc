@@ -129,7 +129,7 @@ public class ConfigurableVehicleService {
             vehicle.setPaymentStatus(VehiclePaymentStatusEnum.BOUGHT);
             userVehicleRepository.save(vehicle);
             UserConfiguration userConfiguration = userConfigurationRepository.findById(vehicle.getUserConfigurationId()).orElseThrow(EntityNotFoundException::new);
-            invoiceMessageService.sendInvoiceMessageEmail(vehicle, userConfiguration);
+            invoiceMessageService.sendVehicleInvoiceMessageEmail(vehicle, userConfiguration);
             userConfigurationRepository.delete(userConfiguration);
         } else {
             UserConfiguration userConfiguration = userConfigurationRepository.findById(vehicle.getUserConfigurationId()).orElseThrow(EntityNotFoundException::new);

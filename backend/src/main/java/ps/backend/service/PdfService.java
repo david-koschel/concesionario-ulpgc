@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+import ps.backend.entity.UserIndependentExtras;
 import ps.backend.entity.configurableVehicle.ConfigurableVehicle;
 import ps.backend.entity.configurableVehicle.ConfigurableVehicleColor;
 import ps.backend.entity.configurableVehicle.ConfigurableVehicleEngine;
@@ -44,18 +45,35 @@ public class PdfService {
     public PdfService() {
     }
 
-    public ByteArrayDataSource generateInvoicePDF(UserConfiguration userConfiguration, String orderNumber) {
+    public ByteArrayDataSource generateVehicleInvoicePDF(UserConfiguration userConfiguration, String orderNumber) {
         PdfPTable pdfPTable = new PdfPTable(12);
 
         this.createInvoiceHeader(pdfPTable, orderNumber);
-        this.createInvoiceBody(pdfPTable, userConfiguration);
+        this.createVehicleInvoiceBody(pdfPTable, userConfiguration);
 
         ByteArrayDataSource dataSource = generatePdfByteArrayDataSourceFromPdfPTable(pdfPTable);
         dataSource.setName(
-                "Factura_Concesionario_ULPGC.pdf"
+                "Factura_Vehículo_Concesionario_ULPGC.pdf"
         );
 
         return dataSource;
+    }
+
+
+
+    public ByteArrayDataSource generateExtraInvoicePDF(UserIndependentExtras extra, String orderNumber) {
+        PdfPTable pdfPTable = new PdfPTable(12);
+
+        this.createInvoiceHeader(pdfPTable, orderNumber);
+        this.createExtraInvoiceBody(pdfPTable, extra);
+
+        ByteArrayDataSource dataSource = generatePdfByteArrayDataSourceFromPdfPTable(pdfPTable);
+        dataSource.setName(
+                "Factura_Accesorio_Concesionario_ULPGC.pdf"
+        );
+
+        return dataSource;
+
     }
 
     private void createInvoiceHeader(PdfPTable table, String orderNumber) {
@@ -128,8 +146,13 @@ public class PdfService {
         }
     }
 
-    private void createInvoiceBody(PdfPTable table, UserConfiguration userConfiguration) {
+    private void createExtraInvoiceBody(PdfPTable table, UserIndependentExtras extra) {
+        generateSingleBoldRow(table, extra.getName(), 1, extra.getPrice());
 
+        this.generateInvoiceEnd(table, extra.getPrice());
+    }
+
+    private void createVehicleInvoiceBody(PdfPTable table, UserConfiguration userConfiguration) {
         ConfigurableVehicle selectedVehicle = userConfiguration.getSelectedVehicle();
         String vehicleName = String.format("%s %s", selectedVehicle.getBrand(), selectedVehicle.getModel());
         generateSingleBoldRow(table, vehicleName, 1, selectedVehicle.getBasePrice());
@@ -156,7 +179,7 @@ public class PdfService {
     private void generateInvoiceEnd(PdfPTable table, float totalPrice) {
         addDivider(table);
 
-        PdfPCell cell = addInlineParagraph("IMPORTE TOTAL: ", String.format("%.2f€", totalPrice), endBoldFont, endNormalFont);
+        PdfPCell cell = addInlineParagraph("IMPORTE TOTAL (IGIC incluido): ", String.format("%.2f€", totalPrice), endBoldFont, endNormalFont);
 
         cell.setColspan(12);
         cell.setPaddingRight(20);

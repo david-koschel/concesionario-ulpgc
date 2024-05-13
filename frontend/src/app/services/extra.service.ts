@@ -17,10 +17,10 @@ import { IndependentExtra } from '../models/independentextra.model';
         return this.http.get<IndependentExtra[]>("http://localhost:8080/api/independent-extras/all")
     }
 
-    buy(id:number):Observable<void>{
-      return this.http.post<void>(`http://localhost:8080/api/independent-extras/buy/${id}`,null);
+    buy(id:number):Observable<any>{
+      return this.http.post<any>(`http://localhost:8080/api/independent-extras/buy/${id}`,null);
     }
-    
+
     getUserExtras():Observable<IndependentExtra[]>{
       return this.http.get<IndependentExtra[]>("http://localhost:8080/api/independent-extras/get-user-extras")
     }

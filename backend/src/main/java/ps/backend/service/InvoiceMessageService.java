@@ -3,6 +3,7 @@ package ps.backend.service;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
+import ps.backend.entity.UserIndependentExtras;
 import ps.backend.entity.userVehicle.UserConfiguration;
 import ps.backend.entity.userVehicle.UserVehicle;
 
@@ -17,14 +18,24 @@ public class InvoiceMessageService {
         this.templateEngine = templateEngine;
     }
 
-    public void sendInvoiceMessageEmail(UserVehicle userVehicle, UserConfiguration configuration) {
+    public void sendVehicleInvoiceMessageEmail(UserVehicle userVehicle, UserConfiguration configuration) {
         String emailBody = this.generateEmailBody();
-        this.emailService.sendInvoiceMail(
+        this.emailService.sendVehicleInvoiceMail(
                 userVehicle.getUser().getEmail(),
-                "Factura Concesionario ULPGC",
+                "Factura Concesionario ULPGC - Vehículo",
                 emailBody,
                 configuration,
                 userVehicle.getPayment().getOrderNumber()
+        );
+    }
+
+    public void sendExtraInvoiceMessageEmail(UserIndependentExtras extra) {
+        String emailBody = this.generateEmailBody();
+        this.emailService.sendExtraInvoiceMail(
+                extra.getUser().getEmail(),
+                "Factura Concesionario ULPGC - Accesorio",
+                emailBody,
+                extra
         );
     }
 

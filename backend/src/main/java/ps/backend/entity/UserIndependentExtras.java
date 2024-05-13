@@ -1,11 +1,13 @@
 package ps.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 
 @AllArgsConstructor
-@NoArgsConstructor@Entity
+@NoArgsConstructor
+@Entity
 @Getter
 @Setter
 @Builder
@@ -25,7 +27,13 @@ public class UserIndependentExtras {
 
     private Float price;
 
+    private boolean bought;
+
     @ManyToOne
     private User user;
 
+    @OneToOne
+    @JsonIgnore
+    @JoinColumn(name = "payment_id")
+    private Payment payment;
 }

@@ -40,6 +40,10 @@ public class Payment {
     @OneToOne(mappedBy = "payment")
     private UserVehicle userVehicle;
 
+    @JsonIgnore
+    @OneToOne(mappedBy = "payment")
+    private UserIndependentExtras userIndependentExtras;
+
     public boolean paymentWasSuccessful() {
         return status >= 0 && status <= 99;
     }

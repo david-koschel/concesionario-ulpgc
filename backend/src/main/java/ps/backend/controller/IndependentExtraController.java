@@ -2,6 +2,7 @@ package ps.backend.controller;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import ps.backend.dto.PaymentInfoDto;
 import ps.backend.entity.IndependentExtra;
 import ps.backend.entity.UserIndependentExtras;
 import ps.backend.service.IndependentExtraService;
@@ -23,9 +24,8 @@ public class IndependentExtraController {
     }
 
     @PostMapping("/buy/{id}")
-    public void saveUserIndependentExtra(@PathVariable Integer id) {
-//        System.out.println(id);
-        independentExtraService.saveUserIndependentExtra(id);
+    public PaymentInfoDto saveUserIndependentExtra(@PathVariable Integer id) {
+        return independentExtraService.buyUserIndependentExtra(id);
     }
 
     @GetMapping("/get-user-extras")

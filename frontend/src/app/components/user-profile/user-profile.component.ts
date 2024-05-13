@@ -15,6 +15,7 @@ import {UserVehicle} from "../../models/user-vehicle.model";
 import { IndependentExtra } from '../../models/independentextra.model';
 import { ExtraService } from '../../services/extra.service';
 import {VehiclePaymentStatusPipe} from "./vehicle-payment-status.pipe";
+import {TpvFormComponent} from "../tpv-form/tpv-form.component";
 
 @Component({
   selector: 'app-user-profile',
@@ -31,7 +32,8 @@ import {VehiclePaymentStatusPipe} from "./vehicle-payment-status.pipe";
     ToastModule,
     RouterLink,
     SidebarModule,
-    VehiclePaymentStatusPipe
+    VehiclePaymentStatusPipe,
+    TpvFormComponent
   ],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.scss',
@@ -65,15 +67,9 @@ export class UserProfileComponent implements OnInit {
   purchaseLoading = false;
 
   @ViewChild("tpvForm")
-  tpvForm: any;
-  @ViewChild("i1")
-  signatureVersion: any;
-  @ViewChild("i2")
-  parameters: any;
-  @ViewChild("i3")
-  signature: any;
-  
-  
+  tpvForm!: TpvFormComponent;
+
+
   protected userExtras: IndependentExtra[] =[];
 
 
@@ -167,8 +163,7 @@ export class UserProfileComponent implements OnInit {
   paymentConfirmed(): void {
     this.purchaseLoading = true;
     this.vehicleService.buyConfiguration(this.selectedConfig!.id!).subscribe((res) => {
-      console.log(res);
-      this.submitTpvForm(res);
+      this.tpvForm.submitData(res);
       this.purchaseLoading = false;
       this.sidebarVisible = false;
       this.selectedConfig = undefined;
@@ -181,14 +176,7 @@ export class UserProfileComponent implements OnInit {
     this.sidebarVisible = false;
   }
 
-  private submitTpvForm(data: any) {
-    this.signatureVersion.nativeElement.value = data.ds_SignatureVersion;
-    this.parameters.nativeElement.value = data.ds_MerchantParameters;
-    this.signature.nativeElement.value = data.ds_Signature;
-    this.tpvForm.nativeElement.submit();
-  }
-
   protected continuePayment(id: number) {
-    this.vehicleService.continueVehiclePurchase(id).subscribe(res => this.submitTpvForm(res));
+    this.vehicleService.continueVehiclePurchase(id).subscribe(res => this.tpvForm.submitData(res));
   }
 }
