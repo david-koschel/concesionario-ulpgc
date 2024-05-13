@@ -101,10 +101,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
       },
       {
         id: 7,
-        name:'Tienda de accesorios',
+        name: 'Alquiler de vehiculos',
+        route: '/rent',
+        icon: ''
+      },
+      {
+        id: 8,
+        name: 'Tienda de accesorios',
         route: '/extras-shop',
         icon: ''
       }
+
     ];
   }
 

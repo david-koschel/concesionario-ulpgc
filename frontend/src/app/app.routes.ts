@@ -19,6 +19,9 @@ import {AboutUsComponent} from './components/about-us/about-us.component';
 import {OurServicesComponent} from './components/our-services/our-services.component';
 import {TermsAndConditionsComponent} from "./components/terms-and-conditions/terms-and-conditions.component";
 import {PrivacyCookiesComponent} from "./components/privacy-cookies/privacy-cookies.component";
+import { RentComponent } from './components/rent/rent.component';
+import { RentDateComponent } from './components/rent-date/rent-date.component';
+import { RentAdminCreateVehicleComponent } from './components/rent-admin-create-vehicle/rent-admin-create-vehicle.component';
 import { ExtrasShopComponent } from './components/extras-shop/extras-shop.component';
 import { IndependentExtrasComponent } from './components/independent-extras/independent-extras.component';
 
@@ -98,7 +101,6 @@ export const routes: Routes = [
   {
     path: "catalogue-vehicles",
     component: CatalogueVehiclesComponent,
-    canActivate: [userIsAdminGuard]
   },
   {
     path: "about-us",
@@ -107,6 +109,18 @@ export const routes: Routes = [
   {
     path: "our-services",
     component: OurServicesComponent
+  },
+  {
+    path: "rent",
+    component: RentComponent
+  },
+  {
+    path: "rent-date",
+    component: RentDateComponent
+  },
+  {
+    path: "rent-admin-create-vehicule",
+    component: RentAdminCreateVehicleComponent
   },
   {
     path: "extras-shop",
