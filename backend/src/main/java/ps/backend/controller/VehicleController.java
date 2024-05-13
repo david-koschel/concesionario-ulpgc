@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ps.backend.dto.PaymentInfoDto;
 import ps.backend.entity.configurableVehicle.ConfigurableVehicle;
 import ps.backend.entity.configurableVehicle.ConfigurableVehicleEngine;
 import ps.backend.entity.configurableVehicle.ConfigurableVehicleExtra;
@@ -84,12 +85,17 @@ public class VehicleController {
 
     @GetMapping("/configuration")
     public List<UserConfiguration> getUserConfigurations() {
-        return configurableVehicleService.getConfigurations();
+        return configurableVehicleService.getUserConfigurations();
     }
 
     @GetMapping("/buy/{id}")
-    public void saveUserVehicle(@PathVariable Integer id) {
-        configurableVehicleService.saveVehicle(id);
+    public PaymentInfoDto buyUserVehicle(@PathVariable Integer id) {
+        return configurableVehicleService.buyVehicle(id);
+    }
+
+    @GetMapping("/continue-purchase/{id}")
+    public PaymentInfoDto continueUserVehiclePurchase(@PathVariable Integer id) {
+        return configurableVehicleService.getPaymentInfo(id);
     }
 
     @GetMapping("/bought")

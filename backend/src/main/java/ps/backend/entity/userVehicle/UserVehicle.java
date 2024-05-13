@@ -1,22 +1,27 @@
 
 package ps.backend.entity.userVehicle;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ps.backend.entity.Payment;
 import ps.backend.entity.User;
 
-import java.beans.ConstructorProperties;
 import java.util.List;
 
 @Entity
@@ -32,6 +37,7 @@ public class UserVehicle {
     private Integer id;
 
     @ManyToOne
+    @JsonIgnore
     private User user;
 
     private String brand;
@@ -51,7 +57,18 @@ public class UserVehicle {
 
     private String rimName;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "configurable_vehicle_id")
     private List<VehicleExtra> extras;
+
+    @OneToOne
+    @JoinColumn(name = "payment_id")
+    private Payment payment;
+
+    @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "VARCHAR")
+    private VehiclePaymentStatusEnum paymentStatus;
+
+    private Integer userConfigurationId;
+
 }
