@@ -7,6 +7,8 @@ import {Subscription} from "rxjs";
 import {MenuModule} from "primeng/menu";
 import {MenuItem} from "primeng/api";
 import {NgOptimizedImage} from "@angular/common";
+import {BlogService} from "../../services/blog.service";
+import {Blog} from "../../models/blog.model";
 
 @Component({
   selector: 'app-header',
@@ -33,7 +35,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   constructor(
     protected loginService: LoginService,
-    private router: Router
+    private router: Router,
+    private blogService: BlogService
   ) {
     this.loggedInSubscription = this.loginService.userIsLoggedIn$
       .subscribe(result => this.onUserLoggedInChange(result));
@@ -100,6 +103,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
         icon: ''
       }
     ];
+    let notices: Blog[];
+    this.blogService.getPublicAllBeforeToday().subscribe({
+      next: blogs => {
+        notices = blogs;
+        if (notices.length > 0){
+          this.buttons?.push({
+            id: 7,
+            name: 'Noticias',
+            route: '/blogs',
+            icon: ''
+          })
+        }
+      }
+    });
   }
 
   buildUserMenu() {
