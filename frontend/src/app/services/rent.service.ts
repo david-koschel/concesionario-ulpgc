@@ -18,7 +18,7 @@ export class RentService {
       year: '2022',
       engine: '1.4 de 194cv',
       price: 50,
-      boockedSlots: ['2024-06-15', '2024-06-16', '2024-06-17']
+      bookedSlots: ['2024-06-15', '2024-06-16', '2024-06-17']
     },
     {
       id: 2,
@@ -28,13 +28,13 @@ export class RentService {
       year: '2022',
       engine: '2.4 turbo de 200cv',
       price: 70,
-      boockedSlots: ['2024-06-15', '2024-06-16', '2024-06-17']
+      bookedSlots: ['2024-06-15', '2024-06-16', '2024-06-17']
     }
   ];
 
   getVehiculosDisponibles(fechaRecogida: string, fechaLlegada: string): RentVehicle[] {
     return this.VEHICULOS_EJEMPLO.filter(vehicle => {
-      return !vehicle.boockedSlots.some(slot => this.isBetweenDates(slot, fechaRecogida, fechaLlegada));
+      return !vehicle.bookedSlots.some(slot => this.isBetweenDates(slot, fechaRecogida, fechaLlegada));
     });
   }
 

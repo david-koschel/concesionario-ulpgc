@@ -6,5 +6,5 @@ export interface RentVehicle {
     year: string,
     engine: string,
     price: number
-    boockedSlots: string[]
+    bookedSlots: string[]
 }

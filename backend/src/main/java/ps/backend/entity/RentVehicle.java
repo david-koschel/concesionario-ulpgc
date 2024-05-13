@@ -1,17 +1,18 @@
 package ps.backend.entity;
 
-import jakarta.persistence.*;
-
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.util.List;
+import java.time.LocalDate;
 
 @Entity
 @Getter
 @Setter
-@Table(name = "Vehicles")
 public class RentVehicle {
 
     @Id
@@ -24,12 +25,13 @@ public class RentVehicle {
 
     private String model;
 
-    private String year;
+    private Integer year;
 
     private String engine;
 
-    private BigDecimal price;
+    private Float price;
 
-    @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<BookedDates> bookedDates;
+    private LocalDate startDate;
+
+    private LocalDate endDate;
 }
