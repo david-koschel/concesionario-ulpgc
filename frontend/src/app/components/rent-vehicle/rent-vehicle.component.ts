@@ -1,12 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-rent-vehicle',
   standalone: true,
-  imports: [],
   templateUrl: './rent-vehicle.component.html',
-  styleUrl: './rent-vehicle.component.scss'
+  styleUrls: ['./rent-vehicle.component.scss']
 })
 export class RentVehicleComponent {
+  @Input() vehicle: any;
+  @Input() rentDays!: number;
+  constructor(private router: Router) {}
+
 
 }

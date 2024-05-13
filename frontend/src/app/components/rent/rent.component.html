@@ -1,2 +1,18 @@
 <h1>SERVICIO DE ALQUILER DE VEHICULOS</h1>
-<p id="vehicle-available">Vehiculos disponibles:</p>
+<div class="content">
+    @if (dateSelected) {
+        <p class="option-title">Vehiculos disponibles:</p>
+        <div *ngFor="let vehicle of vehicles">
+            <app-rent-vehicle [vehicle]="vehicle" [rentDays]="rentDays"></app-rent-vehicle>
+          </div>
+    }
+    @else {
+        <p class="option-title">Elija que días necesita un vehículo</p> <br>
+
+        <app-rent-date (buscarVehiculosDisponibles)="onBuscarVehiculosDisponibles($event)"></app-rent-date>
+    }
+</div>
+
+
+
+  
