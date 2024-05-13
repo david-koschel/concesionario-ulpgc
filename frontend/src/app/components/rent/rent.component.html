@@ -2,13 +2,13 @@
 <div class="content">
     @if (dateSelected) {
         <p class="option-title">Vehiculos disponibles:</p>
-        <div *ngFor="let vehicle of vehicles">
-            <app-rent-vehicle [vehicle]="vehicle" [rentDays]="rentDays"></app-rent-vehicle>
+        <div id="information-container" *ngFor="let vehicle of vehicles">
+            <app-rent-vehicle [vehicle]="vehicle"></app-rent-vehicle>
+            <app-rent-vehicle-price [vehicle]="vehicle" [rentDays]="rentDays" [fechaRecogidaString]="fechaRecogidaString" [fechaLlegadaString]="fechaLlegadaString"></app-rent-vehicle-price>
           </div>
     }
     @else {
         <p class="option-title">Elija que días necesita un vehículo</p> <br>
-
         <app-rent-date (buscarVehiculosDisponibles)="onBuscarVehiculosDisponibles($event)"></app-rent-date>
     }
 </div>

@@ -21,6 +21,7 @@ import {TermsAndConditionsComponent} from "./components/terms-and-conditions/ter
 import {PrivacyCookiesComponent} from "./components/privacy-cookies/privacy-cookies.component";
 import { RentComponent } from './components/rent/rent.component';
 import { RentDateComponent } from './components/rent-date/rent-date.component';
+import { RentAdminCreateVehicleComponent } from './components/rent-admin-create-vehicle/rent-admin-create-vehicle.component';
 
 export const routes: Routes = [
   {
@@ -114,6 +115,10 @@ export const routes: Routes = [
   {
     path: "rent-date",
     component: RentDateComponent
+  },
+  {
+    path: "rent-admin-create-vehicule",
+    component: RentAdminCreateVehicleComponent
   },
   {
     path: '**',

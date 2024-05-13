@@ -98,7 +98,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
         name: 'Solicitud Prueba de Vehículo',
         route: '/drive-request',
         icon: ''
+      },
+      {
+        id: 7,
+        name: 'Alquiler de vehiculos',
+        route: '/rent',
+        icon: ''
       }
+
     ];
   }
 

@@ -9,7 +9,6 @@ import { Router } from '@angular/router';
 })
 export class RentVehicleComponent {
   @Input() vehicle: any;
-  @Input() rentDays!: number;
   constructor(private router: Router) {}
 
 
