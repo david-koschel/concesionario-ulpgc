@@ -61,7 +61,7 @@
                   <label><b>Estado</b></label>
                   <span>{{ vehicle.paymentStatus | vehiclePaymentStatus }}</span>
                 </div>
-                <div class="d-flex justify-content-center px-1 px-md-3 px-xl-5">
+                <div *ngIf="vehicle.paymentStatus === 'IN_PROCESS'" class="d-flex justify-content-center px-1 px-md-3 px-xl-5">
                   <button class="btn btn-outline-dark" (click)="continuePayment(vehicle.id)">
                     Continuar Compra
                   </button>

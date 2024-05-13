@@ -82,15 +82,9 @@ public class ConfigurableVehicleService {
 
         if (userConfiguration.isHidden()) throw new BasicException("Ya hay una compra en proceso");
 
-        float totalPrice = userConfiguration.getSelectedVehicle().getBasePrice() +
-                userConfiguration.getSelectedColor().getPrice() +
-                userConfiguration.getSelectedRim().getPrice() +
-                userConfiguration.getSelectedEngine().getPrice() +
-                userConfiguration.getSelectedExtras().stream().reduce(0f, (subtotal, element) -> subtotal + element.getPrice(), Float::sum);
-
         Payment payment = this.paymentService.createNewPayment(
                 VEHICLE_PURCHASE,
-                (int) Math.floor(totalPrice * 100)
+                (int) Math.floor(userConfiguration.getTotalPrice() * 100)
         );
 
         UserVehicle userVehicle = UserVehicle.builder()
@@ -102,7 +96,7 @@ public class ConfigurableVehicleService {
                 .colorName(userConfiguration.getSelectedColor().getName())
                 .engineName(userConfiguration.getSelectedEngine().getName())
                 .rimName(userConfiguration.getSelectedRim().getName())
-                .totalPrice(totalPrice)
+                .totalPrice(userConfiguration.getTotalPrice())
                 .payment(payment)
                 .userConfigurationId(userConfiguration.getId())
                 .paymentStatus(VehiclePaymentStatusEnum.IN_PROCESS)

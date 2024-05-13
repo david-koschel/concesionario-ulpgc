@@ -23,7 +23,8 @@ public class InvoiceMessageService {
                 userVehicle.getUser().getEmail(),
                 "Factura Concesionario ULPGC",
                 emailBody,
-                configuration
+                configuration,
+                userVehicle.getPayment().getOrderNumber()
         );
     }
 

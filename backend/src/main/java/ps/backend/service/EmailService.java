@@ -36,10 +36,10 @@ public class EmailService {
         }
     }
 
-    public void sendInvoiceMail(String to, String subject, String body, UserConfiguration userConfiguration) {
+    public void sendInvoiceMail(String to, String subject, String body, UserConfiguration userConfiguration, String orderNumber) {
         try {
             MimeMessageHelper helper = this.createEmailObject(to, subject, body);
-            ByteArrayDataSource attachment = this.pdfService.generateInvoicePDF(userConfiguration);
+            ByteArrayDataSource attachment = this.pdfService.generateInvoicePDF(userConfiguration, orderNumber);
             helper.addAttachment(attachment.getName(), attachment);
             emailSender.send(helper.getMimeMessage());
         } catch (MessagingException | UnsupportedEncodingException e) {
