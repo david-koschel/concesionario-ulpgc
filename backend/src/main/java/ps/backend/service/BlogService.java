@@ -62,8 +62,6 @@ public class BlogService {
         }
 
         blogToUpdate.setTitle(standardizeStringToURL(blog.getTitle()));
-        blogToUpdate.setDescription(blog.getDescription());
-        blogToUpdate.setImage(blog.getImage());
         blogToUpdate.setData(blog.getData());
         blogToUpdate.setEndDate(blog.getEndDate());
         blogToUpdate.setModificationDate(ZonedDateTime.now());
