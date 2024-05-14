@@ -31,7 +31,6 @@ export class BlogListComponent implements OnInit{
   blogs!: Blog[];
   blogList!: Blog[];
   loading = true;
-  today = new Date();
 
   public constructor(
     private blogService: BlogService,
@@ -43,10 +42,6 @@ export class BlogListComponent implements OnInit{
     this.getBlogs();
   }
 
-  applyFilterGlobal($event: Event, table: Table) {
-    table.filterGlobal(($event.target as HTMLInputElement).value, 'contains');
-  }
-
   getBlogs() {
     this.blogService.getAll().subscribe({
         next: blogs => {
@@ -56,20 +51,14 @@ export class BlogListComponent implements OnInit{
     });
   }
 
-  filterFinished(filterAll: any) {
-    this.blogList = filterAll ?
-      this.blogs :
-      this.blogList = this.blogs.filter(blog => !blog.endDate || new Date(blog.endDate) > this.today);
-  }
-
   confirmPublishing(event: Event, blog: Blog) {
-    console.log("HOLAA");
     this.confirmationService.confirm({
       target: event.target!,
       message: blog.published ?
         "¿Quiere archivar esta entrada?" :
         "¿Quiere publicar esta entrada?",
       icon: "pi pi-exclamation-triangle",
+      acceptLabel: 'Yes',
       accept: () => this.invertBlogPublishing(blog)
     });
   }

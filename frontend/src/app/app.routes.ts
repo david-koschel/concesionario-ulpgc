@@ -94,7 +94,7 @@ export const routes: Routes = [
     canActivate: [userIsAdminGuard]
   },
   {
-    path: "blog-form/new",
+    path: "blog-form/:blogId",
     component: BlogFormComponent,
     canActivate: [userIsAdminGuard]
   },

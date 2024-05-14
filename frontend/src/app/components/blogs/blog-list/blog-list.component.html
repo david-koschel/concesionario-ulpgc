@@ -13,7 +13,6 @@
   <hr>
   @if(loading || blogList){
     <p-table
-      #blogTable
       styleClass="p-datatable-gridlines"
       [value]="blogList"
       responsiveLayout="stack"
@@ -32,10 +31,6 @@
           <th pSortableColumn="modificationDate">
             Fecha de modificación
             <p-sortIcon field="modificationDate"></p-sortIcon>
-          </th>
-          <th pSortableColumn="endDate">
-            Fecha de fin
-            <p-sortIcon field="endDate"></p-sortIcon>
           </th>
           <th style="width: 5em;">
             <div class="d-flex align-items-center gap-2">
@@ -59,10 +54,6 @@
           <td>
             <span class="p-column-title">Fecha de modificación</span>
             {{blog.modificationDate | date: "EEEE, d 'de' MMMM, Y 'a las' HH:mm":"":"es"}}
-          </td>
-          <td>
-            <span class="p-column-title">Fecha de fin</span>
-            {{blog.endDate | date: "EEEE, d 'de' MMMM, Y":"":"es"}}
           </td>
           <td>
             <span class="p-column-title">Publicado</span>
@@ -89,7 +80,7 @@
               <button
                 pButton
                 title="Publicar"
-                *ngIf="!blog.published && blog.endDate"
+                *ngIf="!blog.published"
                 class="btn btn-outline-success"
                 icon="pi pi-upload"
                 (click)="confirmPublishing($event, blog)"

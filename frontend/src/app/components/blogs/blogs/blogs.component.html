@@ -2,7 +2,7 @@
   <h1>Noticias</h1>
   @for (blog of blogs; track $index){
     <h2>{{blog.title}}</h2>
-    <p>{{blog.data}}</p>
+    <p>{{blog.data | htmlToString}}</p>
     <div class="d-flex justify-content-end">
       <button
         class="btn btn-outline-dark"

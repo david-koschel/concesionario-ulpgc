@@ -1,4 +1,4 @@
-import {AfterContentInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterContentInit, Component, ViewChild} from '@angular/core';
 import {BlogService} from "../../../services/blog.service";
 import {Blog} from "../../../models/blog.model";
 import {Editor, EditorModule} from "primeng/editor";
@@ -11,7 +11,7 @@ import {ProgressSpinnerModule} from "primeng/progressspinner";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {DialogModule} from "primeng/dialog";
 import {FormsModule} from "@angular/forms";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {RippleModule} from "primeng/ripple";
 import {ConfirmationService, MessageService} from "primeng/api";
 
@@ -29,28 +29,27 @@ import {ConfirmationService, MessageService} from "primeng/api";
     DialogModule,
     EditorModule,
     FormsModule,
-    RippleModule
+    RippleModule,
+    RouterLink
   ],
   templateUrl: './blog-form.component.html',
   styleUrl: './blog-form.component.scss',
   providers: [ConfirmationService, MessageService]
 })
-export class BlogFormComponent implements OnInit, AfterContentInit{
-
-  @ViewChild("editor")
-  editor!: Editor;
-  @ViewChild('inputFile')
-  inputFile!: ElementRef;
+export class BlogFormComponent implements AfterContentInit {
 
   module: any;
 
   blogId!: string;
   blog: Blog;
 
-  disable = false;
+  @ViewChild("editor")
+  editor!: Editor;
+
   saveLoading = false;
-  getterIsLoading = false;
-  showInfo = false;
+  data!: string;
+
+  showLink = false;
 
   constructor(
     private blogService: BlogService,
@@ -61,10 +60,7 @@ export class BlogFormComponent implements OnInit, AfterContentInit{
   ) {
     const toolbarOptions = [
       [{'header': [1, 2, 3, 4, 5, false]}],
-      [{'font': []}],
-      [{'align': []}],
       ['bold', 'italic', 'underline', 'strike'],
-      ['blockquote', 'code-block'],
       [{'list': 'ordered'}, {'list': 'bullet'}],
       [{'script': 'sub'}, {'script': 'super'}],
       [{'color': []}, {'background': []}]
@@ -74,10 +70,7 @@ export class BlogFormComponent implements OnInit, AfterContentInit{
         container: toolbarOptions
       }
     };
-    this.blog = {title: "", published: false, data: "", endDate: null!};
-  }
-
-  ngOnInit(): void {
+    this.blog = {title: "", published: false, data: ""};
   }
 
   ngAfterContentInit(): void {
@@ -88,23 +81,19 @@ export class BlogFormComponent implements OnInit, AfterContentInit{
     this.blogId = this.route.snapshot.params['blogId'];
     if (this.blogId !== "new") {
       this.editBlog();
-    } else {
-      this.getterIsLoading = false;
     }
   }
 
   editBlog() {
     this.blogService.getById(this.blogId).subscribe({
       next: blog => {
-        this.editor.quill.setContents(JSON.parse(blog.data));
+        this.data = blog.data;
         this.blog = blog;
-        this.blog.endDate = blog.endDate ? new Date(blog.endDate) : null!;
-        this.disable = false;
-        this.getterIsLoading = false;
-      },
-      error: () => {
-        this.disable = true;
-        this.getterIsLoading = false;
+        this.showLink = blog.published;
+        setTimeout(() => {
+          this.editor.quill.clipboard.dangerouslyPasteHTML(this.data, "silent");
+          this.editor.quill.history.clear();
+        }, 100);
       }
     });
   }
@@ -134,11 +123,10 @@ export class BlogFormComponent implements OnInit, AfterContentInit{
   }
 
   save() {
-    const deltaData = JSON.stringify(this.editor.getQuill().editor.delta.ops);
-    const blog: Blog = {...this.blog, data: deltaData};
+    const blog: Blog = {...this.blog, data: this.data};
 
     this.blogService.save(blog).subscribe({
-      next: (blog : any) => {
+      next: (blog: any) => {
         this.messageService.add({
           summary: "Publicación guardada",
           detail: `La entrada "${blog.title}" se ha guardado con éxito`,
@@ -160,26 +148,21 @@ export class BlogFormComponent implements OnInit, AfterContentInit{
   }
 
   isDisabled(): boolean {
-    if (this.blog.published) {
-      return !this.blog.title ||
-        !this.blog.endDate
-    }
     return !this.blog.title;
+
   }
 
   update() {
-    const deltaData = JSON.stringify(this.editor.getQuill().editor.delta.ops);
-    const blog: Blog = {...this.blog, data: deltaData};
-
+    const blog: Blog = {...this.blog, data: this.data};
     this.blogService.update(blog).subscribe({
-      next: (blog:any) => {
+      next: (blog: any) => {
         this.messageService.add({
           summary: "Publicación actualizada",
           detail: `La entrada "${blog.title}" se ha actualizado con éxito`,
           severity: "success"
         });
         this.blog = blog;
-        this.blog.endDate = blog.endDate ? new Date(blog.endDate) : null!;
+        this.showLink = blog.published;
         this.saveLoading = false;
       },
       error: (error: { error: { message: any; }; }) => {

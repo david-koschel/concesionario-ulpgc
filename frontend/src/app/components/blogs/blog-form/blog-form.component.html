@@ -1,21 +1,13 @@
 <div class="container pt-4">
   <div class="d-flex justify-content-between mb-2">
     <h2>Editar Entrada</h2>
-    <button
-      pButton
-      pRipple
-      type="button"
-      icon="pi pi-info"
-      class="btn btn-outline-info"
-      (click)="showInfo=true"
-    ></button>
   </div>
-  <div *ngIf="!disable">
+  <div *ngIf="blog">
     <p-editor
       #editor
-      [readonly]="disable"
       [modules]="module"
       [style]="{'height':'320px'}"
+      [(ngModel)]="data"
     >
       <ng-template pTemplate="header"></ng-template>
     </p-editor>
@@ -29,15 +21,6 @@
           class="w-100"
         >
         <label class="required" for="title">Título</label>
-      </span>
-      <span class="p-float-label w-100 mt-3">
-        <p-calendar
-          id="cal"
-          class="w-100"
-          styleClass="w-100"
-          [(ngModel)]="blog.endDate"
-        ></p-calendar>
-        <label class="semi-required" for="cal">Fecha de fin</label>
       </span>
     </div>
     <div class="d-flex flex-wrap gap-2 justify-content-between">
@@ -59,45 +42,19 @@
         <button
           pButton
           (click)="onSubmit()"
-          [disabled]="isDisabled() || saveLoading || getterIsLoading"
+          [disabled]="isDisabled() || saveLoading"
           label="Guardar"
           class="btn btn-outline-primary"
         ></button>
       </div>
     </div>
-  </div>
-  <div *ngIf="disable">
-    Ha habido un error
+    @if (showLink) {
+      <a class="link-info float-end mt-2" routerLink="/blogs/{{blog.id}}">Ver entrada</a>
+    }
   </div>
 </div>
-<p-progressSpinner *ngIf="getterIsLoading"></p-progressSpinner>
-
 <p-confirmDialog
   header="Confirmación de publicación"
   acceptLabel="Guardar y Publicar"
   rejectLabel="Cancelar"
 ></p-confirmDialog>
-<p-dialog
-  header="Información"
-  [(visible)]="showInfo"
-  [modal]="true"
-  [style]="{'width': '600px'}"
-  [draggable]="false"
-  [resizable]="false"
->
-  <p>
-    <span style="color: red; font-weight: bold">*</span>
-    : Campos obligatorios.
-  </p>
-  <p>
-    <span style="color: cadetblue; font-weight: bold">*</span>
-    : Campos obligatorios a la hora de publicar.
-  </p>
-  Información de cada campo:
-  <ul>
-    <li>nombre-de-la-entrada: nombre que saldrá en la url para navegar a la entrada. Tiene que ser único.</li>
-    <li>Fecha de fin: fecha en la que la entrada dejará de mostrarse la noticia.</li>
-    <li>Título: texto que saldrá en la pantalla junto a la imagen.</li>
-    <li>Publicar: si al guardar la entrada será pública o no.</li>
-  </ul>
-</p-dialog>

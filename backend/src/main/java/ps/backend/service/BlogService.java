@@ -1,12 +1,12 @@
 package ps.backend.service;
 
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Service;;
+import org.springframework.stereotype.Service;
 import ps.backend.entity.Blog;
 import ps.backend.repository.BlogRepository;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -22,16 +22,16 @@ public class BlogService {
         this.blogRepository = blogRepository;
     }
 
-    public List<Blog> findAll(){return blogRepository.findAll();}
+    public List<Blog> findAll() {
+        return blogRepository.findAll();
+    }
 
     public List<Blog> findAllPublished() {
         return blogRepository.findAllPublished();
     }
 
     public List<Blog> findAllPublishedBeforeToday() {
-        return blogRepository.findAllPublished().stream()
-                .filter(blog -> blog.getEndDate().isAfter(ZonedDateTime.now()))
-                .collect(Collectors.toList());
+        return new ArrayList<>(blogRepository.findAllPublished());
     }
 
     public Blog findById(int id) {
@@ -48,7 +48,7 @@ public class BlogService {
             throw new KeyAlreadyExistsException("Ya existe una entrada con este nombre");
         }
 
-        blog.setTitle(standardizeStringToURL(blog.getTitle()));
+        blog.setTitle(blog.getTitle());
         blog.setModificationDate(ZonedDateTime.now());
         return blogRepository.save(blog);
     }
@@ -61,16 +61,11 @@ public class BlogService {
             throw new NoSuchElementException("Ya existe una entrada con este nombre");
         }
 
-        blogToUpdate.setTitle(standardizeStringToURL(blog.getTitle()));
+        blogToUpdate.setTitle(blog.getTitle());
         blogToUpdate.setData(blog.getData());
-        blogToUpdate.setEndDate(blog.getEndDate());
         blogToUpdate.setModificationDate(ZonedDateTime.now());
         blogToUpdate.setPublished(blog.isPublished());
 
         return blogRepository.save(blogToUpdate);
-    }
-
-    private String standardizeStringToURL(String string) {
-        return StringUtils.stripAccents(string.replaceAll(" ", "-").toLowerCase());
     }
 }
