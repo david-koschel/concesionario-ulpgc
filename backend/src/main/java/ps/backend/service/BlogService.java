@@ -1,8 +1,14 @@
 package ps.backend.service;
 
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 import ps.backend.entity.Blog;
+import ps.backend.entity.BlogSubscription;
+import ps.backend.entity.User;
+import ps.backend.exception.BasicException;
 import ps.backend.repository.BlogRepository;
+import ps.backend.repository.BlogSubscriptionRepository;
 
 import javax.management.openmbean.KeyAlreadyExistsException;
 import java.time.ZonedDateTime;
@@ -16,10 +22,16 @@ import java.util.stream.Collectors;
 public class BlogService {
 
     private final BlogRepository blogRepository;
+    private final BlogSubscriptionRepository blogSubscriptionRepository;
+    private final EmailService emailService;
+    private final TemplateEngine templateEngine;
 
 
-    public BlogService(BlogRepository blogRepository) {
+    public BlogService(BlogRepository blogRepository, BlogSubscriptionRepository blogSubscriptionRepository, EmailService emailService, TemplateEngine templateEngine) {
         this.blogRepository = blogRepository;
+        this.blogSubscriptionRepository = blogSubscriptionRepository;
+        this.emailService = emailService;
+        this.templateEngine = templateEngine;
     }
 
     public List<Blog> findAll() {
@@ -48,9 +60,13 @@ public class BlogService {
             throw new KeyAlreadyExistsException("Ya existe una entrada con este nombre");
         }
 
+        boolean sendNewsletter = blog.isPublished();
+
         blog.setTitle(blog.getTitle());
         blog.setModificationDate(ZonedDateTime.now());
-        return blogRepository.save(blog);
+        Blog savedBlog = blogRepository.save(blog);
+        if (sendNewsletter) this.sendNewsletter(savedBlog);
+        return savedBlog;
     }
 
     public Blog update(Blog blog, Integer id) {
@@ -61,11 +77,39 @@ public class BlogService {
             throw new NoSuchElementException("Ya existe una entrada con este nombre");
         }
 
+        boolean sendNewsletter = blog.isPublished() && !blogToUpdate.isPublished();
+
         blogToUpdate.setTitle(blog.getTitle());
         blogToUpdate.setData(blog.getData());
         blogToUpdate.setModificationDate(ZonedDateTime.now());
         blogToUpdate.setPublished(blog.isPublished());
 
-        return blogRepository.save(blogToUpdate);
+        Blog updatedBlog = blogRepository.save(blogToUpdate);
+        if (sendNewsletter) this.sendNewsletter(updatedBlog);
+        return updatedBlog;
     }
+
+    public void subscribeToNewsletter(String email) {
+        if (blogSubscriptionRepository.findByEmail(email).isEmpty()) {
+            blogSubscriptionRepository.save(BlogSubscription.builder().email(email).build());
+        } else {
+            throw new BasicException("El correo ya está suscrito a nuestro blog");
+        }
+    }
+
+    private void sendNewsletter(Blog blog) {
+        emailService.sendMultipleEmail(
+                "Blog Concesionario ULPGC: " + blog.getTitle(),
+                generateEmailBody(blog),
+                blogSubscriptionRepository.findAll().stream().map(BlogSubscription::getEmail).toArray(String[]::new)
+        );
+    }
+
+    private String generateEmailBody(Blog blog) {
+        Context context = new Context();
+        context.setVariable("title", blog.getTitle());
+        context.setVariable("url", String.format("http://localhost:4200/blogs/%s", blog.getId()));
+        return this.templateEngine.process("newsletter.html", context);
+    }
+
 }

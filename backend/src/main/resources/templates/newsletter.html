@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #0062a3;
+            text-align: center;
+            margin-top: 0;
+        }
+        p {
+            color: #52575e;
+            text-align: center;
+            margin-top: 0;
+        }
+        h3 {
+            color: #0062a3;
+            margin-top: 0;
+            text-align: center;
+        }
+        a {
+            color: #0062a3;
+            text-decoration: none;
+        }
+        .logo {
+            display: block;
+            margin: 20px auto;
+            width: 80px;
+            height: 80px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>¡Nueva entrada en nuestro blog!</h2>
+    <p>Te informamos que hemos publicado una nueva entrada en nuestro blog. ¡No te la pierdas!</p>
+    <h3>Título de la entrada: <span th:text="${title}">título</span></h3>
+    <p>Puedes leer la entrada completa <a th:href="${url}">aquí</a>.</p>
+    <p>¡Esperamos que disfrutes leyéndola tanto como nosotros disfrutamos escribiéndola!</p>
+    <p>¡Gracias por seguir nuestro blog!</p>
+    <img th:src="@{img/logo-footer.png}" alt="Concesionario ULPGC" class="logo">
+</div>
+</body>
+</html>

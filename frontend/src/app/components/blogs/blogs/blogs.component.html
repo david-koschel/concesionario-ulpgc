@@ -1,13 +1,41 @@
 <div class="container">
   <h1>Noticias</h1>
-  @for (blog of blogs; track $index){
-    <h2>{{blog.title}}</h2>
-    <p>{{blog.data | htmlToString}}</p>
+  <button
+    pButton
+    icon="fa-regular fa-newspaper"
+    label="!Suscribirse a nuestro blog!"
+    class="btn btn-outline-dark float-end"
+    (click)="visible = true"
+  ></button>
+  @for (blog of blogs; track $index) {
+    <h2>{{ blog.title }}</h2>
+    <p class="ellipsis">{{ blog.data | htmlToString }}</p>
     <div class="d-flex justify-content-end">
       <button
         class="btn btn-outline-dark"
         routerLink="/blogs/{{blog.id}}"
-      >Leer más</button>
+      >Leer más
+      </button>
     </div>
   }
 </div>
+<p-dialog header="Suscribirse al Blog" [modal]="true" [(visible)]="visible" [style]="{ 'max-width': '35rem' }">
+  <b class="mb-5">¡No te pierdas nada del blog!</b>
+  <p class="mb-3 p-text-secondary">
+    Suscríbete para recibir todas nuestras actualizaciones en tu bandeja de entrada. Solo deja tu correo electrónico y
+    estarás listo para sumergirte en el mundo del automovilismo.
+  </p>
+  <div class="d-flex flex-column justify-content-center align-items-start gap-2 mb-3">
+    <label for="email" class="font-semibold">Correo electrónico</label>
+    <input [(ngModel)]="email" pInputText id="email" class="w-100"/>
+  </div>
+  <div class="d-flex justify-content-center">
+    <button
+      pButton
+      label="Suscribirse"
+      (click)="subscribeToNewsletter()"
+      class="btn btn-outline-dark text-center"
+    ></button>
+  </div>
+</p-dialog>
+<p-toast></p-toast>

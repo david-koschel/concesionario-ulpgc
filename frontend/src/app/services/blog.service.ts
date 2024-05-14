@@ -29,4 +29,8 @@ export class BlogService {
   save(blog: Blog) : Observable<Blog> {
     return this.http.post<Blog>("http://localhost:8080/api/blog", blog);
   }
+
+  subscribeToNewsletter(email: string): Observable<void> {
+    return this.http.post<void>(`http://localhost:8080/api/blog/public/newsletter`, email);
+  }
 }

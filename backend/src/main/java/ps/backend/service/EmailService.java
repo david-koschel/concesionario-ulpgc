@@ -36,6 +36,15 @@ public class EmailService {
         }
     }
 
+    public void sendMultipleEmail(String subject, String body, String... to) {
+        try {
+            MimeMessageHelper helper = this.createEmailObjectMultiple(subject, body, to);
+            emailSender.send(helper.getMimeMessage());
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
     public void sendVehicleInvoiceMail(String to, String subject, String body, UserConfiguration userConfiguration, String orderNumber) {
         try {
             MimeMessageHelper helper = this.createEmailObject(to, subject, body);
@@ -63,6 +72,16 @@ public class EmailService {
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
         helper.setFrom(EMAIL_ADDRESS, EMAIL_NAME);
         helper.setTo(to);
+        helper.setSubject(subject);
+        helper.setText(body, true);
+        return helper;
+    }
+
+    private MimeMessageHelper createEmailObjectMultiple(String subject, String body, String... to) throws MessagingException, UnsupportedEncodingException {
+        MimeMessage message = emailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.setFrom(EMAIL_ADDRESS, EMAIL_NAME);
+        helper.setBcc(to);
         helper.setSubject(subject);
         helper.setText(body, true);
         return helper;
