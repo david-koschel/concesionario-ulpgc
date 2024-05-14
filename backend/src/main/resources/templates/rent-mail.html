@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div>
+    <h4>Recibí de alquiler de vehículo</h4>
+    <hr>
+    <p>
+        Hemos procesado adecuadamente el alquiler del vehículo. Por la presente le informamos que puede
+        retirarlo en nuestro concesionario el <span th:text="${startDate}"></span>.
+    </p>
+    <p>
+        Deseamos que disfrute de nuestros servicios y nuestra atención. A continuación le dejamos un desglose
+        del alquiler, en caso de error, puede comunicárnoslo por nuestra web, correo o teléfono.
+    </p>
+    <p><b>Modelo: </b><span th:text="${model}"></span></p>
+    <p><b>Día de retirada del vehículo: </b><span th:text="${startDate}"></span></p>
+    <p><b>Día de devolución del vehículo: </b><span th:text="${endDate}"></span></p>
+    <div>
+        <br>
+        <span>Atentamente,<br></span>
+        <span>Concesionario ULPGC</span>
+    </div>
+</div>
+</html>

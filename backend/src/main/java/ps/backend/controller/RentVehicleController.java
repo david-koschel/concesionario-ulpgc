@@ -22,17 +22,10 @@ public class RentVehicleController {
         return rentVehicleService.getCatalogue();
     }
 
-    /*@PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/add")
     public ResponseEntity<RentVehicle> addCatalogue(@RequestBody RentVehicle newVehicle) {
         RentVehicle savedCatalogue = rentVehicleService.addVehicle(newVehicle);
         return ResponseEntity.ok(savedCatalogue);
     }
-
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @PostMapping("/edit")
-    public ResponseEntity<RentVehicle> updateCatalogue(@RequestBody RentVehicle updatedVehicle) {
-        RentVehicle updated = rentVehicleService.updateCatalogue(updatedVehicle);
-        return ResponseEntity.ok(updated);
-    }*/
 }

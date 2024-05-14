@@ -24,4 +24,7 @@ public class RentVehicleService {
         return rentVehicleRepository.findById(id);
     }
 
+    public RentVehicle addVehicle(RentVehicle newVehicle) {
+        return rentVehicleRepository.save(newVehicle);
+    }
 }

@@ -4,28 +4,31 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Entity
 @Getter
 @Setter
-public class RentVehicle {
+@Entity
+public class RentRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String img;
+    @OneToOne
+    @JoinColumn(name = "rent_vehicle_id", referencedColumnName = "id")
+    private RentVehicle rentVehicle;
 
-    private String model;
+    private LocalDate startDate;
 
-    private Integer year;
+    private LocalDate endDate;
 
-    private String engine;
+    private String name;
 
-    private Float price;
+    private String email;
 }
