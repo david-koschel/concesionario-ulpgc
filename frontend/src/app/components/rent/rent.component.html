@@ -1,18 +1,30 @@
 <h1>SERVICIO DE ALQUILER DE VEHICULOS</h1>
 <div class="content">
+  <p>
+    ¡Desata tu aventura con nosotros! En nuestro servicio de alquiler de vehículos, te ofrecemos la
+    llave hacia destinos inolvidables. Desde las pintorescas carreteras costeras hasta las majestuosas montañas,
+    nuestros vehículos están listos para llevar tus sueños a la carretera.
+    ¿Quieres sentir la libertad de explorar sin límites? Con nuestra flota diversa y confiable,
+    el viaje de tus sueños está a solo un volante de distancia. ¿A qué esperas? ¡Haz realidad tu próxima gran
+    escapada con nosotros!
+  </p>
     @if (dateSelected) {
         <p class="option-title">Vehiculos disponibles:</p>
+      @if(vehicles.length > 0){
         <div id="information-container" *ngFor="let vehicle of vehicles">
-            <app-rent-vehicle [vehicle]="vehicle"></app-rent-vehicle>
-            <app-rent-vehicle-price [vehicle]="vehicle" [rentDays]="rentDays" [fechaRecogidaString]="fechaRecogidaString" [fechaLlegadaString]="fechaLlegadaString"></app-rent-vehicle-price>
-          </div>
+          <app-rent-vehicle [vehicle]="vehicle"></app-rent-vehicle>
+          <app-rent-vehicle-price [vehicle]="vehicle" [rentDays]="rentDays" [fechaRecogidaString]="fechaRecogidaString" [fechaLlegadaString]="fechaLlegadaString"></app-rent-vehicle-price>
+        </div>
+      } @else {
+        <p>No hay vehículos disponibles para la fecha seleccionada</p>
+      }
+
     }
     @else {
         <p class="option-title">Elija que días necesita un vehículo</p> <br>
-        <app-rent-date (buscarVehiculosDisponibles)="onBuscarVehiculosDisponibles($event)"></app-rent-date>
+        <app-rent-date (findFreeVehicles)="getAvailability($event)"></app-rent-date>
     }
 </div>
 
 
 
-  

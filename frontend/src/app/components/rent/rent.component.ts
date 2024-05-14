@@ -15,20 +15,23 @@ import { RentVehiclePriceComponent } from '../rent-vehicle-price/rent-vehicle-pr
 })
 export class RentComponent {
   dateSelected: boolean = false;
-  rentService: RentService = inject(RentService);
-  vehicles: RentVehicle[] = [];
+  vehicles!: RentVehicle[];
   rentDays: number = 0;
   fechaRecogidaString: string = "";
   fechaLlegadaString: string = "";
-  onBuscarVehiculosDisponibles(eventData: { fechaRecogida: Date, fechaLlegada: Date }) {
-    this.fechaRecogidaString = eventData.fechaRecogida.toISOString().slice(0, 10);;
-    this.fechaLlegadaString = eventData.fechaLlegada.toISOString().slice(0, 10);;
 
-    console.log('Fecha de recogida:', this.fechaRecogidaString);
-    console.log('Fecha de llegada:', this.fechaLlegadaString);
+  public constructor(
+    private rentService: RentService
+  ) {
+  }
 
-    this.vehicles = this.rentService.getVehiculosDisponibles(this.fechaRecogidaString, this.fechaLlegadaString);
-    this.rentDays = this.rentService.calcularDiferenciaEnDias(this.fechaRecogidaString, this.fechaLlegadaString);
+  getAvailability(eventData: {startDate: Date, endDate: Date}) {
+
+    this.rentService.getFreeVehicles(eventData.startDate, eventData.endDate).subscribe(
+      vehicles => this.vehicles = vehicles
+    )
+
+    this.rentDays = this.rentService.calculateDays(eventData.startDate, eventData.endDate);
     this.dateSelected = true;
   }
 }

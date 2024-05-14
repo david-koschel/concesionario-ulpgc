@@ -1,6 +1,6 @@
 <div class="d-flex gap-4 align-items-start">
   <p-calendar
-    [formControl]="fechaRecogida"
+    [formControl]="startDate"
     [minDate]="currentDate"
   >
     <ng-template pTemplate="date" let-date>
@@ -10,7 +10,7 @@
     </ng-template>
   </p-calendar>
   <p-calendar
-    [formControl]="fechaLlegada"
+    [formControl]="endDate"
     [minDate]="currentDate"
   >
     <ng-template pTemplate="date" let-date>
@@ -20,8 +20,10 @@
     </ng-template>
   </p-calendar>
   <div class="d-flex flex-column gap-3">
-    <button id="show-vehicles" (click)="onBuscarVehiculosDisponibles()">BUSCAR VEHICULOS DISPONIBLES</button>
-    <div class="alert alert-danger" *ngIf="fechaInvalida" role="alert">
+    <button
+      class="btn btn-primary"
+      (click)="onClickFindAvailableVehicles()">BUSCAR VEHICULOS DISPONIBLES</button>
+    <div class="alert alert-danger" *ngIf="invalidDate" role="alert">
       La fecha de llegada no puede ser anterior a la fecha de recogida.
     </div>
   </div>

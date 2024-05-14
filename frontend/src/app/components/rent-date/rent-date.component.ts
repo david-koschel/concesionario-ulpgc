@@ -19,27 +19,28 @@ import {CalendarModule} from "primeng/calendar";
   styleUrl: './rent-date.component.scss'
 })
 export class RentDateComponent {
-  fechaRecogida = new FormControl();
-  fechaLlegada = new FormControl();
-  fechaInvalida = false;
+  startDate = new FormControl();
+  endDate = new FormControl();
+  invalidDate = false;
   currentDate = new Date();
-  @Output() buscarVehiculosDisponibles = new EventEmitter<{ fechaRecogida: Date, fechaLlegada: Date }>();
+  @Output()
+  findFreeVehicles = new EventEmitter<{ startDate: Date, endDate: Date }>();
 
-  onBuscarVehiculosDisponibles() {
-    if (this.fechaLlegada.value < this.fechaRecogida.value) {
-      this.fechaInvalida = true;
+  onClickFindAvailableVehicles() {
+    if (this.endDate.value < this.startDate.value) {
+      this.invalidDate = true;
 
       setTimeout(() => {
-        this.fechaInvalida = false;
+        this.invalidDate = false;
       }, 3000);
 
       return;
     }
 
-    this.fechaInvalida = false;
-    this.buscarVehiculosDisponibles.emit({
-      fechaRecogida: this.fechaRecogida.value,
-      fechaLlegada: this.fechaLlegada.value
+    this.invalidDate = false;
+    this.findFreeVehicles.emit({
+      startDate: this.startDate.value,
+      endDate: this.endDate.value
     });
   }
 
