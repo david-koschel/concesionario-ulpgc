@@ -16,6 +16,8 @@ final class SecurityConstant {
             "/api/test-drive-car/all",
             "/api/test-drive-request/form",
             "/api/test-drive-request/occupied-dates",
+            "/api/user/password/forgot",
+            "/api/user/password/reset",
             "/api/blog/public/**",
             "/api/tpv/notification/**"
     };

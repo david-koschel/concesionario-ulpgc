@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {User} from "../models/user.model";
+import {ForgotPassword} from "../components/reset-password/forgot-password.model";
 
 @Injectable({
   providedIn: 'root'
@@ -42,4 +43,11 @@ export class UserService {
     return this.http.post<User>("http://localhost:8080/api/user/register", user);
   }
 
+  forgotPassword(username: string): Observable<void> {
+    return this.http.get<void>(`http://localhost:8080/api/user/password/forgot`, {params: {username: username}});
+  }
+
+  resetPassword(dto: ForgotPassword): Observable<void> {
+    return this.http.post<void>(`http://localhost:8080/api/user/password/reset`, dto);
+  }
 }

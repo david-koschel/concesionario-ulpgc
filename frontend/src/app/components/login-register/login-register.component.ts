@@ -1,39 +1,45 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {CardModule} from 'primeng/card';
 import {InputTextModule} from 'primeng/inputtext';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ButtonModule} from 'primeng/button';
 import {CommonModule} from '@angular/common';
 import {CheckboxModule} from "primeng/checkbox";
 import {ToastModule} from "primeng/toast";
 import {LoginService} from "../../security/login.service";
 import {MessageService} from "primeng/api"; // Importa CommonModule
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {UserService} from "../../services/user.service";
 import {map} from "rxjs";
 import {User} from "../../models/user.model";
+import {DynamicDialogRef} from "primeng/dynamicdialog";
 
 @Component({
   selector: 'app-login-register-arreglado',
   standalone: true,
-  imports: [CardModule, InputTextModule, ReactiveFormsModule, ButtonModule, CommonModule, CheckboxModule, ToastModule],
+  imports: [CardModule, InputTextModule, ReactiveFormsModule, ButtonModule, CommonModule, CheckboxModule, ToastModule, FormsModule, RouterLink],
   templateUrl: './login-register.component.html',
   styleUrl: './login-register.component.scss',
-  providers: [MessageService]
+  providers: [MessageService, DynamicDialogRef]
 })
 
 
 export class LoginRegisterArregladoComponent implements OnInit {
 
-  private userService = inject(UserService);
-  private formBuilder = inject(FormBuilder);
-  private loginService = inject(LoginService);
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
-  private messageService = inject(MessageService);
-
   protected loading = false;
   private configuredVehicle!: number;
+
+  login = true;
+
+  public constructor(
+    private userService: UserService,
+    private formBuilder: FormBuilder,
+    private loginService: LoginService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private messageService: MessageService
+  ) {
+  }
 
   protected loginForm = this.formBuilder.group({
     loginName: ['', [Validators.required]],
@@ -58,13 +64,13 @@ export class LoginRegisterArregladoComponent implements OnInit {
   }
 
   submitForm() {
-    if (this.registerForm.valid) {
+    if (this.registerForm.valid && this.validarContrasenia(this.registerForm.controls['password'].value)) {
       this.loading = true;
       const user: User = {...this.registerForm.value};
       this.userService.registerUser(user)
         .subscribe({
           next: res => {
-            this.login(res.username, res.password);
+            this.submitLogin(res.username, res.password);
             this.loading = false;
           },
           error: err => {
@@ -78,7 +84,8 @@ export class LoginRegisterArregladoComponent implements OnInit {
         });
     } else {
       this.messageService.add({
-        summary: "Rellene correctamente todos los campos",
+        summary: "Error",
+        detail: "Rellene correctamente todos los campos",
         severity: "error"
       });
     }
@@ -115,19 +122,20 @@ export class LoginRegisterArregladoComponent implements OnInit {
 
   submitLoginForm() {
     if (this.loginForm.valid) {
-      this.login(
+      this.submitLogin(
         this.loginForm.controls['loginName'].value!,
         this.loginForm.controls['loginPassword'].value!
       );
     } else {
       this.messageService.add({
-        summary: "Rellene correctamente todos los campos",
+        summary: "Error",
+        detail: "Rellene correctamente todos los campos",
         severity: "error"
       });
     }
   }
 
-  private login(username: string, password: string) {
+  private submitLogin(username: string, password: string) {
     this.loginService.login(username, password).subscribe({
       next: () => this.successfulLogin(),
       error: () => {
@@ -149,5 +157,31 @@ export class LoginRegisterArregladoComponent implements OnInit {
     } else {
       this.router.navigate(["user"]);
     }
+  }
+
+  validarContrasenia(contrasenia: string): boolean {
+    const longitudMinima = 8;
+    if (contrasenia.length < longitudMinima) {
+      this.messageService.add({severity: 'error', summary: 'Error', detail: "La contraseña debe tener al menos una longitud de 8 caracteres"});
+      return false;
+    }
+    if (!/\d/.test(contrasenia)) {
+      this.messageService.add({severity: 'error', summary: 'Error', detail: "La contraseña debe contener al menos un caracter numerico"});
+      return false;
+    }
+    if (!/[A-Z]/.test(contrasenia)) {
+      this.messageService.add({severity: 'error', summary: 'Error', detail: "La contraseña debe contener al menos un caracter en mayuscula"});
+      return false;
+    }
+    if (!/[a-z]/.test(contrasenia)) {
+      this.messageService.add({severity: 'error', summary: 'Error', detail: "La contraseña debe contener al menos un caracter en minuscula"});
+      return false;
+    }
+    if (!/[^A-Za-z0-9]/.test(contrasenia)) {
+      this.messageService.add({severity: 'error', summary: 'Error', detail: "La contraseña debe contener al menos un caracter especial"});
+      return false;
+    }
+    this.messageService.add({severity: 'success', summary: 'Éxito', detail: "Contraseña modificada con exito"});
+    return true;
   }
 }
