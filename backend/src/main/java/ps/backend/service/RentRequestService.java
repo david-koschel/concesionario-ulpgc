@@ -99,9 +99,8 @@ public class RentRequestService {
     }
 
     private boolean requestTakesPlaceInInterval(LocalDate startDate, LocalDate endDate, RentRequest rentRequest) {
-        boolean b = (rentRequest.getEndDate().isAfter(startDate) || rentRequest.getEndDate().equals(startDate)) &&
+        return (rentRequest.getEndDate().isAfter(startDate) || rentRequest.getEndDate().equals(startDate)) &&
                 (rentRequest.getStartDate().isBefore(endDate) || rentRequest.getStartDate().equals(endDate));
-        return b;
     }
 
     private void sendConfirmationEmail(RentRequest rentRequest) {

@@ -39,7 +39,9 @@ public class ResetPasswordService {
                     Link para restablecer la contraseña: http://localhost:4200/reset-password/%s
                     Este link caducará en 5 minutos.
                     """, token));
-        } catch (BasicException ignored) {}
+        } catch (BasicException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void resetPassword(ForgotPasswordDto dto) {
