@@ -6,11 +6,12 @@ import {MessageService} from "primeng/api";
 import {FooterComponent} from "./components/footer/footer.component";
 import {registerLocaleData} from "@angular/common";
 import localeEs from '@angular/common/locales/es'
+import {TranslateWidgetComponent} from "./components/translate-widget/translate-widget.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent, ToastModule, FooterComponent],
+  imports: [RouterOutlet, HeaderComponent, ToastModule, FooterComponent, TranslateWidgetComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   providers: [MessageService]
