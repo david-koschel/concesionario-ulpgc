@@ -1,39 +1,45 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {CardModule} from 'primeng/card';
 import {InputTextModule} from 'primeng/inputtext';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ButtonModule} from 'primeng/button';
 import {CommonModule} from '@angular/common';
 import {CheckboxModule} from "primeng/checkbox";
 import {ToastModule} from "primeng/toast";
 import {LoginService} from "../../security/login.service";
 import {MessageService} from "primeng/api"; // Importa CommonModule
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {UserService} from "../../services/user.service";
 import {map} from "rxjs";
 import {User} from "../../models/user.model";
+import {DynamicDialogRef} from "primeng/dynamicdialog";
 
 @Component({
   selector: 'app-login-register-arreglado',
   standalone: true,
-  imports: [CardModule, InputTextModule, ReactiveFormsModule, ButtonModule, CommonModule, CheckboxModule, ToastModule],
+  imports: [CardModule, InputTextModule, ReactiveFormsModule, ButtonModule, CommonModule, CheckboxModule, ToastModule, FormsModule, RouterLink],
   templateUrl: './login-register.component.html',
   styleUrl: './login-register.component.scss',
-  providers: [MessageService]
+  providers: [MessageService, DynamicDialogRef]
 })
 
 
 export class LoginRegisterArregladoComponent implements OnInit {
 
-  private userService = inject(UserService);
-  private formBuilder = inject(FormBuilder);
-  private loginService = inject(LoginService);
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
-  private messageService = inject(MessageService);
-
   protected loading = false;
   private configuredVehicle!: number;
+
+  login = true;
+
+  public constructor(
+    private userService: UserService,
+    private formBuilder: FormBuilder,
+    private loginService: LoginService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private messageService: MessageService
+  ) {
+  }
 
   protected loginForm = this.formBuilder.group({
     loginName: ['', [Validators.required]],
@@ -64,7 +70,7 @@ export class LoginRegisterArregladoComponent implements OnInit {
       this.userService.registerUser(user)
         .subscribe({
           next: res => {
-            this.login(res.username, res.password);
+            this.submitLogin(res.username, res.password);
             this.loading = false;
           },
           error: err => {
@@ -116,7 +122,7 @@ export class LoginRegisterArregladoComponent implements OnInit {
 
   submitLoginForm() {
     if (this.loginForm.valid) {
-      this.login(
+      this.submitLogin(
         this.loginForm.controls['loginName'].value!,
         this.loginForm.controls['loginPassword'].value!
       );
@@ -129,7 +135,7 @@ export class LoginRegisterArregladoComponent implements OnInit {
     }
   }
 
-  private login(username: string, password: string) {
+  private submitLogin(username: string, password: string) {
     this.loginService.login(username, password).subscribe({
       next: () => this.successfulLogin(),
       error: () => {

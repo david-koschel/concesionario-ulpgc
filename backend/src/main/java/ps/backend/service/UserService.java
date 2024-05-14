@@ -1,11 +1,13 @@
 package ps.backend.service;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -24,11 +26,14 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final EmailService emailService;
     private final TemplateEngine templateEngine;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, EmailService emailService, TemplateEngine templateEngine) {
+    public UserService(UserRepository userRepository, EmailService emailService, TemplateEngine templateEngine,
+                       @Lazy PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.emailService = emailService;
         this.templateEngine = templateEngine;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<User> findAll() {
@@ -123,5 +128,19 @@ public class UserService implements UserDetailsService {
                 true,
                 Collections.singleton(new SimpleGrantedAuthority(user.getRole().toString()))
         );
+    }
+
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username).orElseThrow(BasicException::new);
+    }
+
+    public void changeForgottenPassword(String username, String newPassword) {
+        User user = findByUsername(username);
+
+        if (newPassword.equals("fake_password")) {
+            throw new BasicException("La nueva contraseña no es válida");
+        }
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
     }
 }

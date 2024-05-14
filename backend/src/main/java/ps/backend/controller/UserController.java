@@ -1,5 +1,6 @@
 package ps.backend.controller;
 
+import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -9,11 +10,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import ps.backend.dto.ForgotPasswordDto;
 import ps.backend.entity.User;
 import ps.backend.exception.BasicException;
 import ps.backend.service.EmailService;
+import ps.backend.service.ResetPasswordService;
 import ps.backend.service.UserService;
 import ps.backend.dto.RestorePasswordRequest;
 
@@ -27,10 +31,12 @@ public class UserController {
 
     private final UserService userService;
     private final EmailService emailService;
+    private final ResetPasswordService resetPasswordService;
 
-    public UserController(UserService userService, EmailService emailService) {
+    public UserController(UserService userService, EmailService emailService, ResetPasswordService resetPasswordService) {
         this.userService = userService;
         this.emailService = emailService;
+        this.resetPasswordService = resetPasswordService;
     }
 
     @GetMapping("/current")
@@ -66,10 +72,14 @@ public class UserController {
         emailService.sendEmail(sendEmail, "Recuperación de Contraseña", "http://localhost:4200/forgot-password?email=" + sendEmail);
     }
 
-    @PostMapping("/restorePassword")
-    public void restorePassword(@RequestBody RestorePasswordRequest request) {
-        System.out.println(request.getPassword());
-        this.userService.restorePassword(request.getEmail(), request.getPassword());
+    @GetMapping("/password/forgot")
+    public void forgotPassword(@NotNull @RequestParam String username) {
+        resetPasswordService.requestPasswordChange(username);
+    }
+
+    @PostMapping("/password/reset")
+    public void resetPassword(@RequestBody ForgotPasswordDto forgotPasswordDto) {
+        resetPasswordService.resetPassword(forgotPasswordDto);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
