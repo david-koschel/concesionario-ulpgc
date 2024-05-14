@@ -16,7 +16,10 @@
           <app-rent-vehicle-price [vehicle]="vehicle" [rentDays]="rentDays" [fechaRecogidaString]="fechaRecogidaString" [fechaLlegadaString]="fechaLlegadaString"></app-rent-vehicle-price>
         </div>
       } @else {
-        <p>No hay vehículos disponibles para la fecha seleccionada</p>
+        <p>
+          No hay vehículos disponibles para la fecha seleccionada.
+          <a routerLink="/rent" (click)="location.reload()">Volver a buscar</a>
+        </p>
       }
 
     }

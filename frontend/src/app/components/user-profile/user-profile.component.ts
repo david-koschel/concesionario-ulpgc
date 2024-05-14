@@ -1,5 +1,5 @@
 import {Component, inject, OnInit, ViewChild} from '@angular/core';
-import {NgClass, NgForOf, NgIf, NgOptimizedImage, NgTemplateOutlet} from "@angular/common";
+import {DatePipe, NgClass, NgForOf, NgIf, NgOptimizedImage, NgTemplateOutlet} from "@angular/common";
 import {ButtonModule} from "primeng/button";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {InputTextModule} from "primeng/inputtext";
@@ -16,6 +16,8 @@ import { IndependentExtra } from '../../models/independentextra.model';
 import { ExtraService } from '../../services/extra.service';
 import {VehiclePaymentStatusPipe} from "./vehicle-payment-status.pipe";
 import {TpvFormComponent} from "../tpv-form/tpv-form.component";
+import {RentService} from "../../services/rent.service";
+import {RentRequest} from "../../models/rent-request.model";
 
 @Component({
   selector: 'app-user-profile',
@@ -33,7 +35,8 @@ import {TpvFormComponent} from "../tpv-form/tpv-form.component";
     RouterLink,
     SidebarModule,
     VehiclePaymentStatusPipe,
-    TpvFormComponent
+    TpvFormComponent,
+    DatePipe
   ],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.scss',
@@ -45,12 +48,14 @@ export class UserProfileComponent implements OnInit {
   private formBuilder = inject(FormBuilder);
   private messageService = inject(MessageService);
   private vehicleService = inject(VehicleService);
-  private extraService = inject(ExtraService)
+  private extraService = inject(ExtraService);
+  private rentService = inject(RentService);
 
   protected editing: boolean = false;
 
   protected userCardRows: { name: string; value: string; formControl?: string }[] = [];
   protected userVehicles: UserVehicle[] = [];
+  protected userRents: RentRequest[] = [];
   protected userConfigurations: UserConfiguration[] = [];
 
   protected form!: FormGroup;
@@ -78,6 +83,7 @@ export class UserProfileComponent implements OnInit {
     this.getUserVehicles();
     this.getUserExtras();
     this.getUserConfigurations();
+    this.getUserRents();
   }
 
   private getUserData() {
@@ -99,15 +105,16 @@ export class UserProfileComponent implements OnInit {
     this.vehicleService.getUserVehicles().subscribe(res => this.userVehicles = res);
   }
 
-////
   private getUserExtras(){
-    this.extraService.getUserExtras().subscribe(data => this.userExtras = data)
+    this.extraService.getUserExtras().subscribe(data => this.userExtras = data);
   }
-////
-
 
   private getUserConfigurations() {
     this.vehicleService.getUserConfigurations().subscribe(res => this.userConfigurations = res);
+  }
+
+  private getUserRents() {
+    this.rentService.getUserVehicles().subscribe(res => this.userRents = res);
   }
 
   protected editProfile() {
@@ -178,5 +185,9 @@ export class UserProfileComponent implements OnInit {
 
   protected continuePayment(id: number) {
     this.vehicleService.continueVehiclePurchase(id).subscribe(res => this.tpvForm.submitData(res));
+  }
+
+  protected continueRentPayment(id: number) {
+    this.rentService.continuePayment(id).subscribe(res => this.tpvForm.submitData(res));
   }
 }

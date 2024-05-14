@@ -1,10 +1,12 @@
 package ps.backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,15 +22,19 @@ public class RentRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToOne
-    @JoinColumn(name = "rent_vehicle_id", referencedColumnName = "id")
+    @ManyToOne
     private RentVehicle rentVehicle;
 
     private LocalDate startDate;
 
     private LocalDate endDate;
 
-    private String name;
+    @OneToOne
+    @JsonIgnore
+    @JoinColumn(name = "payment_id")
+    private Payment payment;
 
-    private String email;
+    @ManyToOne
+    @JsonIgnore
+    private User user;
 }

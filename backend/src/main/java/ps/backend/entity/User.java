@@ -52,4 +52,8 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<UserIndependentExtras> userIndependentExtras;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<RentRequest> rentRequests;
+
 }

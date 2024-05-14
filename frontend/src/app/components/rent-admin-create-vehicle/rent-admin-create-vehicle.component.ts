@@ -30,10 +30,12 @@ export class RentAdminCreateVehicleComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.rentService.getRentVehicles().subscribe(
-      vehicles => this.cars = vehicles
-    )
+    this.getRentVehicles();
     this.initForm();
+  }
+
+  private getRentVehicles() {
+    this.rentService.getRentVehicles().subscribe(vehicles => this.cars = vehicles);
   }
 
   initForm(): void {
@@ -52,8 +54,9 @@ export class RentAdminCreateVehicleComponent implements OnInit {
       this.rentService.addVehicle(newVehicle).subscribe({
         next: value => {
           this.vehicleForm.reset();
+          this.getRentVehicles();
         }
-      })
+      });
     }
   }
 

@@ -31,6 +31,7 @@ public class PaymentService {
     private final String shopId = "999008881";
     private final ConfigurableVehicleService configurableVehicleService;
     private final IndependentExtraService independentExtraService;
+    private final RentRequestService rentRequestService;
 
     @Value("${redsys.notification.url}")
     private String notificationUrl;
@@ -39,10 +40,11 @@ public class PaymentService {
 
     private static final DateTimeFormatter DATE_AND_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd");
 
-    public PaymentService(PaymentRepository paymentRepository, @Lazy ConfigurableVehicleService configurableVehicleService, @Lazy IndependentExtraService independentExtraService) {
+    public PaymentService(PaymentRepository paymentRepository, @Lazy ConfigurableVehicleService configurableVehicleService, @Lazy IndependentExtraService independentExtraService, RentRequestService rentRequestService) {
         this.paymentRepository = paymentRepository;
         this.configurableVehicleService = configurableVehicleService;
         this.independentExtraService = independentExtraService;
+        this.rentRequestService = rentRequestService;
     }
 
 
@@ -108,6 +110,7 @@ public class PaymentService {
         switch (type) {
             case VEHICLE_PURCHASE -> configurableVehicleService.paymentConfirmation(payment);
             case EXTRA_PURCHASE -> independentExtraService.paymentConfirmation(payment);
+            case RENT -> rentRequestService.paymentConfirmation(payment);
             default -> throw new BasicException("Tipo de pago no implementado");
         }
     }

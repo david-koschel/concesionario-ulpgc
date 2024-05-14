@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+import ps.backend.entity.RentRequest;
 import ps.backend.entity.UserIndependentExtras;
 import ps.backend.entity.configurableVehicle.ConfigurableVehicle;
 import ps.backend.entity.configurableVehicle.ConfigurableVehicleColor;
@@ -66,6 +67,21 @@ public class PdfService {
 
         this.createInvoiceHeader(pdfPTable, orderNumber);
         this.createExtraInvoiceBody(pdfPTable, extra);
+
+        ByteArrayDataSource dataSource = generatePdfByteArrayDataSourceFromPdfPTable(pdfPTable);
+        dataSource.setName(
+                "Factura_Accesorio_Concesionario_ULPGC.pdf"
+        );
+
+        return dataSource;
+
+    }
+
+    public ByteArrayDataSource generateRentRequestInvoicePDF(RentRequest rentRequest) {
+        PdfPTable pdfPTable = new PdfPTable(12);
+
+        this.createInvoiceHeader(pdfPTable, rentRequest.getPayment().getOrderNumber());
+        this.createRentRequestInvoiceBody(pdfPTable, rentRequest);
 
         ByteArrayDataSource dataSource = generatePdfByteArrayDataSourceFromPdfPTable(pdfPTable);
         dataSource.setName(
@@ -150,6 +166,12 @@ public class PdfService {
         generateSingleBoldRow(table, extra.getName(), 1, extra.getPrice());
 
         this.generateInvoiceEnd(table, extra.getPrice());
+    }
+
+    private void createRentRequestInvoiceBody(PdfPTable table, RentRequest rentRequest) {
+        float price = rentRequest.getPayment().getAmount() / 100f;
+        generateSingleBoldRow(table, String.format("Alquiler de %s", rentRequest.getRentVehicle().getModel()), 1, price);
+        this.generateInvoiceEnd(table, price);
     }
 
     private void createVehicleInvoiceBody(PdfPTable table, UserConfiguration userConfiguration) {

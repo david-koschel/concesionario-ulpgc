@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import ps.backend.entity.RentRequest;
 import ps.backend.entity.UserIndependentExtras;
 import ps.backend.entity.userVehicle.UserConfiguration;
 
@@ -60,6 +61,17 @@ public class EmailService {
         try {
             MimeMessageHelper helper = this.createEmailObject(to, subject, body);
             ByteArrayDataSource attachment = this.pdfService.generateExtraInvoicePDF(extra, extra.getPayment().getOrderNumber());
+            helper.addAttachment(attachment.getName(), attachment);
+            emailSender.send(helper.getMimeMessage());
+        } catch (MessagingException | UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void sendRentInvoiceMail(String body, String subject, RentRequest rentRequest) {
+        try {
+            MimeMessageHelper helper = this.createEmailObject(rentRequest.getUser().getEmail(), subject, body);
+            ByteArrayDataSource attachment = this.pdfService.generateRentRequestInvoicePDF(rentRequest);
             helper.addAttachment(attachment.getName(), attachment);
             emailSender.send(helper.getMimeMessage());
         } catch (MessagingException | UnsupportedEncodingException e) {

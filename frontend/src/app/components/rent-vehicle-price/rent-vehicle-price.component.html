@@ -1,8 +1,12 @@
 <div id="price-container"> <p>Número de días: {{rentDays}}</p>
     <p>Precio Total: {{rentDays*vehicle.price}}€</p>
-    <p>Fecha de recogida: {{fechaRecogidaString}}</p>
-    <p>Fecha de devolución: {{fechaLlegadaString}}</p>
+    <p>Fecha de recogida: {{fechaRecogidaString | date:"dd/MM/yyyy"}}</p>
+    <p>Fecha de devolución: {{fechaLlegadaString | date:"dd/MM/yyyy"}}</p>
     <button
+      pButton
       id="rentButton"
+      (click)="rent()"
+      [disabled]="loading"
     >Alquilar</button>
 </div>
+<app-tpv-form #tpvForm></app-tpv-form>

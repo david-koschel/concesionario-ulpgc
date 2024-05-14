@@ -37,7 +37,7 @@
   </div>
   <hr>
   <h3>Mis vehículos</h3>
-  @if (userVehicles.length > 0) {
+  @if (userVehicles.length > 0 || userRents.length > 0) {
     <div class="container text-center">
       <div class="row row-cols-2">
         @for (vehicle of userVehicles; track vehicle.id) {
@@ -63,6 +63,36 @@
                 </div>
                 <div *ngIf="vehicle.paymentStatus === 'IN_PROCESS'" class="d-flex justify-content-center px-1 px-md-3 px-xl-5">
                   <button class="btn btn-outline-dark" (click)="continuePayment(vehicle.id)">
+                    Continuar Compra
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+        @for (rent of userRents; track rent.id) {
+          <div class="col my-2">
+            <div class="card bg-body-secondary h-100">
+              <div class="card-body">
+                <img src="{{rent.rentVehicle.img}}" alt="imagen" class="object-fit-cover rounded" width="136" height="64">
+                <div class="d-flex flex-wrap gap-1 justify-content-between px-1 px-md-3 px-xl-5 mt-4">
+                  <label><b>Modelo</b></label>
+                  <span>{{ rent.rentVehicle.model }}</span>
+                </div>
+                <div class="d-flex flex-wrap gap-1 justify-content-between px-1 px-md-3 px-xl-5">
+                  <label><b>Motor</b></label>
+                  <span>{{ rent.rentVehicle.engine }}</span>
+                </div>
+                <div class="d-flex flex-wrap gap-1 justify-content-between px-1 px-md-3 px-xl-5">
+                  <label><b>Estado</b></label>
+                  <span>{{ rent.bought ? 'Alquilado' : 'Alquilado a la espera de pagar' }}</span>
+                </div>
+                <div class="d-flex flex-wrap gap-1 justify-content-between px-1 px-md-3 px-xl-5">
+                  <label><b>Hasta</b></label>
+                  <span>{{ rent.endDate | date:'dd/MM/yyyy' }}</span>
+                </div>
+                <div *ngIf="!rent.bought" class="d-flex justify-content-center px-1 px-md-3 px-xl-5">
+                  <button class="btn btn-outline-dark" (click)="continueRentPayment(rent.id!)">
                     Continuar Compra
                   </button>
                 </div>
