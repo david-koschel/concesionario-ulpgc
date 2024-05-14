@@ -93,7 +93,7 @@ export class BlogFormComponent implements AfterContentInit {
         setTimeout(() => {
           this.editor.quill.clipboard.dangerouslyPasteHTML(this.data, "silent");
           this.editor.quill.history.clear();
-        }, 100);
+        }, 200);
       }
     });
   }

@@ -31,7 +31,7 @@ import {ToastModule} from "primeng/toast";
 export class BlogsComponent implements OnInit {
 
   blogs!: Blog[];
-  visible = true;
+  visible = false;
   email: string | undefined;
   emailRegex: RegExp = new RegExp("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$");
 

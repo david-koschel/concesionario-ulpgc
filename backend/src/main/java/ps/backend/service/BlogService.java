@@ -98,11 +98,14 @@ public class BlogService {
     }
 
     private void sendNewsletter(Blog blog) {
-        emailService.sendMultipleEmail(
-                "Blog Concesionario ULPGC: " + blog.getTitle(),
-                generateEmailBody(blog),
-                blogSubscriptionRepository.findAll().stream().map(BlogSubscription::getEmail).toArray(String[]::new)
-        );
+        String[] subscriptions = blogSubscriptionRepository.findAll().stream().map(BlogSubscription::getEmail).toArray(String[]::new);
+        if (subscriptions.length > 0) {
+            emailService.sendMultipleEmail(
+                    "Blog Concesionario ULPGC: " + blog.getTitle(),
+                    generateEmailBody(blog),
+                    subscriptions
+            );
+        }
     }
 
     private String generateEmailBody(Blog blog) {
