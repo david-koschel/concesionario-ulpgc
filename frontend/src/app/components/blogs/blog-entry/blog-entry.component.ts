@@ -29,7 +29,7 @@ export class BlogEntryComponent implements OnInit{
   }
 
   private getBlog() {
-    this.blogService.getById(this.blogId).subscribe(
+    this.blogService.getByIdPublic(this.blogId).subscribe(
       blog => this.blog = blog
     );
   }

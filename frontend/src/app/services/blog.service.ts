@@ -18,6 +18,10 @@ export class BlogService {
     return this.http.get<Blog>(`http://localhost:8080/api/blog/${blogId}`);
   }
 
+  getByIdPublic(id: string): Observable<Blog> {
+    return this.http.get<Blog>(`http://localhost:8080/api/blog/public/id/${id}`);
+  }
+
   getPublicAllBeforeToday(): Observable<Blog[]> {
     return this.http.get<Blog[]>(`http://localhost:8080/api/blog/public/show`);
   }

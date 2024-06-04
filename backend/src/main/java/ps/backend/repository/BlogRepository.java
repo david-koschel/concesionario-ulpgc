@@ -14,8 +14,7 @@ import java.util.Optional;
 public interface BlogRepository extends JpaRepository<Blog, Integer> {
     Optional<Blog> findByTitle(String title);
 
-    @Query("SELECT b from Blog b where b.title = :name AND b.published = true")
-    Optional<Blog> findPublishedByName(@Param("name") String name);
+    Optional<Blog> findBlogByIdAndPublishedIsTrue(Integer id);
 
     @Query("SELECT  b from Blog b where b.published = true")
     List<Blog> findAllPublished();

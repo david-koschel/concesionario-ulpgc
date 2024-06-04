@@ -39,9 +39,9 @@ public class BlogController {
         return blogService.findAllPublishedBeforeToday();
     }
 
-    @GetMapping("/public/{name}")
-    public Blog findByName(@PathVariable String name){
-        return blogService.findPublishedByName(name);
+    @GetMapping("/public/id/{id}")
+    public Blog findByName(@PathVariable Integer id){
+        return blogService.findPublishedById(id);
     }
 
     @PostMapping("/public/newsletter")

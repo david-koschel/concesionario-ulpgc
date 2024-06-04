@@ -88,6 +88,10 @@
                   <span>{{ rent.bought ? 'Alquilado' : 'Alquilado a la espera de pagar' }}</span>
                 </div>
                 <div class="d-flex flex-wrap gap-1 justify-content-between px-1 px-md-3 px-xl-5">
+                  <label><b>Desde</b></label>
+                  <span>{{ rent.startDate | date:'dd/MM/yyyy' }}</span>
+                </div>
+                <div class="d-flex flex-wrap gap-1 justify-content-between px-1 px-md-3 px-xl-5">
                   <label><b>Hasta</b></label>
                   <span>{{ rent.endDate | date:'dd/MM/yyyy' }}</span>
                 </div>

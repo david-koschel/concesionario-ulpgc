@@ -33,11 +33,9 @@ public class RentRequestController {
     @GetMapping("/all")
     public List<RentRequestDto> findAll(){return rentRequestService.findAll();}
 
-    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/user")
     public List<RentRequestDto> findAllByUser(){return rentRequestService.findUserRents();}
 
-    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/user/{id}")
     public PaymentInfoDto continuePayment(@PathVariable Integer id){return rentRequestService.continuePayment(id);}
 

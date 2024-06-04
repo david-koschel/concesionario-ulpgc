@@ -50,8 +50,8 @@ public class BlogService {
         return blogRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
-    public Blog findPublishedByName(String name) {
-        return blogRepository.findPublishedByName(name).orElseThrow(NoSuchElementException::new);
+    public Blog findPublishedById(Integer id) {
+        return blogRepository.findBlogByIdAndPublishedIsTrue(id).orElseThrow(NoSuchElementException::new);
     }
 
     public Blog save(Blog blog) {
